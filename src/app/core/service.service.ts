@@ -115,8 +115,8 @@ getDummyData(): Observable<any> {
  }
   
 
-getProductsMini(): Promise<any[]> {
-  return firstValueFrom(this.http.get<any[]>("http://localhost:3000/product"));
-}
+// getProductsMini(): Promise<any[]> {
+//   return firstValueFrom(this.http.get<any[]>("http://localhost:3000/product"));
+// }
 
 }
