@@ -1,0 +1,107 @@
+.global-filter{
+    margin-top: 20px;
+}
+
+.sub-toolbar{
+    background-color: rgb(136, 136, 196) !important
+}
+
+.p{
+    width: 10px;
+}
+
+header{
+    background-color: rgb(40, 40, 53);
+}
+
+a{
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+::ng-deep .custom-dialog-header .p-dialog-header {
+  background-color: #074486;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 1rem;
+}
+
+
+.highlight-header {
+  background-color: yellow;
+  color: black;
+  font-weight: bold;
+}
+
+
+.custom-search-bar {
+  position: fixed;
+  top: 200px;
+  right: 20px;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 5px;
+  box-shadow: 0 3px 10px rgbba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  z-index: 10000;
+}
+
+.custom-search-bar input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px 8px;
+  margin: 0 10px;
+  width: 200px;
+}
+
+.custom-search-bar .match-info {
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.icon-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 3px;
+}
+
+.icon-button:focus {
+  outline: none;
+}
+
+.search-icon {
+  font-size: 16px;
+  color: #333;
+}
+
+.close-btn i {
+  color: red;
+}
+
+.p-table-wrapper {
+  overflow-x: auto;
+}
+
+mark.highlight {
+  background-color: yellow;
+  color: black;
+}
+
+mark.highlight-active {
+  background-color: orange;
+  color: white;
+}
+
+
+
+
+
+    

@@ -1,0 +1,44 @@
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ZButtonComponent } from './z-button/z-button.component';
+import { UiModule } from '../ui/ui/ui.module';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputComponent } from './input/input.component';
+import { FormComponent } from './form/form.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
+import { CheckboxComponent } from './checkbox/checkbox.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { PieChartComponent } from './pie-chart/pie-chart.component';
+import { TabsComponent } from './tabs/tabs.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { StudentDetailFormComponent } from './tabs/component/student-detail-form/student-detail-form.component';
+import { StudentDetailTableComponent } from './tabs/component/student-detail-table/student-detail-table.component';
+import { ConfigurationBasedFormComponent } from './tabs/configuration-based-form/configuration-based-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ConfigFormComponent } from './tabs/component/config-form/config-form.component';
+
+
+
+
+@NgModule({
+  declarations: [
+    ZButtonComponent,
+    InputComponent,
+    FormComponent,
+    DropdownComponent,
+    CheckboxComponent,
+    BarChartComponent,
+    PieChartComponent,
+    TabsComponent,
+    StudentDetailFormComponent,
+    StudentDetailTableComponent,
+    ConfigurationBasedFormComponent,
+    ConfigFormComponent,
+    
+  ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [CommonModule, UiModule, FormsModule, InputTextModule, MultiSelectModule,ReactiveFormsModule ],
+  exports: [ZButtonComponent, CheckboxComponent,BarChartComponent,PieChartComponent,TabsComponent],
+})
+export class SharedModule {}

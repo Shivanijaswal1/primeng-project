@@ -1,0 +1,212 @@
+{
+  "form": [
+    {
+      "id": "123",
+      "name": "acb",
+      "email": "abc@Gmail.com",
+      "age": 20,
+      "selectedValue": "Arts",
+      "children": [
+        {
+          "project": "project a",
+          "role": "admin",
+          "status": "true",
+          "joinDate": "20/03/2022",
+          "dateofbirth": "20/07/2004"
+        }
+      ]
+    },
+    {
+      "id": "d090",
+      "name": "wrt",
+      "email": "d@gmail.com",
+      "age": "22",
+      "selectedValue": "Commerce",
+      "selectedDate": "2025-05-14T09:05:26.821Z"
+    },
+    {
+      "id": "130e",
+      "name": "hhhh",
+      "email": "hhh@Gmail.com",
+      "age": "21",
+      "selectedValue": "ART",
+      "selectedDate": "2025-05-14T09:06:24.714Z"
+    },
+    {
+      "id": "9fef",
+      "name": "wrt",
+      "email": "asdfg@gmail.com",
+      "age": "12",
+      "selectedValue": "Medical",
+      "selectedDate": "2025-05-15T05:16:53.620Z"
+    },
+    {
+      "id": "48ef",
+      "name": "wrt",
+      "email": "shivani@gmail.com",
+      "age": "22",
+      "selectedValue": "ART",
+      "selectedDate": "2025-05-15T07:14:04.581Z"
+    },
+    {
+      "id": "1a2e",
+      "name": "name2ww",
+      "email": "asdfg@gmail.com",
+      "age": "56",
+      "selectedValue": null,
+      "father": "vg"
+    },
+    {
+      "id": "255a",
+      "name": "vghbj",
+      "email": "shivani@gmail.com",
+      "age": "7",
+      "selectedValue": "ART",
+      "father": "vg"
+    }
+  ],
+  "data": [
+    {
+      "id": "1",
+      "label": "Angular",
+      "value": 166443
+    },
+    {
+      "id": "2",
+      "label": "React",
+      "value": 150793
+    },
+    {
+      "id": "3",
+      "label": "Node.js",
+      "value": 62342
+    },
+    {
+      "id": "4",
+      "label": "PHP",
+      "value": 27643
+    }
+  ],
+  "pieChart": [
+    {
+      "label": "Angular",
+      "value": 0.3
+    },
+    {
+      "label": "Node.js",
+      "value": 0.4
+    },
+    {
+      "label": "JAVA",
+      "value": 0.6
+    },
+    {
+      "label": "Angular",
+      "value": 1
+    },
+    {
+      "label": "Node.js",
+      "value": 0.7
+    },
+    {
+      "label": "JAVA",
+      "value": 0.4
+    },
+    {
+      "label": "Angular",
+      "value": 0.2
+    },
+    {
+      "label": "Node.js",
+      "value": 1
+    },
+    {
+      "label": "JAVA",
+      "value": 1
+    },
+    {
+      "label": "JAVA",
+      "value": 1
+    },
+    {
+      "label": "Angular",
+      "value": 0.4
+    },
+    {
+      "label": "Node.js",
+      "value": 1
+    },
+    {
+      "label": "JAVA",
+      "value": 1.2
+    },
+    {
+      "label": "Angular",
+      "value": 0.1
+    },
+    {
+      "label": "Node.js",
+      "value": 0.9
+    },
+    {
+      "label": "JAVA",
+      "value": 2
+    },
+    {
+      "label": "JAVA",
+      "value": 2
+    },
+    {
+      "label": "Angular",
+      "value": 0.2
+    },
+    {
+      "label": "Node.js",
+      "value": 2.1
+    },
+    {
+      "label": "JAVA",
+      "value": 1.2
+    },
+    {
+      "label": "Angular",
+      "value": 0.1
+    },
+    {
+      "label": "Node.js",
+      "value": 0.2
+    },
+    {
+      "label": "JAVA",
+      "value": 0.1
+    },
+    {
+      "label": "JAVA",
+      "value": 1.2
+    },
+    {
+      "label": "Angular",
+      "value": 0.3
+    }
+  ],
+  "product":[
+    
+      {
+    "name": "Bamboo Watch",
+    "category": "Accessories",
+    "rating": "5"
+
+    },
+      {
+    "name": "Bamboo Watch",
+    "category": "Accessories",
+    "rating": "4"
+
+    },{
+    "name": "Bamboo Watch",
+    "category": "Accessories",
+    "rating": "2"
+
+    }
+  ]
+}

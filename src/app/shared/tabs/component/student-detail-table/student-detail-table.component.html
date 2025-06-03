@@ -1,0 +1,30 @@
+  <p-table 
+    [columns]="selectedColumns" 
+    [value]="products"
+  >
+  <ng-template pTemplate="caption">
+          <p-multiSelect 
+           [options]="cols" 
+           [(ngModel)]="selectedColumns" 
+           optionLabel="header"
+           [style]="{'min-width': '300px','padding':'10px'}" 
+           [display]="'comma'" 
+           [selectedItemsLabel]="' '"
+           [maxSelectedLabels]="0"
+           placeholder="Choose Columns"/>
+  </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          {{ product[col.field] }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table> 

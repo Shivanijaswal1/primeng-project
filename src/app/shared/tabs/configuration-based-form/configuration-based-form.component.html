@@ -1,0 +1,25 @@
+
+<form *ngIf="configForm && fields.length" [formGroup]="configForm">
+  <div *ngFor="let field of fields">
+    <label>{{ field.fieldName }}</label>
+
+    <input pInputText
+      *ngIf="field.type === 'text' || field.type === 'number'"
+      [type]="field.type"
+      [formControlName]="field.field"
+      [disabled]="!field.editable"
+    />
+
+    <select 
+      *ngIf="field.type === 'select'"
+      [formControlName]="field.field"
+      [disabled]="!field.editable"
+    >
+      <option *ngFor="let option of field.options" [value]="option">
+        {{ option }}
+      </option>
+    </select>
+  </div>
+
+  <button pButton type="button" (click)="onSubmit()">Submit</button>
+</form>

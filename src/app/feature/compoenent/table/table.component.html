@@ -1,0 +1,188 @@
+<div>
+  <app-layout></app-layout>
+  <div class="main">
+    <div class="global-filter" style="margin-bottom: 10px;">
+      <div class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="globalFilter"
+          (input)="onGlobalFilter()"
+          placeholder="Search all columns"/>
+      </div>
+    </div>
+    <p-toolbar
+      [style]="{ 'background-color': 'rgb(70, 89, 181)','margin-bottom':'20px','padding':'30','height':'10vh'}"
+      styleClass="sub-toolbar">
+      <app-z-button [style]="{'background-color':'white'}" label="Delete"
+        *ngIf="showDeleteButton"
+        (handleclick)="del(selectedEmployeeIds)"></app-z-button>
+      <div class="custom-search-bar">
+        <div class="p-input-icon-left">
+          <input
+            #searchInput
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="onSearchInputChange()"
+            placeholder="Search headers..."
+           />
+          <span class="match-info">
+            {{ currentMatchIndex + 1 }} / {{ matches.length }}
+          </span>
+          <button class="icon-button" (click)="prevMatch()"
+            title="Previous match">
+            <i class="pi pi-chevron-left"></i>
+          </button>
+          <button class="icon-button" (click)="nextMatch()" title="Next match">
+            <i class="pi pi-chevron-right"></i>
+          </button>
+          <button class="icon-button close-btn" (click)="closeSearch()"
+            title="Close">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+      </div>
+    </p-toolbar>
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
+    <p-table #dt [value]="employees" [paginator]="true" [rows]="5"
+      [resizableColumns]="true" [globalFilterFields]="globalFields"
+      [dataKey]="'id'"
+      [expandedRowKeys]="expandedRows" (onRowToggle)="onRowToggle($event)"
+      [value]="filteredEmployees"
+      (onRowExpand)="onRowExpand($event)"
+      (onRowCollapse)="onRowCollapse($event)"
+      scrollDirection="horizontal"
+      *ngIf="employees.length > 0; else noData">
+      <ng-template pTemplate="header">
+        <tr>
+          <th></th>
+          <th><app-checkbox (checkedChange)="onSelectAllChange($event)"
+              [checked]="isChecked"></app-checkbox></th>
+          <th *ngFor="let Parent of columns ; let i = index"
+            [pSortableColumn]="Parent.field" #headerCell
+            [attr.id]="'header-' + Parent.field">
+          <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
+            <p-sortIcon [field]="Parent.field"></p-sortIcon>
+            <i class="pi pi-filter" [style]="{'margin-left':'10px'}"
+              style="cursor: pointer"
+              (click)="openFilterMenu($event, Parent.field)"></i>
+              
+  <i class="pi pi-times"
+     style="color: red; margin-left: 10px; cursor: pointer"
+     (click)="confirmDeleteColumn(Parent.field)">
+  </i>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded">
+        <tr [pEditableRow]="rowData">
+         <td>
+     
+            <ng-container
+              *ngIf="rowData.children && rowData.children.length > 0">
+              <app-z-button
+                [icon]="expanded ? 'pi pi-chevron-down':'pi pi-chevron-right'"
+                [rounded]="true"
+                [text]="true"
+                [plain]="true"
+                [pRowToggler]="rowData">
+              </app-z-button>
+            </ng-container>
+          </td>
+          <td>
+            <app-checkbox
+              (checkedChange)="handleCheckboxChange($event, rowData.id)"
+              [checked]="selectedEmployeeIds.includes(rowData.id)"></app-checkbox>
+          </td>
+           <td *ngFor="let parent of columns">
+         <ng-container *ngIf="parent.field !== 'name'; else nonEditableName">
+        <td pEditableColumn [pEditableColumnField]="parent.field">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData[parent.field]" required />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ rowData[parent.field] }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+      </ng-container>
+
+      <!-- Non-editable name field -->
+      <ng-template #nonEditableName>
+        <td>
+          <a href="javascript:void(0)" (click)="handleNameClick(rowData)">
+            {{ rowData[parent.field] }}
+          </a>
+        </td>
+      </ng-template>
+    </td>
+        </tr>
+      </ng-template>
+      
+      <ng-template pTemplate="rowexpansion" let-rowData>
+        <tr>
+          <td colspan="7">
+            <div class="p-4">
+              <p-table class="child-table" [value]="rowData.children"
+                dataKey="id">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th *ngFor="let header of dynamicHeaders"
+                      [pSortableColumn]="header.field">
+                      {{ header.header }}
+                      <p-sortIcon [field]="header.field"></p-sortIcon>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-children>
+                  <tr>
+                    <td>{{children.project}}</td>
+                    <td>{{children.role}}</td>
+                    <td>{{children.status}}</td>
+                    <td>{{children.joinDate}}</td>
+                    <td>{{children.dateofbirth}}</td>
+                  </tr>
+                </ng-template>
+                <ng-template #emptymessage>
+                  <tr>
+                    <td colspan="6"> There are no orders for this product
+                      yet.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template #noData>
+      <div style="text-align: center; padding: 4rem; color: red;">
+        No data found.
+      </div>
+    </ng-template>
+    <p-overlayPanel #filterOverlay [dismissable]="true"
+      [style]="{'width':'15vw'}">
+      <div *ngFor="let val of uniqueValues" class="p-field-checkbox"
+        (click)="$event.stopPropagation()">
+        <p-checkbox [style]="{'margin':'5px'}"
+          name="filter"
+          [binary]="true"
+          [value]="val"
+          [(ngModel)]="checkboxStates[val]"
+          (onChange)="onCheckboxChange(val)">
+        </p-checkbox>
+        <label style="margin-left: 8px">{{val}}</label>
+      </div>
+      <div class="p-mt-2">
+        <app-z-button label="Clear" class="p-button-sm p-button-secondary"
+          (click)="clearFilter()"></app-z-button>
+        <app-z-button label="Apply" class="p-button-sm p-mr-2"
+          (click)="applyFilter()"></app-z-button>
+      </div>
+    </p-overlayPanel>
+    <p-menu #filterMenu [popup]="true" [model]="filterMenuItems"></p-menu>
+  </div>
+</div>

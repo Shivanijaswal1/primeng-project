@@ -1,0 +1,13 @@
+<p-toolbar
+  [style]="{ 'background-color': 'rgb(70, 89, 181)', 'padding': '10px 10px 10px 15px' }">
+  <h1 [style]="{'color':'white'}">Students Details</h1>
+  <app-z-button [style]="{'background-color':'white','margin-left':'43vw'}"
+    class="z-button dashboard-btn" class="add" label="+Add Student Details"
+    pTooltip="Enter Student" [class]="'p-button-secondary mr-2'"
+    tooltipPosition="bottom" (handleclick)="show()"></app-z-button>
+
+  <app-z-button [style]="{'background-color':'white','margin-right':'3vw'}"
+    icon="pi-pi-home" class="z-button dashboard-btn" label="Dashboard"
+    [class]="'p-button-secondary mr-2'" tooltipPosition="bottom"
+    (handleclick)="openChart()"></app-z-button>
+</p-toolbar>
