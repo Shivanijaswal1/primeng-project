@@ -50,6 +50,9 @@ export class ServiceService {
     ];
     return of(section);
   }
-
+  
+getProductsMini(): Promise<any[]> {
+  return firstValueFrom(this.http.get<any[]>("http://localhost:3000/product"));
+}
 
 }

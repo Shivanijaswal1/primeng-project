@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ServiceService } from 'src/app/core/service.service';
+import { ServiceService } from '../../service/service.service';
 
 interface Column {
   field: string;

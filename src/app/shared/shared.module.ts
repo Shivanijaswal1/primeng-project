@@ -14,9 +14,9 @@ import { TabsComponent } from './tabs/tabs.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { StudentDetailFormComponent } from './tabs/component/student-detail-form/student-detail-form.component';
 import { StudentDetailTableComponent } from './tabs/component/student-detail-table/student-detail-table.component';
-import { ConfigurationBasedFormComponent } from './tabs/configuration-based-form/configuration-based-form.component';
+import { ConfigurationBasedFormComponent } from './tabs/component/configuration-based-form/configuration-based-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ConfigFormComponent } from './tabs/component/config-form/config-form.component';
+
 
 
 
@@ -34,7 +34,7 @@ import { ConfigFormComponent } from './tabs/component/config-form/config-form.co
     StudentDetailFormComponent,
     StudentDetailTableComponent,
     ConfigurationBasedFormComponent,
-    ConfigFormComponent,
+
     
   ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

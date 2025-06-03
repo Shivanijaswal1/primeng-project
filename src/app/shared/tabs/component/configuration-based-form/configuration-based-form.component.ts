@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { ServiceService } from '../service/service.service';
+import { ServiceService } from '../../service/service.service';
 
 export interface FormField {
   field: string;

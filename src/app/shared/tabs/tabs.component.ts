@@ -1,7 +1,7 @@
 import { Component,ChangeDetectorRef } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ServiceService } from './service/service.service';
-import { FormSection } from './component/config-form/config-form.component';
+import { FormSection } from './component/configuration-based-form/configuration-based-form.component';
 
 
 interface Column {
@@ -44,30 +44,12 @@ export class TabsComponent {
       { title: 'Tab 3', value: 2, content: 'Tab 3 Content' },
     ];
 
-
-    // if (this.config.data) {
-    //   this.user = { ...this.config.data};
-    // }
-
-    
         this._service.getDummyData().subscribe((sections) => {
       if (sections.length > 0) {
         this.configData = sections[0];
       }
     });
   
-
-    // this._service.getProductsMini().then((data) => {
-    //   this.products = data;
-    //   this.cd.markForCheck();
-    // });
-    // this._service.getProductsMini().then((data:any)=>{
-    //   this.products=data;
-    //   this.cd.markForCheck()
-    // })
-
-    
-
     this.cols = [
       { field: 'name', header: 'Name' },
       { field: 'category', header: 'Category' },
