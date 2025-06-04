@@ -155,7 +155,7 @@ export class TableComponent {
       data: rowData,
       header: `Student Name :${rowData.name}`,
       width: '40%',
-      height: '75vh',
+      height: '78vh',
       styleClass: 'custom-dialog-header',
     });
     this.ref.onClose.subscribe(() => {

@@ -33,6 +33,7 @@ export class DropdownComponent {
       this.errorMessage = '';
     }
   }
+
  writeValue(obj: any): void {
     this.value = obj;
   }
@@ -41,18 +42,12 @@ export class DropdownComponent {
     this.onChange = fn;
   }
 
-
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
- 
-  }
-
   onChange = (_: any) => {};
   onTouched = () => {};
-
 
   onSelect(value: any) {
     this.value = value;
@@ -60,6 +55,5 @@ export class DropdownComponent {
     this.onTouched();
     this.valueChange.emit(value);
   }
-
 
 }
