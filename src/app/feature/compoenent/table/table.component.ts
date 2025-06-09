@@ -132,6 +132,7 @@ export class TableComponent {
     this.tempSelectedValue = [...this.selectedValue];
     this.filterOverlay.show(event);
   }
+  
 
   onCheckboxChange(value: string) {
     if (this.tempSelectedValue.includes(value)) {
@@ -159,7 +160,7 @@ export class TableComponent {
     }, 2000);
   });
   }
-  
+
 
 handleCheckboxRefesh(checked: boolean, id: number) {
   if (checked) {
