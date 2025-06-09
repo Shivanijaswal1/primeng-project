@@ -1,24 +1,13 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import {Component,ElementRef,HostListener,QueryList,ViewChild,ViewChildren} from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ServiceService } from 'src/app/core/service.service';
-import {
-  Confirmation,
-  ConfirmationService,
-  MenuItem,
-  MessageService,
-} from 'primeng/api';
+import {Confirmation,ConfirmationService,MenuItem,MessageService} from 'primeng/api';
 import { FilterService } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
+import { ShowDataComponent } from 'src/app/shared/show-data/show-data.component';
 
 interface ExtendedConfirmation extends Confirmation {
   rejectButtonProps?: {
@@ -45,13 +34,13 @@ export class TableComponent {
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
   @ViewChild('searchInput') searchInput!: ElementRef;
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
-  employees: any[] = [];
+  student: any[] = [];
   expandedRows: any = {};
   columns: any[] = [];
   globalFields: string[] | undefined;
   globalFilter: string = '';
   ref: DynamicDialogRef | undefined;
-  selectedEmployeeIds: any[] = [];
+  selectedStudentIds: any[] = [];
   dynamicHeaders: any[] = [];
   showDeleteButton: boolean = false;
   isEditing = false;
@@ -75,16 +64,18 @@ export class TableComponent {
   highlightedHeaders: { [key: number]: string } = {};
   activeHighlightedHeader: number | null = null;
   selectedColumns: any[] = [];
+  selectedEmployee: any;
+  loading:boolean=false;
 
   constructor(
-    private _employeeService: ServiceService,
+    private _studentService: ServiceService,
     public dialogservice: DialogService,
     private _deleteservice: ConfirmationService,
     private _messageservice: MessageService
   ) {}
 
   ngOnInit() {
-    this.getEmployeeData();
+    this.getstudentData();
     this.columns = [
       { field: 'id', header: 'Enrollment No' },
       { field: 'name', header: 'FullName' },
@@ -117,7 +108,6 @@ export class TableComponent {
       { field: 'id', header: 'Enrollment No' },
     ];
     
-
     this.dynamicHeaders = [
       { header: 'Project', field: 'project', sortable: true },
       { header: 'Role', field: 'role', sortable: true },
@@ -125,21 +115,24 @@ export class TableComponent {
       { header: 'Join Date', field: 'joinDate', sortable: true },
       { header: 'Date of Birth', filed: 'dateofbirth', sortable: true },
     ];
-
   }
 
-  getEmployeeData() {
-    this._employeeService.getEmployee().subscribe((data) => {
-      this.employees = data;
-      this.filteredEmployees = [...this.employees];
+  getstudentData() {
+    this._studentService.getStudent().subscribe((data) => {
+      this.student = data;
+      this.loading=false;
+      this.filteredEmployees = [...this.student];
     });
   }
+
+
   openFilterMenu(event: MouseEvent, field: string) {
     this.selectedField = field;
-    this.uniqueValues = [...new Set(this.employees.map((emp) => emp[field]))];
+    this.uniqueValues = [...new Set(this.student.map((emp) => emp[field]))];
     this.tempSelectedValue = [...this.selectedValue];
     this.filterOverlay.show(event);
   }
+
   onCheckboxChange(value: string) {
     if (this.tempSelectedValue.includes(value)) {
       this.tempSelectedValue = this.tempSelectedValue.filter(
@@ -150,21 +143,38 @@ export class TableComponent {
       this.tempSelectedValue.push(value);
     }
   }
+
   handleNameClick(rowData: any) {
     this.ref = this.dialogservice.open(TabsComponent, {
       data: rowData,
       header: `Student Name :${rowData.name}`,
       width: '40%',
-      height: '78vh',
+      height: '79vh',
       styleClass: 'custom-dialog-header',
     });
     this.ref.onClose.subscribe(() => {
-      this.getEmployeeData();
-    });
+    this.loading = true;
+    setTimeout(() => {
+      this.getstudentData(); 
+    }, 2000);
+  });
   }
+  
 
-  @HostListener('window:keydown', ['$event'])
-  onKeydown(event: KeyboardEvent) {
+handleCheckboxRefesh(checked: boolean, id: number) {
+  if (checked) {
+    if (!this.selectedStudentIds.includes(id)) {
+      this.selectedStudentIds.push(id);
+    }
+  } else {
+    this.selectedStudentIds = this.selectedStudentIds.filter(empId => empId !== id);
+  }
+     this.showDeleteButton = this.selectedStudentIds.length > 0;
+}
+
+
+@HostListener('window:keydown',['$event'])
+ onKeydown(event: KeyboardEvent) {
     if (event.key === 'Enter' && this.matches.length > 0) {
       this.nextMatch();
       this.scrollToActiveHeader();
@@ -247,7 +257,7 @@ export class TableComponent {
       }
     });
     if (this.selectedField && this.selectedValue.length > 0) {
-      this.filteredEmployees = this.employees.filter((emp) =>
+      this.filteredEmployees = this.student.filter((emp) =>
         this.selectedValue.includes(emp[this.selectedField])
       );
     }
@@ -255,7 +265,7 @@ export class TableComponent {
   }
 
   clearFilter() {
-    this.filteredEmployees = [...this.employees];
+    this.filteredEmployees = [...this.student];
     this.selectedValue = [];
     Object.keys(this.checkboxStates).forEach((key) => {
       this.checkboxStates[key] = false;
@@ -265,10 +275,10 @@ export class TableComponent {
 
   onGlobalFilter(): void {
     if (this.globalFilter.trim() === '') {
-      this.employees = [...this.employees];
-      this.getEmployeeData();
+      this.student = [...this.student];
+      this.getstudentData();
     } else {
-      this.employees = this.employees.filter((employee) => {
+      this.student = this.student.filter((employee) => {
         return Object.values(employee).some((value) =>
           value
             ?.toString()
@@ -307,35 +317,36 @@ export class TableComponent {
       },
     });
     if (confirmed) {
-      this._employeeService.deleteMultiple(this.selectedEmployeeIds);
-      this.getEmployeeData();
-      this.selectedEmployeeIds = [];
-      this.getEmployeeData();
+      this._studentService.deleteMultiple(this.selectedStudentIds);
+      this.getstudentData();
+      this.selectedStudentIds = [];
+      this.getstudentData();
     }
   }
 
   handleCheckboxChange(checked: boolean, id: number) {
     if (checked) {
-      if (!this.selectedEmployeeIds.includes(id)) {
-        this.selectedEmployeeIds.push(id);
+      if (!this.selectedStudentIds.includes(id)) {
+        this.selectedStudentIds.push(id);
       }
     } else {
-      this.selectedEmployeeIds = this.selectedEmployeeIds.filter(
+      this.selectedStudentIds = this.selectedStudentIds.filter(
         (empId) => empId !== id
       );
     }
     this.showDeleteButton = checked;
-    this.isChecked = this.selectedEmployeeIds.length === this.employees.length;
+    this.isChecked = this.selectedStudentIds.length === this.student.length;
   }
 
   onSelectAllChange(checked: boolean): void {
     this.isChecked = checked;
     if (checked) {
-      this.selectedEmployeeIds = this.employees.map((emp) => emp.id);
+      this.selectedStudentIds = this.student.map((emp) => emp.id);
     } else {
-      this.selectedEmployeeIds = [];
+      this.selectedStudentIds = [];
     }
     this.showDeleteButton = checked;
+    
   }
 
   onRowToggle(event: any) {
@@ -360,11 +371,34 @@ export class TableComponent {
     });
   }
 
-   confirmDeleteColumn(field: string) {
-    this._deleteservice.confirm({
-      message: `Are you sure you want to delete the column "${field}"?`,
-      header: 'Confirm Deletion',
-      icon: 'pi pi-exclamation-triangle',
-    });
-  }
+  confirmDeleteColumn(field: string) {
+  this._deleteservice.confirm({
+    message: `Are you sure you want to delete the column "${field}"?`,
+    header: 'Confirm Deletion',
+    icon: 'pi pi-exclamation-triangle',
+    acceptLabel: 'Delete',
+    rejectLabel: 'Cancel',
+    accept: () => {
+      this.columns = this.columns.filter(col => col.field !== field);
+      this._messageservice.add({
+        severity: 'success',
+        summary: 'Deleted',
+        detail: `Column "${field}" has been deleted`,
+        life: 3000
+      });
+    },
+    reject: () => {
+      this._messageservice.add({
+        severity: 'info',
+        summary: 'Cancelled',
+        detail: 'Column deletion cancelled',
+        life: 3000
+      });
+    }
+  });
+}
+
+
+
+
 }

@@ -13,13 +13,13 @@ export class HeaderComponent {
   ref: DynamicDialogRef | undefined;
   employees: any[] = [];
   constructor(
-    private _employeeService: ServiceService,
+    private _studnetService: ServiceService,
     private _route: Router,
     public dialogservice: DialogService
   ) {}
 
   getEmployeeData() {
-    this._employeeService.getEmployee().subscribe((data) => {
+    this._studnetService.getStudent().subscribe((data) => {
       this.employees = data;
     });
   }

@@ -10,9 +10,6 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent {
-  // onDateChange($event: Date) {
-  //   throw new Error('Method not implemented.');
-  // }
 @ViewChild('dropdownElem') dropdownElem: any;
   name: string = '';
   email: string = '';
@@ -83,11 +80,9 @@ export class FormComponent {
         selectedValue: this.selectedValue ? this.selectedValue.name : null,
         father: this.Father,
       };
-
       this._service.addData(this.payload).subscribe({
         next: (response: any) => {
           this.formData = {};
-          console.log('Data submitted successfully', response);
           this._mesaage.add({
             severity: 'success',
             summary: 'Success',
@@ -102,7 +97,6 @@ export class FormComponent {
       });
     } else {
       form.control.markAllAsTouched();
-      console.log('Form is invalid');
       this._mesaage.add({
         severity: 'error',
         summary: 'Error',
@@ -166,27 +160,6 @@ export class FormComponent {
     return this.dropdownElem?.el?.nativeElement.querySelector('input') || null;
   }
   
-//   @HostListener('document:click', ['$event'])
-// handleClickOutside(event: MouseEvent): void {
-//   const clickedInside = this.dropdownElem?.el?.nativeElement.contains(event.target);
-//   if (!clickedInside && this.isEditable) {
-//     const selectedOption = this.childOptions.find(opt => opt.key === this.selectedChild);
-
-//     if (selectedOption) {
-//       this.selectedChild = selectedOption.key;
-//     } else {
-//       const fallbackValue = this.getInput()?.value?.trim();
-//       if (fallbackValue) {
-//         const newKey = Date.now().toString();
-//         const newOption = { key: newKey, value: fallbackValue };
-//         this.childOptions.push(newOption);
-//         this.selectedChild = newKey;
-//       }
-//     }
-
-  //   this.isEditable = false;
-  //   console.log('Final saved selection:', this.selectedChild);
-  // }
 }
 
 

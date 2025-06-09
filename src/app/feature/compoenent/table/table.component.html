@@ -12,12 +12,16 @@
           placeholder="Search all columns"/>
       </div>
     </div>
-    <p-toolbar
-      [style]="{ 'background-color': 'rgb(70, 89, 181)','margin-bottom':'20px','padding':'30','height':'10vh'}"
+    <p-toolbar [style]="{ 'background-color': 'rgb(70, 89, 181)','margin-bottom':'20px','padding':'30','height':'10vh'}"
       styleClass="sub-toolbar">
       <app-z-button [style]="{'background-color':'white'}" label="Delete"
         *ngIf="showDeleteButton"
-        (handleclick)="del(selectedEmployeeIds)"></app-z-button>
+        (handleclick)="del(selectedStudentIds)">
+      </app-z-button>
+      <app-z-button [style]="{'background-color':'white'}" label="Delete"
+        *ngIf="showDeleteButton"
+        (handleclick)="del(selectedStudentIds)">
+      </app-z-button>
       <div class="custom-search-bar">
         <div class="p-input-icon-left">
           <input
@@ -46,7 +50,11 @@
     </p-toolbar>
     <p-toast></p-toast>
     <p-confirmDialog></p-confirmDialog>
-    <p-table #dt [value]="employees" [paginator]="true" [rows]="5"
+      <div *ngIf="loading" class="table-spinner-overlay">
+    <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
+  </div>
+
+    <p-table #dt [value]="student" [paginator]="true" [rows]="5"
       [resizableColumns]="true" [globalFilterFields]="globalFields"
       [dataKey]="'id'"
       [expandedRowKeys]="expandedRows" (onRowToggle)="onRowToggle($event)"
@@ -54,32 +62,27 @@
       (onRowExpand)="onRowExpand($event)"
       (onRowCollapse)="onRowCollapse($event)"
       scrollDirection="horizontal"
-      *ngIf="employees.length > 0; else noData">
+      *ngIf="student.length > 0; else noData">
       <ng-template pTemplate="header">
         <tr>
-          <th></th>
-          <th><app-checkbox (checkedChange)="onSelectAllChange($event)"
-              [checked]="isChecked"></app-checkbox></th>
+       <th></th>
+          <th><app-checkbox (checkedChange)="onSelectAllChange($event)" [checked]="isChecked"></app-checkbox></th>
           <th *ngFor="let Parent of columns ; let i = index"
             [pSortableColumn]="Parent.field" #headerCell
             [attr.id]="'header-' + Parent.field">
           <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
             <p-sortIcon [field]="Parent.field"></p-sortIcon>
-            <i class="pi pi-filter" [style]="{'margin-left':'10px'}"
-              style="cursor: pointer"
+            <i class="pi pi-filter" [style]="{'margin-left':'10px'}" style="cursor: pointer"
               (click)="openFilterMenu($event, Parent.field)"></i>
-              
-  <i class="pi pi-times"
-     style="color: red; margin-left: 10px; cursor: pointer"
-     (click)="confirmDeleteColumn(Parent.field)">
-  </i>
+          <div class="icon-hover-wrapper">
+               <i class="pi pi-times delete-icon" (click)="confirmDeleteColumn(Parent.field)"></i>
+                  </div>
           </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded">
         <tr [pEditableRow]="rowData">
          <td>
-     
             <ng-container
               *ngIf="rowData.children && rowData.children.length > 0">
               <app-z-button
@@ -94,7 +97,8 @@
           <td>
             <app-checkbox
               (checkedChange)="handleCheckboxChange($event, rowData.id)"
-              [checked]="selectedEmployeeIds.includes(rowData.id)"></app-checkbox>
+              [checked]="selectedStudentIds.includes(rowData.id)">
+            </app-checkbox>
           </td>
            <td *ngFor="let parent of columns">
          <ng-container *ngIf="parent.field !== 'name'; else nonEditableName">
@@ -104,7 +108,7 @@
               <input pInputText type="text" [(ngModel)]="rowData[parent.field]" required />
             </ng-template>
             <ng-template pTemplate="output">
-              {{ rowData[parent.field] }}
+              {{rowData[parent.field] }}
             </ng-template>
           </p-cellEditor>
         </td>
@@ -119,7 +123,6 @@
     </td>
         </tr>
       </ng-template>
-      
       <ng-template pTemplate="rowexpansion" let-rowData>
         <tr>
           <td colspan="7">
@@ -146,8 +149,7 @@
                 </ng-template>
                 <ng-template #emptymessage>
                   <tr>
-                    <td colspan="6"> There are no orders for this product
-                      yet.</td>
+                    <td colspan="6"> There are no orders for this product yet.</td>
                   </tr>
                 </ng-template>
               </p-table>
@@ -181,7 +183,6 @@
           (click)="applyFilter()"></app-z-button>
       </div>
     </p-overlayPanel>
-    
     <p-menu #filterMenu [popup]="true" [model]="filterMenuItems"></p-menu>
   </div>
 </div>

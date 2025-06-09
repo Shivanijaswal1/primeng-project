@@ -17,36 +17,12 @@
       ]
     },
     {
-      "id": "d090",
-      "name": "wrt",
-      "email": "d@gmail.com",
-      "age": "22",
-      "selectedValue": "Commerce",
-      "selectedDate": "2025-05-14T09:05:26.821Z"
-    },
-    {
-      "id": "130e",
-      "name": "hhhh",
-      "email": "hhh@Gmail.com",
-      "age": "21",
-      "selectedValue": "ART",
-      "selectedDate": "2025-05-14T09:06:24.714Z"
-    },
-    {
       "id": "9fef",
       "name": "wrt",
       "email": "asdfg@gmail.com",
       "age": "12",
       "selectedValue": "Medical",
       "selectedDate": "2025-05-15T05:16:53.620Z"
-    },
-    {
-      "id": "48ef",
-      "name": "wrt",
-      "email": "shivani@gmail.com",
-      "age": "22",
-      "selectedValue": "ART",
-      "selectedDate": "2025-05-15T07:14:04.581Z"
     },
     {
       "id": "1a2e",
@@ -62,6 +38,22 @@
       "email": "shivani@gmail.com",
       "age": "7",
       "selectedValue": "ART",
+      "father": "vg"
+    },
+    {
+      "id": "2e16",
+      "name": "sdfs",
+      "email": "asdfg@gmail.com",
+      "age": "22",
+      "selectedValue": "Medical",
+      "father": "vg"
+    },
+    {
+      "id": "9543",
+      "name": "wrt",
+      "email": "shivani@gmail.com",
+      "age": "33",
+      "selectedValue": "Medical",
       "father": "vg"
     }
   ],
@@ -90,123 +82,148 @@
   "pieChart": [
     {
       "label": "Angular",
-      "value": 0.3
+      "value": 0.3,
+      "id": "4f94"
     },
     {
       "label": "Node.js",
-      "value": 0.4
+      "value": 0.4,
+      "id": "0f86"
     },
     {
       "label": "JAVA",
-      "value": 0.6
+      "value": 0.6,
+      "id": "3cc2"
     },
     {
       "label": "Angular",
-      "value": 1
+      "value": 1,
+      "id": "1340"
     },
     {
       "label": "Node.js",
-      "value": 0.7
+      "value": 0.7,
+      "id": "0fcf"
     },
     {
       "label": "JAVA",
-      "value": 0.4
+      "value": 0.4,
+      "id": "82fe"
     },
     {
       "label": "Angular",
-      "value": 0.2
+      "value": 0.2,
+      "id": "086e"
     },
     {
       "label": "Node.js",
-      "value": 1
+      "value": 1,
+      "id": "2b10"
     },
     {
       "label": "JAVA",
-      "value": 1
+      "value": 1,
+      "id": "eb5d"
     },
     {
       "label": "JAVA",
-      "value": 1
+      "value": 1,
+      "id": "570f"
     },
     {
       "label": "Angular",
-      "value": 0.4
+      "value": 0.4,
+      "id": "7f13"
     },
     {
       "label": "Node.js",
-      "value": 1
+      "value": 1,
+      "id": "e3be"
     },
     {
       "label": "JAVA",
-      "value": 1.2
+      "value": 1.2,
+      "id": "d406"
     },
     {
       "label": "Angular",
-      "value": 0.1
+      "value": 0.1,
+      "id": "686e"
     },
     {
       "label": "Node.js",
-      "value": 0.9
+      "value": 0.9,
+      "id": "4e36"
     },
     {
       "label": "JAVA",
-      "value": 2
+      "value": 2,
+      "id": "fb37"
     },
     {
       "label": "JAVA",
-      "value": 2
+      "value": 2,
+      "id": "c3c1"
     },
     {
       "label": "Angular",
-      "value": 0.2
+      "value": 0.2,
+      "id": "56d0"
     },
     {
       "label": "Node.js",
-      "value": 2.1
+      "value": 2.1,
+      "id": "2ea2"
     },
     {
       "label": "JAVA",
-      "value": 1.2
+      "value": 1.2,
+      "id": "ffdb"
     },
     {
       "label": "Angular",
-      "value": 0.1
+      "value": 0.1,
+      "id": "6da9"
     },
     {
       "label": "Node.js",
-      "value": 0.2
+      "value": 0.2,
+      "id": "e032"
     },
     {
       "label": "JAVA",
-      "value": 0.1
+      "value": 0.1,
+      "id": "a48f"
     },
     {
       "label": "JAVA",
-      "value": 1.2
+      "value": 1.2,
+      "id": "7566"
     },
     {
       "label": "Angular",
-      "value": 0.3
+      "value": 0.3,
+      "id": "ae74"
     }
   ],
-  "product":[
-    
-      {
-    "name": "Bamboo Watch",
-    "category": "Accessories",
-    "rating": "5"
-
+  "product": [
+    {
+      "name": "Bamboo Watch",
+      "category": "Accessories",
+      "rating": "5",
+      "id": "ebb1"
     },
-      {
-    "name": "Bamboo Watch",
-    "category": "Accessories",
-    "rating": "4"
-
-    },{
-    "name": "Bamboo Watch",
-    "category": "Accessories",
-    "rating": "2"
-
+    {
+      "name": "Bamboo Watch",
+      "category": "Accessories",
+      "rating": "4",
+      "id": "0b1b"
+    },
+    {
+      "name": "Bamboo Watch",
+      "category": "Accessories",
+      "rating": "2",
+      "id": "dde5"
     }
   ]
 }

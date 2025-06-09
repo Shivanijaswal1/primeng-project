@@ -36,7 +36,7 @@ export class ServiceService {
     return this.http.post("http://localhost:3000/form",data);
   }
 
-  getEmployee(): Observable<Parent[]> {
+  getStudent(): Observable<Parent[]> {
     return this.http.get<Parent[]>("http://localhost:3000/form");
   }
   delete(id: number | string): Observable<any> {

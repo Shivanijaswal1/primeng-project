@@ -34,4 +34,12 @@
                 Age is required
             </div>
         </div>
+          <div class="form-button">
+            <app-z-button class="btn1" label="Cancel"
+                [class]="'p-button-danger mr-2'"
+                (handleclick)="closeDialog()"></app-z-button>
+            <app-z-button class="btn2" label="Submit"
+                (handleclick)="onSubmit(myForm)"></app-z-button>
+        </div>
         </form>
+

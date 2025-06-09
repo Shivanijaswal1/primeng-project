@@ -16,6 +16,7 @@ import { StudentDetailFormComponent } from './tabs/component/student-detail-form
 import { StudentDetailTableComponent } from './tabs/component/student-detail-table/student-detail-table.component';
 import { ConfigurationBasedFormComponent } from './tabs/component/configuration-based-form/configuration-based-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ShowDataComponent } from './show-data/show-data.component';
 
 
 
@@ -34,11 +35,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     StudentDetailFormComponent,
     StudentDetailTableComponent,
     ConfigurationBasedFormComponent,
+    ShowDataComponent,
 
     
   ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, UiModule, FormsModule, InputTextModule, MultiSelectModule,ReactiveFormsModule ],
-  exports: [ZButtonComponent, CheckboxComponent,BarChartComponent,PieChartComponent,TabsComponent],
+  exports: [ZButtonComponent, CheckboxComponent,BarChartComponent,PieChartComponent,TabsComponent,ShowDataComponent],
 })
 export class SharedModule {}

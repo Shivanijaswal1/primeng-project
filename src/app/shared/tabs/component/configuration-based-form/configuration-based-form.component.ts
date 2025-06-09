@@ -1,4 +1,9 @@
-import { Component, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  SimpleChanges,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ServiceService } from '../../service/service.service';
 
@@ -21,23 +26,26 @@ export interface FormSection {
   selector: 'app-configuration-based-form',
   templateUrl: './configuration-based-form.component.html',
   styleUrls: ['./configuration-based-form.component.scss'],
-  encapsulation: ViewEncapsulation.None 
+  encapsulation: ViewEncapsulation.None,
 })
 export class ConfigurationBasedFormComponent {
-   @Input() formConfig!: FormSection;
+  @Input() formConfig!: FormSection;
   configForm: FormGroup = new FormGroup({});
   fields: FormField[] = [];
-  
- constructor(private _Service:ServiceService,private _fb:FormBuilder){}
+  sectionName: string = '';
+  constructor(private _Service: ServiceService, private _fb: FormBuilder) {}
 
-   ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['formConfig'] && this.formConfig?.field) {
+      this.sectionName = this.formConfig.sectionName;
       this.buildForm();
     }
   }
 
   buildForm(): void {
-    this.fields = this.formConfig.field.sort((a, b) => a.displayOrder - b.displayOrder);
+    this.fields = this.formConfig.field.sort(
+      (a, b) => a.displayOrder - b.displayOrder
+    );
     const group: any = {};
     this.fields.forEach((field) => {
       group[field.field] = new FormControl('');
@@ -48,5 +56,4 @@ export class ConfigurationBasedFormComponent {
   onSubmit(): void {
     console.log('Submitted values:', this.configForm.value);
   }
-
 }

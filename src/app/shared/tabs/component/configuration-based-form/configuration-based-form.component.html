@@ -1,8 +1,8 @@
-
+<h2 *ngIf="sectionName">{{ sectionName }}</h2>
 <form *ngIf="configForm && fields.length" [formGroup]="configForm">
+
   <div *ngFor="let field of fields">
     <label>{{ field.fieldName }}</label>
-
     <input pInputText
       *ngIf="field.type === 'text' || field.type === 'number'"
       [type]="field.type"
@@ -20,6 +20,5 @@
       </option>
     </select>
   </div>
-
   <button class="btn2" pButton type="button" (click)="onSubmit()">Submit</button>
 </form>

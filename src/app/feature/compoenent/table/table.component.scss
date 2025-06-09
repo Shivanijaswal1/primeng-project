@@ -40,7 +40,7 @@ a:hover{
 
 .custom-search-bar {
   position: fixed;
-  top: 200px;
+  top: 180px;
   right: 20px;
   background: #ffffff;
   border: 1px solid #ccc;
@@ -100,8 +100,45 @@ mark.highlight-active {
   color: white;
 }
 
+.icon-hover-wrapper {
+  display: inline-block;
+  width: 30px;
+  height: 30px; 
+  position: relative;
+}
 
+.delete-icon {
+  color: red;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
 
+.icon-hover-wrapper:hover .delete-icon {
+  opacity: 1;
+}
+.table-wrapper {
+  position: relative;
+}
 
+.table-spinner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: none;
+}
 
-    
+.custom-spinner {
+  width: 50px;
+  height: 50px;
+}
