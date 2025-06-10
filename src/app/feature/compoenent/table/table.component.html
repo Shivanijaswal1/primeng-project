@@ -18,10 +18,7 @@
         *ngIf="showDeleteButton"
         (handleclick)="del(selectedStudentIds)">
       </app-z-button>
-      <app-z-button [style]="{'background-color':'white'}" label="Delete"
-        *ngIf="showDeleteButton"
-        (handleclick)="del(selectedStudentIds)">
-      </app-z-button>
+     
       <div class="custom-search-bar">
         <div class="p-input-icon-left">
           <input
@@ -47,18 +44,24 @@
           </button>
         </div>
       </div>
+        <i 
+    [style]="{ 'margin-left': '96vw','color':'white'}" 
+    class="pi pi-sort"
+    (click)="advanceSorting()"
+> </i>
     </p-toolbar>
     <p-toast></p-toast>
     <p-confirmDialog></p-confirmDialog>
       <div *ngIf="loading" class="table-spinner-overlay">
     <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
   </div>
-
     <p-table #dt [value]="student" [paginator]="true" [rows]="5"
       [resizableColumns]="true" [globalFilterFields]="globalFields"
+        [sortField]="sortField"
+  [sortOrder]="sortOrder"
       [dataKey]="'id'"
       [expandedRowKeys]="expandedRows" (onRowToggle)="onRowToggle($event)"
-      [value]="filteredEmployees"
+      [value]="filteredstudent"
       (onRowExpand)="onRowExpand($event)"
       (onRowCollapse)="onRowCollapse($event)"
       scrollDirection="horizontal"
@@ -67,10 +70,12 @@
         <tr>
        <th></th>
           <th><app-checkbox (checkedChange)="onSelectAllChange($event)" [checked]="isChecked"></app-checkbox></th>
-          <th *ngFor="let Parent of columns ; let i = index"
-            [pSortableColumn]="Parent.field" #headerCell
-            [attr.id]="'header-' + Parent.field">
+          <th *ngFor="let Parent of columns ; let i = index" [ngClass]="{'sorted-column': isSorted(Parent.field)}"
+            [pSortableColumn]="Parent.field" #headerCell 
+            [attr.id]="'header-' + Parent.field"
+            >
           <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
+
             <p-sortIcon [field]="Parent.field"></p-sortIcon>
             <i class="pi pi-filter" [style]="{'margin-left':'10px'}" style="cursor: pointer"
               (click)="openFilterMenu($event, Parent.field)"></i>

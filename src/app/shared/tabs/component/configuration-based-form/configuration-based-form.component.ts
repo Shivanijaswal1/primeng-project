@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  SimpleChanges,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ServiceService } from '../../service/service.service';
 
@@ -26,7 +21,6 @@ export interface FormSection {
   selector: 'app-configuration-based-form',
   templateUrl: './configuration-based-form.component.html',
   styleUrls: ['./configuration-based-form.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class ConfigurationBasedFormComponent {
   @Input() formConfig!: FormSection;

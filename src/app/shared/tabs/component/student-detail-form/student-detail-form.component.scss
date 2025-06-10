@@ -1,0 +1,23 @@
+
+
+
+ ::ng-deep .form-css input {
+  width: 100%;
+  padding: 15px ;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+::ng-deep .form-css input:focus {
+  border-color: #4659b5;
+  box-shadow: 0 0 5px rgba(70, 89, 181, 0.5);
+}
+::ng-deep label {
+  display: block;
+  font-weight: 600;
+  color: #222;
+}

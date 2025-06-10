@@ -1,27 +1,4 @@
 
-::ng-deep app-input label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  color: #222;
-}
-
-::ng-deep app-input input {
-  width: 100%;
-  padding: 15px ;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-::ng-deep app-input input:focus {
-  border-color: #4659b5;
-  box-shadow: 0 0 5px rgba(70, 89, 181, 0.5);
-}
 ::ng-deep p-tabView .p-tabview-nav .p-tabview-nav-link {
   color: #007ad9;
   font-weight: 600;

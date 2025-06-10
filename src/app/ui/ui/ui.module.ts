@@ -18,7 +18,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TabViewModule } from 'primeng/tabview';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 const primengModule = [
   ButtonModule,
@@ -36,7 +36,9 @@ const primengModule = [
   MenuModule,
   OverlayPanelModule,
   TabViewModule,
-  MultiSelectModule,ProgressSpinnerModule
+  MultiSelectModule,
+  ProgressSpinnerModule,
+  RadioButtonModule
 
 ];
 @NgModule({

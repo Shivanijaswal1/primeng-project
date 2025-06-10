@@ -26,7 +26,7 @@ export class HeaderComponent {
     show() {
       this.ref = this.dialogservice.open(FormComponent, {
         header: 'Student form',
-        width: '35%',
+        width: '36%',
         height: 'auto',
         contentStyle: { overflow: 'auto' },
         baseZIndex: 10000,

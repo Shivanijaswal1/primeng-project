@@ -7,7 +7,7 @@
                 style="color: red;">
                 Enrollment Number is required
             </div>
-        </div>
+        </div><br>
         <div class="form-css">
             <app-input label="FullName" [(ngModel)]="user.name" name="name"
                 [required]="true" type="text" #nameCtrl="ngModel"></app-input>
@@ -16,6 +16,7 @@
                 Name is required
             </div>
         </div>
+        <br>
                 <div class="form-css">
             <app-input label="Email ID" [(ngModel)]="user.email" name="email"
                 [required]="true" type="email" #emailCtrl="ngModel"></app-input>

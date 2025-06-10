@@ -17,6 +17,7 @@ import { StudentDetailTableComponent } from './tabs/component/student-detail-tab
 import { ConfigurationBasedFormComponent } from './tabs/component/configuration-based-form/configuration-based-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ShowDataComponent } from './show-data/show-data.component';
+import { AdvanceSortingComponent } from './advance-sorting/advance-sorting.component';
 
 
 
@@ -36,11 +37,12 @@ import { ShowDataComponent } from './show-data/show-data.component';
     StudentDetailTableComponent,
     ConfigurationBasedFormComponent,
     ShowDataComponent,
+    AdvanceSortingComponent,
 
     
   ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, UiModule, FormsModule, InputTextModule, MultiSelectModule,ReactiveFormsModule ],
-  exports: [ZButtonComponent, CheckboxComponent,BarChartComponent,PieChartComponent,TabsComponent,ShowDataComponent],
+  exports: [ZButtonComponent, CheckboxComponent,BarChartComponent,PieChartComponent,TabsComponent,ShowDataComponent,AdvanceSortingComponent],
 })
 export class SharedModule {}

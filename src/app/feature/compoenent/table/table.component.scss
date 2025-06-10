@@ -41,7 +41,7 @@ a:hover{
 .custom-search-bar {
   position: fixed;
   top: 180px;
-  right: 20px;
+  right: 50px;
   background: #ffffff;
   border: 1px solid #ccc;
   padding: 8px 12px;
@@ -141,4 +141,9 @@ mark.highlight-active {
 .custom-spinner {
   width: 50px;
   height: 50px;
+}
+
+.sorted-column {
+  background-color: #d1e7fd; 
+  font-weight: bold;
 }

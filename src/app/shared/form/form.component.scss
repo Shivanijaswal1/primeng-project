@@ -1,10 +1,8 @@
-
 .p-fluid {
   padding: 10px;
   max-width: 900px;
   margin: auto;
 }
-
 
 .form-css {
   margin-bottom: 10px;
@@ -15,12 +13,18 @@ form {
   flex-direction: column;
 }
 
-
 .form-button {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+::ng-deep label {
+  display: block;
+  font-weight: 600;
+  margin-top: 10px;
+  color: #222;
 }
 
 .btn1, .btn2 {
@@ -45,10 +49,10 @@ form {
     width: 15vw;
 }
 .box .form-css3{
-    position: absolute;
-    top:19vh;
+    position: fixed;
+    top:20vh;
     left:18vw;
-    width: 15vw;
+    width: 16vw;
 }
 
 

@@ -8,6 +8,7 @@ import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
 import { ShowDataComponent } from 'src/app/shared/show-data/show-data.component';
+import { AdvanceSortingComponent } from 'src/app/shared/advance-sorting/advance-sorting.component';
 
 interface ExtendedConfirmation extends Confirmation {
   rejectButtonProps?: {
@@ -28,6 +29,7 @@ interface ExtendedConfirmation extends Confirmation {
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
+
   @ViewChild('dt') dt: any;
   @ViewChild('filterMenu') filterMenu!: Menu;
   @ViewChild('op') overlayPanel!: OverlayPanel;
@@ -47,7 +49,7 @@ export class TableComponent {
   editingRow: any = null;
   splitterVisible: boolean = true;
   isChecked: boolean = false;
-  filteredEmployees: any[] = [];
+  filteredstudent: any[] = [];
   filterMenuItems: MenuItem[] = [];
   selectedField: string = '';
   selectedCheckboxValue: string = '';
@@ -66,6 +68,9 @@ export class TableComponent {
   selectedColumns: any[] = [];
   selectedEmployee: any;
   loading:boolean=false;
+  currentSortFields:string[]=[];
+  sortField: string = '';
+  sortOrder: number = 1;
 
   constructor(
     private _studentService: ServiceService,
@@ -121,7 +126,7 @@ export class TableComponent {
     this._studentService.getStudent().subscribe((data) => {
       this.student = data;
       this.loading=false;
-      this.filteredEmployees = [...this.student];
+      this.filteredstudent = [...this.student];
     });
   }
 
@@ -145,6 +150,54 @@ export class TableComponent {
     }
   }
 
+  advanceSorting(){
+    this.ref=this.dialogservice.open(AdvanceSortingComponent,{
+      header:"Advance Sorting",
+      width: '40%',
+      height: '79vh',
+      styleClass: 'custom-dialog-header',
+       data: {
+      columns: this.columns 
+    }
+    });
+     this.ref.onClose.subscribe((sortData) => {
+  if (sortData) {
+    console.log('Received Sort Data:', sortData); 
+    this.applyAdvancedSorting(sortData);
+  }
+});
+
+  }
+  isSorted(field: string): boolean {
+  return this.currentSortFields.includes(field);
+}
+
+applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
+  this.currentSortFields = sortData.map(s => s.sortField); 
+  this.filteredstudent.sort((a, b) => {
+    for (const { sortField, sortOrder } of sortData) {
+      let valueA = a[sortField];
+      let valueB = b[sortField];
+
+
+      if (valueA == null && valueB == null) return 0;
+      if (valueA == null) return sortOrder;
+      if (valueB == null) return -sortOrder;
+
+   
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        const result = valueA.localeCompare(valueB);
+        if (result !== 0) return sortOrder * result;
+      } else {
+        const result = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+        if (result !== 0) return sortOrder * result;
+      }
+    }
+    return 0;
+  });
+}
+
+
   handleNameClick(rowData: any) {
     this.ref = this.dialogservice.open(TabsComponent, {
       data: rowData,
@@ -157,7 +210,7 @@ export class TableComponent {
     this.loading = true;
     setTimeout(() => {
       this.getstudentData(); 
-    }, 2000);
+    }, 1000);
   });
   }
 
@@ -203,7 +256,6 @@ handleCheckboxRefesh(checked: boolean, id: number) {
       this.currentMatchIndex = -1;
       this.activeHighlightedHeader = null;
     }
-
     this.scrollToActiveHeader();
   }
 
@@ -258,7 +310,7 @@ handleCheckboxRefesh(checked: boolean, id: number) {
       }
     });
     if (this.selectedField && this.selectedValue.length > 0) {
-      this.filteredEmployees = this.student.filter((emp) =>
+      this.filteredstudent = this.student.filter((emp) =>
         this.selectedValue.includes(emp[this.selectedField])
       );
     }
@@ -266,7 +318,7 @@ handleCheckboxRefesh(checked: boolean, id: number) {
   }
 
   clearFilter() {
-    this.filteredEmployees = [...this.student];
+    this.filteredstudent = [...this.student];
     this.selectedValue = [];
     Object.keys(this.checkboxStates).forEach((key) => {
       this.checkboxStates[key] = false;

@@ -55,6 +55,14 @@
       "age": "33",
       "selectedValue": "Medical",
       "father": "vg"
+    },
+    {
+      "id": "be22",
+      "name": "jh",
+      "email": "shivani@gmail.com",
+      "age": "33",
+      "selectedValue": "Commerce",
+      "father": "eeeeer@gmail.com"
     }
   ],
   "data": [
