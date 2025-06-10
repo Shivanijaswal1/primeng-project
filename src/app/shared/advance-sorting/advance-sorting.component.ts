@@ -30,9 +30,7 @@ export class AdvanceSortingComponent {
         sortField: field.field,
         sortOrder: field.order === 'asc' ? 1 : -1,
       }));
-
     console.log('Selected Fields:', selectedFields);
-
     if (selectedFields.length > 0) {
       this.ref.close(selectedFields);
     }

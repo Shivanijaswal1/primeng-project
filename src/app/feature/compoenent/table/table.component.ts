@@ -1,7 +1,19 @@
-import {Component,ElementRef,HostListener,QueryList,ViewChild,ViewChildren} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ServiceService } from 'src/app/core/service.service';
-import {Confirmation,ConfirmationService,MenuItem,MessageService} from 'primeng/api';
+import {
+  Confirmation,
+  ConfirmationService,
+  MenuItem,
+  MessageService,
+} from 'primeng/api';
 import { FilterService } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
@@ -29,7 +41,6 @@ interface ExtendedConfirmation extends Confirmation {
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
-
   @ViewChild('dt') dt: any;
   @ViewChild('filterMenu') filterMenu!: Menu;
   @ViewChild('op') overlayPanel!: OverlayPanel;
@@ -67,10 +78,11 @@ export class TableComponent {
   activeHighlightedHeader: number | null = null;
   selectedColumns: any[] = [];
   selectedEmployee: any;
-  loading:boolean=false;
-  currentSortFields:string[]=[];
+  loading: boolean = false;
+  currentSortFields: string[] = [];
   sortField: string = '';
   sortOrder: number = 1;
+  sortingActive: boolean = false;
 
   constructor(
     private _studentService: ServiceService,
@@ -112,7 +124,7 @@ export class TableComponent {
       { field: 'selectedValue', header: 'Department' },
       { field: 'id', header: 'Enrollment No' },
     ];
-    
+
     this.dynamicHeaders = [
       { header: 'Project', field: 'project', sortable: true },
       { header: 'Role', field: 'role', sortable: true },
@@ -125,11 +137,10 @@ export class TableComponent {
   getstudentData() {
     this._studentService.getStudent().subscribe((data) => {
       this.student = data;
-      this.loading=false;
+      this.loading = false;
       this.filteredstudent = [...this.student];
     });
   }
-
 
   openFilterMenu(event: MouseEvent, field: string) {
     this.selectedField = field;
@@ -137,7 +148,6 @@ export class TableComponent {
     this.tempSelectedValue = [...this.selectedValue];
     this.filterOverlay.show(event);
   }
-  
 
   onCheckboxChange(value: string) {
     if (this.tempSelectedValue.includes(value)) {
@@ -150,53 +160,58 @@ export class TableComponent {
     }
   }
 
-  advanceSorting(){
-    this.ref=this.dialogservice.open(AdvanceSortingComponent,{
-      header:"Advance Sorting",
+  advanceSorting() {
+    this.ref = this.dialogservice.open(AdvanceSortingComponent, {
+      header: 'Advance Sorting',
       width: '40%',
-      height: '79vh',
+      height: '60vh',
       styleClass: 'custom-dialog-header',
-       data: {
-      columns: this.columns 
-    }
+      data: {
+        columns: this.columns,
+      },
     });
-     this.ref.onClose.subscribe((sortData) => {
-  if (sortData) {
-    console.log('Received Sort Data:', sortData); 
-    this.applyAdvancedSorting(sortData);
-  }
-});
-
+    this.ref.onClose.subscribe((sortData) => {
+      if (sortData) {
+        console.log('Received Sort Data:', sortData);
+        this.applyAdvancedSorting(sortData);
+      }
+    });
   }
   isSorted(field: string): boolean {
-  return this.currentSortFields.includes(field);
-}
+    return this.currentSortFields.includes(field);
+  }
 
-applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
-  this.currentSortFields = sortData.map(s => s.sortField); 
-  this.filteredstudent.sort((a, b) => {
-    for (const { sortField, sortOrder } of sortData) {
-      let valueA = a[sortField];
-      let valueB = b[sortField];
+  applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
+    this.sortingActive = true;
+    this.currentSortFields = sortData.map((s) => s.sortField);
+    this.filteredstudent.sort((a, b) => {
+      for (const { sortField, sortOrder } of sortData) {
+        let valueA = a[sortField];
+        let valueB = b[sortField];
 
+        if (valueA == null && valueB == null) return 0;
+        if (valueA == null) return sortOrder;
+        if (valueB == null) return -sortOrder;
 
-      if (valueA == null && valueB == null) return 0;
-      if (valueA == null) return sortOrder;
-      if (valueB == null) return -sortOrder;
-
-   
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        const result = valueA.localeCompare(valueB);
-        if (result !== 0) return sortOrder * result;
-      } else {
-        const result = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
-        if (result !== 0) return sortOrder * result;
+        if (typeof valueA === 'string' && typeof valueB === 'string') {
+          const result = valueA.localeCompare(valueB);
+          if (result !== 0) return sortOrder * result;
+        } else {
+          const result = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+          if (result !== 0) return sortOrder * result;
+        }
       }
-    }
-    return 0;
-  });
-}
+      return 0;
+    });
+  }
 
+  clearSorting() {
+    this.currentSortFields = [];
+    this.sortOrder = 0;
+    this.sortField = '';
+    this.sortingActive = false;
+    this.filteredstudent = [...this.student];
+  }
 
   handleNameClick(rowData: any) {
     this.ref = this.dialogservice.open(TabsComponent, {
@@ -207,28 +222,28 @@ applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
       styleClass: 'custom-dialog-header',
     });
     this.ref.onClose.subscribe(() => {
-    this.loading = true;
-    setTimeout(() => {
-      this.getstudentData(); 
-    }, 1000);
-  });
+      this.loading = true;
+      setTimeout(() => {
+        this.getstudentData();
+      }, 1000);
+    });
   }
 
-
-handleCheckboxRefesh(checked: boolean, id: number) {
-  if (checked) {
-    if (!this.selectedStudentIds.includes(id)) {
-      this.selectedStudentIds.push(id);
+  handleCheckboxRefesh(checked: boolean, id: number) {
+    if (checked) {
+      if (!this.selectedStudentIds.includes(id)) {
+        this.selectedStudentIds.push(id);
+      }
+    } else {
+      this.selectedStudentIds = this.selectedStudentIds.filter(
+        (empId) => empId !== id
+      );
     }
-  } else {
-    this.selectedStudentIds = this.selectedStudentIds.filter(empId => empId !== id);
+    this.showDeleteButton = this.selectedStudentIds.length > 0;
   }
-     this.showDeleteButton = this.selectedStudentIds.length > 0;
-}
 
-
-@HostListener('window:keydown',['$event'])
- onKeydown(event: KeyboardEvent) {
+  @HostListener('window:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent) {
     if (event.key === 'Enter' && this.matches.length > 0) {
       this.nextMatch();
       this.scrollToActiveHeader();
@@ -399,7 +414,6 @@ handleCheckboxRefesh(checked: boolean, id: number) {
       this.selectedStudentIds = [];
     }
     this.showDeleteButton = checked;
-    
   }
 
   onRowToggle(event: any) {
@@ -425,33 +439,29 @@ handleCheckboxRefesh(checked: boolean, id: number) {
   }
 
   confirmDeleteColumn(field: string) {
-  this._deleteservice.confirm({
-    message: `Are you sure you want to delete the column "${field}"?`,
-    header: 'Confirm Deletion',
-    icon: 'pi pi-exclamation-triangle',
-    acceptLabel: 'Delete',
-    rejectLabel: 'Cancel',
-    accept: () => {
-      this.columns = this.columns.filter(col => col.field !== field);
-      this._messageservice.add({
-        severity: 'success',
-        summary: 'Deleted',
-        detail: `Column "${field}" has been deleted`,
-        life: 3000
-      });
-    },
-    reject: () => {
-      this._messageservice.add({
-        severity: 'info',
-        summary: 'Cancelled',
-        detail: 'Column deletion cancelled',
-        life: 3000
-      });
-    }
-  });
-}
-
-
-
-
+    this._deleteservice.confirm({
+      message: `Are you sure you want to delete the column "${field}"?`,
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
+      accept: () => {
+        this.columns = this.columns.filter((col) => col.field !== field);
+        this._messageservice.add({
+          severity: 'success',
+          summary: 'Deleted',
+          detail: `Column "${field}" has been deleted`,
+          life: 3000,
+        });
+      },
+      reject: () => {
+        this._messageservice.add({
+          severity: 'info',
+          summary: 'Cancelled',
+          detail: 'Column deletion cancelled',
+          life: 3000,
+        });
+      },
+    });
+  }
 }

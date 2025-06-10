@@ -5,6 +5,7 @@ interface Column {
   field: string;
   header: string;
 }
+
 export interface Product {
   id?: string;
   name?: string;

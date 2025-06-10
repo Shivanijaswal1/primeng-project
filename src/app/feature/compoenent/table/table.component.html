@@ -18,7 +18,13 @@
         *ngIf="showDeleteButton"
         (handleclick)="del(selectedStudentIds)">
       </app-z-button>
-     
+<app-z-button 
+  [style]="{'background-color':'white','margin-left':'63vw'}" 
+  label="Clear Sorting"
+  (handleclick)="clearSorting()"
+    *ngIf="sortingActive" 
+></app-z-button>
+
       <div class="custom-search-bar">
         <div class="p-input-icon-left">
           <input
@@ -45,7 +51,7 @@
         </div>
       </div>
         <i 
-    [style]="{ 'margin-left': '96vw','color':'white'}" 
+    [style]="{'margin-left': '96vw','color':'white'}" 
     class="pi pi-sort"
     (click)="advanceSorting()"
 > </i>

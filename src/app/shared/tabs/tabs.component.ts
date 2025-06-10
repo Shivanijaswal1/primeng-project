@@ -1,8 +1,7 @@
-import { Component,ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ServiceService } from './service/service.service';
 import { FormSection } from './component/configuration-based-form/configuration-based-form.component';
-
 
 interface Column {
   field: string;
@@ -44,12 +43,12 @@ export class TabsComponent {
       { title: 'Tab 3', value: 2, content: 'Tab 3 Content' },
     ];
 
-        this._service.getDummyData().subscribe((sections) => {
+    this._service.getDummyData().subscribe((sections) => {
       if (sections.length > 0) {
         this.configData = sections[0];
       }
     });
-  
+
     this.cols = [
       { field: 'name', header: 'Name' },
       { field: 'category', header: 'Category' },
@@ -58,14 +57,10 @@ export class TabsComponent {
 
     this.selectedColumns = [...this.cols];
   }
-     get selectedColumn(): Column[] {
-        return this.selectedColumns;
-    }
-     set selectedColumn(val: Column[]) {
-        this.selectedColumns = this.cols.filter((col) => val.includes(col));
-    }
-      
-
-
-
+  get selectedColumn(): Column[] {
+    return this.selectedColumns;
+  }
+  set selectedColumn(val: Column[]) {
+    this.selectedColumns = this.cols.filter((col) => val.includes(col));
+  }
 }

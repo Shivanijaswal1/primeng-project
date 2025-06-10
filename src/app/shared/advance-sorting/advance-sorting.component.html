@@ -1,48 +1,43 @@
-
 <div class="p-fluid">
-    <div *ngFor="let item of sortFields; let i = index"
-        class="sort-field-group">
+    <div *ngFor="let item of sortFields; let i = index" class="sort-field-group">
         <label>Sort Field {{ i + 1 }}</label>
-        <p-dropdown
-            [options]="columns"
-            optionLabel="header"
-            optionValue="field"
-            [(ngModel)]="sortFields[i].field"
-            placeholder="Select Field">
-        </p-dropdown>
-
-        <p-radiobutton
-            name="sortOrder{{i}}"
-            value="asc"
-            [(ngModel)]="sortFields[i].order"
-            inputId="asc{{i}}" />
-        <label for="asc{{i}}" class="ml-2">A - Z</label>
-
-        <p-radiobutton
-            name="sortOrder{{i}}"
-            value="desc"
-            [(ngModel)]="sortFields[i].order"
-            inputId="desc{{i}}" />
-        <label for="desc{{i}}" class="ml-2">Z - A</label>
-    </div>
-
+    <p-dropdown 
+    [options]="columns" 
+    optionLabel="header" 
+    optionValue="field" 
+    [(ngModel)]="sortFields[i].field" 
+    placeholder="Select Field">
+    </p-dropdown>
+<p-radioButton 
+    name="sortOrder{{i}}" 
+    value="asc" 
+    [(ngModel)]="sortFields[i].order" 
+    inputId="asc{{i}}"/>
+<label  for="asc{{i}}" class="ml-2">A - Z</label>
+<p-radioButton 
+    name="sortOrder{{i}}" 
+    value="desc" 
+    [(ngModel)]="sortFields[i].order" 
+    inputId="desc{{i}}"/>
+<label for="desc{{i}}" class="ml-2">Z - A</label>
+</div>
     <div class="add-button">
-        <button
-            pButton
-            type="button"
-            label="Add Field"
-            icon="pi pi-plus"
-            class="p-button-secondary"
+        <button 
+            pButton 
+            type="button" 
+            label="Add Field" 
+            icon="pi pi-plus" 
+            class="p-button-secondary" 
             (click)="addSortField()">
         </button>
     </div>
 
     <div class="dialog-actions">
-        <button
-            pButton
-            type="button"
-            label="Apply"
-            class="p-button-info"
+        <button 
+            pButton 
+            type="button" 
+            label="Apply" 
+            class="p-button-info" 
             (click)="applySort()">
         </button>
     </div>
