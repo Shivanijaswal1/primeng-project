@@ -18,8 +18,8 @@ import { ConfigurationBasedFormComponent } from './tabs/component/configuration-
 import { ReactiveFormsModule } from '@angular/forms';
 import { ShowDataComponent } from './show-data/show-data.component';
 import { AdvanceSortingComponent } from './advance-sorting/advance-sorting.component';
-
-
+import { FileUpload } from 'primeng/fileupload';
+import { SubmitMessageComponent } from './submit-message/submit-message.component';
 
 
 
@@ -38,11 +38,31 @@ import { AdvanceSortingComponent } from './advance-sorting/advance-sorting.compo
     ConfigurationBasedFormComponent,
     ShowDataComponent,
     AdvanceSortingComponent,
-
+    SubmitMessageComponent
     
+   
   ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, UiModule, FormsModule, InputTextModule, MultiSelectModule,ReactiveFormsModule ],
-  exports: [ZButtonComponent, CheckboxComponent,BarChartComponent,PieChartComponent,TabsComponent,ShowDataComponent,AdvanceSortingComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    UiModule,
+    FormsModule,
+    InputTextModule,
+    MultiSelectModule,
+    ReactiveFormsModule,
+
+  
+  ],
+  exports: [
+    ZButtonComponent,
+    CheckboxComponent,
+    BarChartComponent,
+    PieChartComponent,
+    TabsComponent,
+    ShowDataComponent,
+    AdvanceSortingComponent,
+    FileUpload
+
+  ],
 })
 export class SharedModule {}

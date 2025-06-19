@@ -19,7 +19,6 @@ import { Menu } from 'primeng/menu';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
-import { ShowDataComponent } from 'src/app/shared/show-data/show-data.component';
 import { AdvanceSortingComponent } from 'src/app/shared/advance-sorting/advance-sorting.component';
 
 interface ExtendedConfirmation extends Confirmation {
@@ -99,10 +98,10 @@ export class TableComponent {
       { field: 'email', header: 'Email' },
       { field: 'age', header: 'Age' },
       { field: 'selectedValue', header: 'Department' },
-      { field: 'selectedValue', header: 'Department' },
-      { field: 'id', header: 'Enrollment No' },
-      { field: 'name', header: 'FullName' },
-      { field: 'email', header: 'Email' },
+      { field: 'age', header: 'Amount' },
+      { field: 'id', header: 'second Amount' },
+      { field: 'fathername', header: 'Fathername' },
+      { field: 'email', header: '' },
       { field: 'age', header: 'Age' },
       { field: 'selectedValue', header: 'Department' },
       { field: 'payment', header: 'Payment' },
@@ -113,16 +112,6 @@ export class TableComponent {
       { field: 'age', header: 'Age' },
       { field: 'selectedValue', header: 'Department' },
       { field: 'selectedValue', header: 'Department' },
-      { field: 'id', header: 'Enrollment No' },
-      { field: 'payment', header: 'Payment' },
-      { field: 'gyyd', header: 'assignTo' },
-      { field: 'dfv', header: 'Project' },
-      { field: 'payment', header: 'Payment' },
-      { field: 'email', header: 'Email' },
-      { field: 'age', header: 'Age' },
-      { field: 'selectedValue', header: 'Department' },
-      { field: 'selectedValue', header: 'Department' },
-      { field: 'id', header: 'Enrollment No' },
     ];
 
     this.dynamicHeaders = [
@@ -172,7 +161,6 @@ export class TableComponent {
     });
     this.ref.onClose.subscribe((sortData) => {
       if (sortData) {
-        console.log('Received Sort Data:', sortData);
         this.applyAdvancedSorting(sortData);
       }
     });

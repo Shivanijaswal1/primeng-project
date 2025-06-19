@@ -10,7 +10,6 @@ export class AdvanceSortingComponent {
   columns: any[] = [];
   sortFields: { field: string; order: string }[] = [];
   selectedItem: string = '';
-
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig
@@ -30,7 +29,6 @@ export class AdvanceSortingComponent {
         sortField: field.field,
         sortOrder: field.order === 'asc' ? 1 : -1,
       }));
-    console.log('Selected Fields:', selectedFields);
     if (selectedFields.length > 0) {
       this.ref.close(selectedFields);
     }

@@ -1,121 +1,242 @@
 <div class="p-fluid">
-    <form #myForm="ngForm">
-        <div class="form-css">
-            <app-input label="Name" [(ngModel)]="name" name="name"
-                [required]="true" type="text" #nameCtrl="ngModel"></app-input>
-            <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="error-text"
-                style="color: red;">
-                Name is required
-            </div>
-        </div>
-        <div class="box">
-        <div class="form-css2">
-            <label for="parentDropdown">Choose Parent</label>
-            <p-dropdown
-                name="parent"
-                inputId="parentDropdown"
-                [options]="parentOptions"
-                [(ngModel)]="selectedParent"
-                optionLabel="value"
-                optionValue="key"
-                placeholder="Select Parent"
-                [required]="true"
-                (onChange)="onParentChange($event)"
-                >  
-            <ng-template let-option pTemplate="item">
-               <div [pTooltip]="option.value" tooltipPosition="right">
-                   {{ option.value }}
-              </div>
-            </ng-template>
-            </p-dropdown>
-        </div>
-        <div class="form-css3">
-            <ng-container>
-                <label for="childDropdown">Choose Child</label>
-                <p-dropdown
-                    #dropdownElem
-                    name="children"
-                    inputId="childDropdown"
-                    [options]="childOptions"
-                    [(ngModel)]="selectedChild"
-                    optionLabel="value"
-                    optionValue="key"
-                    [editable]="isEditable"
-                    placeholder="Select Child"
-                    (onChange)="onDropdownChange($event)"
-                    (onBlur)="onDropdownBlur()"
-                    #childCtrl="ngModel">
-                    <ng-template pTemplate="footer">
-                        <div class="p-3" *ngIf="selectedParent ">
-                            <app-z-button
-                                label="Add New"
-                                icon="pi pi-plus"
-                                severity="secondary"
-                                size="small"
-                                class="footer-button "
-                                (handleclick)="DropdownEditable()" />
+    <p-splitter [panelSizes]="panelSize" [minSizes]="minSize" styleClass="mb-5" >
+        <ng-template pTemplate style="    flex-basis: calc(53.7313% - 4px);">
+            <form #myForm="ngForm">
+                <div id="content" #content>
+                    <div class="form-css">
+                        <label for="name">
+                            Name <span *ngIf="nameCtrl.errors "
+                                style="color: red;">*</span>
+                        </label>
+                        <app-input [(ngModel)]="name" name="name"
+                            [required]="true" type="text"
+                            pattern="^[A-Za-z]+\s?[A-Za-z]+$"
+                            #nameCtrl="ngModel"></app-input>
+                        <div *ngIf="nameCtrl.invalid && nameCtrl.touched"
+                            class="error-text" style="color: red;">
+                            Name is required and should contain only letters.
                         </div>
-                    </ng-template>
-                </p-dropdown>
-                <div *ngIf="childCtrl.invalid && childCtrl.touched"
-                    class="error-text" style="color: red;">
-                    Child selection is required
-                </div>
-                <div *ngIf="childExistsError"
-                    style="color: red; font-size: 13px;">
-                    This value already exists in the dropdown.
-                </div>
-            </ng-container>
-        </div>
-        </div>
-        <div class="form-css">
-            <app-input label="Email" [(ngModel)]="email" name="email"
-                [required]="true" type="email" #emailCtrl="ngModel"></app-input>
-            <div *ngIf="emailCtrl.invalid && emailCtrl.touched"
-                class="error-text" style="color: red;">
-                Email is required
-            </div>
-        </div>
-        <div class="form-css">
-            <app-input label="Father/Guardian" [(ngModel)]="Father"
-                name="father" [required]="true" type="text"
-                #fatherCtrl="ngModel"></app-input>
-            <div *ngIf="fatherCtrl.invalid && fatherCtrl.touched"
-                class="error-text" style="color: red;">
-                Father/Guardian is required
-            </div>
-        </div>
+                    </div>
+                    <div class="form-css-inline">
+                        <div class="form-css-half">
+                            <label for="parentDropdown">Choose Parent</label>
+                            <p-dropdown
+                                name="parent"
+                                inputId="parentDropdown"
+                                [options]="parentOptions"
+                                [(ngModel)]="selectedParent"
+                                optionLabel="value"
+                                optionValue="key"
+                                placeholder="Select Parent"
+                                [required]="true"
+                                (onChange)="onParentChange($event)">
+                                <ng-template let-option pTemplate="item">
+                                    <div [pTooltip]="option.value"
+                                        tooltipPosition="right">
+                                        {{ option.value }}
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div class="form-css-half">
+                            <ng-container>
+                                <label for="childDropdown">Choose Child</label>
+                                <p-dropdown
+                                    #dropdownElem
+                                    name="children"
+                                    inputId="childDropdown"
+                                    [options]="childOptions"
+                                    [(ngModel)]="selectedChild"
+                                    optionLabel="value"
+                                    optionValue="key"
+                                    [editable]="isEditable"
+                                    placeholder="Select Child"
+                                    (onChange)="onDropdownChange($event)"
+                                    (onBlur)="onDropdownBlur()"
+                                    #childCtrl="ngModel">
+                                    <ng-template pTemplate="footer">
+                                        <div class="p-3"
+                                            *ngIf="selectedParent ">
+                                            <app-z-button
+                                                label="Add New"
+                                                icon="pi pi-plus"
+                                                severity="secondary"
+                                                size="small"
+                                                class="footer-button "
+                                                (handleclick)="DropdownEditable()" />
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                                <div
+                                    *ngIf="childCtrl.invalid && childCtrl.touched"
+                                    class="error-text" style="color: red;">
+                                    Child selection is required
+                                </div>
+                                <div *ngIf="childExistsError"
+                                    style="color: red; font-size: 13px;">
+                                    This value already exists in the dropdown.
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="box1">
+                        <div class="form-css5">
+                            <label for="email">
+                                Email <span *ngIf="emailCtrl.errors "
+                                    style="color: red;">*</span>
+                            </label>
+                            <app-input [(ngModel)]="email" name="email"
+                                [required]="true"
+                                type="email" #emailCtrl="ngModel"></app-input>
+                            <div *ngIf="emailCtrl.invalid && emailCtrl.touched"
+                                class="error-text" style="color: red;">
+                                Please enter a valid email address.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-css4">
+                        <label for="fathername">
+                            Fathername/Guardian <span *ngIf="fatherCtrl.errors "
+                                style="color: red;">*</span>
+                        </label>
+                        <app-input [(ngModel)]="Father"
+                            name="father" pattern="^[A-Za-z]+\s?[A-Za-z]+$"
+                            [required]="true" type="text"
+                            #fatherCtrl="ngModel"></app-input>
+                        <div *ngIf="fatherCtrl.invalid && fatherCtrl.touched"
+                            class="error-text" style="color: red;">
+                            Father Name is required and should contain only
+                            letters.
+                        </div>
+                    </div>
 
-        <div class="form-css">
-      <app-dropdown
-        name="genericDropdown"
-        [label]="'Choose Option'"
-        [(ngModel)]="selectedValue"
-        [options]="dropdownOptions"
-        [required]="true"
-        (valueChange)="handleValueChange($event)"
-        #genericDropdownCtrl="ngModel">
-      </app-dropdown>
-      <div *ngIf="genericDropdownCtrl.invalid && genericDropdownCtrl.touched" class="error-text" style="color: red;">
-        Selection is required
-      </div>
+     <div class="address-group">
+    <div class="form-css">
+        <label for="address">
+            Address <span *ngIf="addressCtrl.errors" style="color: red;">*</span>
+        </label>
+        <app-input [(ngModel)]="address" name="address" type="text" [required]="true" #addressCtrl="ngModel"></app-input>
+        <div *ngIf="addressCtrl.invalid && addressCtrl.touched" class="error-text" style="color: red;">
+            Address is required.
+        </div>
     </div>
-        <div class="form-css">
-            <app-input label="Age" [(ngModel)]="age" name="age"
-                [required]="true" type="number" [min]="18" [max]="100"
-                #ageCtrl="ngModel"></app-input>
-            <div *ngIf="ageCtrl.invalid && ageCtrl.touched" class="error-text"
-                style="color: red;">
-                Age is required
+
+    <div class="form-css-inline">
+        <div class="form-css-half">
+            <label for="city">
+                City <span *ngIf="cityCtrl.errors" style="color: red;">*</span>
+            </label>
+            <app-input [(ngModel)]="city" name="city" type="text" [required]="true" #cityCtrl="ngModel"></app-input>
+            <div *ngIf="cityCtrl.invalid && cityCtrl.touched" class="error-text" style="color: red;">
+                City is required.
             </div>
         </div>
 
-        <div class="form-button">
-            <app-z-button class="btn1" label="Cancel"
-                [class]="'p-button-danger mr-2'"
-                (handleclick)="closeDialog()"></app-z-button>
-            <app-z-button class="btn2" label="Submit"
-                (handleclick)="onSubmit(myForm)"></app-z-button>
+        <div class="form-css-half">
+            <label for="state">
+                State <span *ngIf="stateCtrl.errors" style="color: red;">*</span>
+            </label>
+            <app-input [(ngModel)]="state" name="state" type="text" [required]="true" #stateCtrl="ngModel"></app-input>
+            <div *ngIf="stateCtrl.invalid && stateCtrl.touched" class="error-text" style="color: red;">
+                State is required.
+            </div>
         </div>
-    </form>
+    </div>
+
+    <div class="form-css">
+        <label for="postalCode">
+            Postal Code <span *ngIf="postalCtrl.errors" style="color: red;">*</span>
+        </label>
+        <app-input [(ngModel)]="postalCode" name="postalCode" type="text"  [required]="true" #postalCtrl="ngModel"></app-input>
+        <div *ngIf="postalCtrl.invalid && postalCtrl.touched" class="error-text" style="color: red;">
+            Valid postal code is required.
+        </div>
+      </div>
+          </div>
+
+                    <div class="form-css">
+                        <label for="chooseoption">
+                            Choose Option <span
+                                *ngIf="genericDropdownCtrl.errors "
+                                style="color: red;">*</span>
+                        </label>
+                        <app-dropdown
+                            name="genericDropdown"
+                            [(ngModel)]="selectedValue"
+                            [options]="dropdownOptions"
+                            [required]="true"
+                            (valueChange)="handleValueChange($event)"
+                            #genericDropdownCtrl="ngModel">
+                        </app-dropdown>
+                        <div
+                            *ngIf="genericDropdownCtrl.invalid && genericDropdownCtrl.touched"
+                            class="error-text" style="color: red;">
+                            Selection is required
+                        </div>
+                    </div>
+                    <div class="form-css">
+                        <label for="age">
+                            Age <span *ngIf="ageCtrl.errors "
+                                style="color: red;">*</span>
+                        </label>
+                        <app-input [(ngModel)]="age" name="age"
+                            [required]="true" type="number" [min]="18"
+                            [max]="100"
+                            #ageCtrl="ngModel"></app-input>
+                        <div *ngIf="ageCtrl.invalid && ageCtrl.touched"
+                            class="error-text" style="color: red;">
+                            Age must be between 18 and 100.
+                        </div>
+                    </div>
+                    <div class="form-button">
+                        <app-z-button class="btn1" label="Cancel"
+                            [class]="'p-button-danger mr-2'"
+                            (handleclick)="closeDialog()"></app-z-button>
+                        <app-z-button class="btn2" label="Submit"
+                            (handleclick)="onSubmit(myForm)"></app-z-button>
+                    </div>
+                </div>
+            </form>
+        </ng-template>
+        <!-- <ng-template pTemplate>
+            <div class="pdf-preview">
+                <div class="pdf-card" *ngIf="rawPdfUrl" (click)="openPdf()">
+                    <div class="card-content">
+                        <span class="pdf-label"> Student Detail form Assign by:
+                            {{name}}</span>
+                    </div>
+                </div>
+                <div *ngIf="submissionTime" class="submission-time">
+                    Submitted on: {{ submissionTime }}
+                </div> -->
+                <ng-template pTemplate>
+              <div class="pdf-preview">
+              <div *ngFor="let pdf of pdfUrls; let i = index" class="pdf-card" (click)="openPdf(i)">
+              <div class="card-content">
+              <span class="pdf-label">
+              Student Detail form Assigned by: {{ name }}
+               </span>
+           </div>
+            </div>
+        <div *ngIf="submissionTime" class="submission-time">
+          Submitted on: {{ submissionTime }}
+         </div>
+  </div>
+                <div class="footer">
+                    <p-fileUpload
+                        name="file"
+                        url="your-upload-endpoint-url"
+                        [auto]="false"
+                        [customUpload]="true"
+                        [multiple]="true"
+                        [chooseLabel]="'Choose'"
+                        [uploadLabel]="'Upload'"
+                        [cancelLabel]="'Cancel'"
+                        (uploadHandler)="onUpload($event)"
+                        mode="advanced">
+                    </p-fileUpload>
+                </div>
+            <!-- </div> -->
+        </ng-template>
+    </p-splitter>
 </div>

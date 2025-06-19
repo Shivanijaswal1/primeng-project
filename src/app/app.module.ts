@@ -4,13 +4,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FeatureModule } from './feature/feature.module';
 import { DialogService } from 'primeng/dynamicdialog';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { provideHttpClient} from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { MultiSelectModule } from 'primeng/multiselect';
-
-
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,9 +19,13 @@ import { MultiSelectModule } from 'primeng/multiselect';
     BrowserAnimationsModule,
     FormsModule,
     MultiSelectModule
-   
   ],
-  providers: [DialogService, provideHttpClient(),ConfirmationService,MessageService,],
+  providers: [
+    DialogService,
+    provideHttpClient(),
+    ConfirmationService,
+    MessageService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

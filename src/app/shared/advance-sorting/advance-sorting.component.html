@@ -13,7 +13,7 @@
     value="asc" 
     [(ngModel)]="sortFields[i].order" 
     inputId="asc{{i}}"/>
-<label  for="asc{{i}}" class="ml-2">A - Z</label>
+<label for="asc{{i}}" class="ml-2">A - Z</label>
 <p-radioButton 
     name="sortOrder{{i}}" 
     value="desc" 
@@ -31,7 +31,6 @@
             (click)="addSortField()">
         </button>
     </div>
-
     <div class="dialog-actions">
         <button 
             pButton 

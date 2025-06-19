@@ -19,6 +19,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { FileUploadModule } from 'primeng/fileupload';
+
 
 const primengModule = [
   ButtonModule,
@@ -38,7 +40,8 @@ const primengModule = [
   TabViewModule,
   MultiSelectModule,
   ProgressSpinnerModule,
-  RadioButtonModule
+  RadioButtonModule,
+  FileUploadModule
 
 ];
 @NgModule({

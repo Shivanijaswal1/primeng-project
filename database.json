@@ -33,14 +33,6 @@
       "father": "vg"
     },
     {
-      "id": "255a",
-      "name": "vghbj",
-      "email": "shivani@gmail.com",
-      "age": "7",
-      "selectedValue": "ART",
-      "father": "vg"
-    },
-    {
       "id": "2e16",
       "name": "sdfs",
       "email": "asdfg@gmail.com",
@@ -63,6 +55,38 @@
       "age": "33",
       "selectedValue": "Commerce",
       "father": "eeeeer@gmail.com"
+    },
+    {
+      "id": "61b2",
+      "name": "name2ww",
+      "email": "asdfg@gmail.com",
+      "age": "22",
+      "selectedValue": "ART",
+      "father": "vg"
+    },
+    {
+      "id": "240c",
+      "name": "name2ww",
+      "email": "shivani@gmail.com",
+      "age": "23",
+      "selectedValue": "Medical",
+      "father": "eeeeer"
+    },
+    {
+      "id": "a13f",
+      "name": "name2ww",
+      "email": "hhh@Gmail.com",
+      "age": "17",
+      "selectedValue": "Medical",
+      "father": "eeee"
+    },
+    {
+      "id": "4df2",
+      "name": "name2ww",
+      "email": "asdfg@gmail.com",
+      "age": "19",
+      "selectedValue": "Medical",
+      "father": "eeeeer"
     }
   ],
   "data": [
