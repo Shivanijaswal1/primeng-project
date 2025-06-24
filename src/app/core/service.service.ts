@@ -55,7 +55,7 @@ getDummyData(): Observable<any> {
   const dummyResponse = [
     {
       key: 1,
-      value: 'Parent Item 1',
+      value: 'JavaScript',
       children: [
         {
           key: 101,
@@ -71,7 +71,7 @@ getDummyData(): Observable<any> {
     },
     {
       key: 2,
-      value: 'Parent Item 2',
+      value: 'JAVA',
       children: [
         {
           key: 201,
@@ -87,7 +87,7 @@ getDummyData(): Observable<any> {
     },
     {
       key: 3,
-      value: 'Parent Item 3',
+      value: 'Pyhton',
       children: [
         {
           key: 301,
@@ -115,8 +115,6 @@ getDummyData(): Observable<any> {
  }
   
 
-// getProductsMini(): Promise<any[]> {
-//   return firstValueFrom(this.http.get<any[]>("http://localhost:3000/product"));
-// }
+
 
 }

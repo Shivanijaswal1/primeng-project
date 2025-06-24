@@ -1,14 +1,25 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  ViewChild,
-  Input,
-} from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ServiceService } from 'src/app/core/service.service';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
+import { jsPDF } from 'jspdf';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SubmitMessageComponent } from '../submit-message/submit-message.component';
+import { FileUploadEvent } from 'primeng/fileupload';
+
+interface FormPayload {
+  name: string;
+  email: string;
+  age: number;
+  selectedValue: string | null;
+  father: string;
+}
+
+interface UploadEvent {
+  originalEvent: Event;
+  files: File[];
+}
 
 @Component({
   selector: 'app-form',
@@ -17,12 +28,20 @@ import { MessageService } from 'primeng/api';
 })
 export class FormComponent {
   @ViewChild('dropdownElem') dropdownElem: any;
+  @ViewChild('content', { static: false })
+  panelSize: number[] = [80, 10];
+  minSize: number[] = [50, 10];
+  content!: ElementRef;
   name: string = '';
   email: string = '';
   age: number | null = null;
   Father: string = '';
   parent: string = '';
   child: string = '';
+  address: string = '';
+  city: string = '';
+  state: string = '';
+  postalCode: string = '';
   dataService: any;
   formData: any = {};
   payload: {} | undefined;
@@ -36,11 +55,27 @@ export class FormComponent {
   newChildValue: string = '';
   isTyping: boolean = false;
   childExistsError: boolean = false;
+  pdfUrl: SafeResourceUrl | null = null;
+  rawPdfUrl: string | null = null;
+  submissionTime: string | null = null;
+  pdfUrls: any[] = [];
+  previousPdfUrl: any;
+  uploadedFiles: any = [];
+  message: string = 'Please Complete all required fields';
+  formattedSubmissionTime: any;
+
+  mostRecentType: 'pdf' | 'file' | null = null;
+  mostRecentIndex: number = -1;
+
+
+  showSection: 'pdf' | 'file' = 'pdf';
 
   constructor(
     public ref: DynamicDialogRef,
     private _service: ServiceService,
-    private _mesaage: MessageService
+    private _mesaage: MessageService,
+    private sanitizer: DomSanitizer,
+    private dialogservice: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -77,6 +112,8 @@ export class FormComponent {
   }
 
   onSubmit(form: NgForm) {
+    const currentTime = new Date();
+    this.submissionTime = currentTime.toLocaleString();
     if (form.valid) {
       this.payload = {
         name: this.name,
@@ -84,29 +121,87 @@ export class FormComponent {
         age: this.age,
         selectedValue: this.selectedValue ? this.selectedValue.name : null,
         father: this.Father,
-      };
+        address: this.address,
+        city: this.city,
+        state: this.state,
+        postalCode: this.postalCode,
+      } as FormPayload;
+      console.log(this.payload);
+      const doc = new jsPDF();
+      doc.text(`Name: ${this.name}`, 10, 10);
+      doc.text(`Email: ${this.email}`, 10, 20);
+      doc.text(`Age: ${this.age}`, 10, 30);
+      doc.text(`selectedValue: ${this.selectedValue.name}`, 10, 40);
+      doc.text(`Father's Name: ${this.Father}`, 10, 50);
+      doc.text(`Address: ${this.address}`, 10, 60);
+      doc.text(`City: ${this.city}`, 10, 70);
+      doc.text(`State: ${this.state}`, 10, 80);
+      doc.text(`Postal Code: ${this.postalCode}`, 10, 90);
+      const pdfBlob = doc.output('blob');
+      const url = URL.createObjectURL(pdfBlob);
+      this.rawPdfUrl = url;
+      const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      this.pdfUrls.push({
+        url: this.rawPdfUrl,
+        name: this.name,
+        submissionTime: this.submissionTime
+      });
+
+      this.updateMostRecentHighlight();
       this._service.addData(this.payload).subscribe({
         next: (response: any) => {
           this.formData = {};
-          this._mesaage.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Message Content',
+          this.ref = this.dialogservice.open(SubmitMessageComponent, {
+            header: 'Form Submitted Message',
+            width: '30%',
+            styleClass: 'custom-dialog-header',
+            data: { message: 'Form submitted successfully!' },
           });
-          form.reset();
-          this.ref.close();
         },
         error: (error: any) => {
-          console.error('Error submitting data', error);
+          this._mesaage.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error submitting data',
+          });
         },
       });
     } else {
       form.control.markAllAsTouched();
-      this._mesaage.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Message Content',
+      this.ref = this.dialogservice.open(SubmitMessageComponent, {
+        header: 'Error',
+        width: '30%',
+        styleClass: 'custom-dialog-header',
+        data: { message: this.message },
       });
+    }
+  }
+
+  onUpload(event: any) {
+    for (let file of event.files) {
+      this.uploadedFiles.push(file);
+    }
+    this.updateMostRecentHighlight();
+   
+  }
+
+
+  updateMostRecentHighlight() {
+    debugger
+    let lastPdfTime = this.pdfUrls.length ? new Date(this.pdfUrls[this.pdfUrls.length - 1].submissionTime).getTime() : 0;
+    let lastFileTime = 0;
+    if (this.uploadedFiles.length && this.uploadedFiles[this.uploadedFiles.length - 1].lastModified) {
+      lastFileTime = this.uploadedFiles[this.uploadedFiles.length - 1].lastModified;
+    }
+    if (lastPdfTime === 0 && lastFileTime === 0) {
+      this.mostRecentType = null;
+      this.mostRecentIndex = -1;
+    } else if (lastPdfTime >= lastFileTime) {
+      this.mostRecentType = 'pdf';
+      this.mostRecentIndex = this.pdfUrls.length - 1;
+    } else {
+      this.mostRecentType = 'file';
+      this.mostRecentIndex = this.uploadedFiles.length - 1;
     }
   }
 
@@ -120,6 +215,11 @@ export class FormComponent {
         input.focus();
       }, 0);
     }
+  }
+
+  openPdf(index: number) {
+    const pdfBlobUrl = this.pdfUrls[index].url;
+    window.open(pdfBlobUrl as string, '_blank');
   }
 
   onDropdownChange(event: any) {
@@ -158,7 +258,10 @@ export class FormComponent {
     this.isEditable = true;
   }
 
+
   private getInput(): HTMLInputElement | null {
     return this.dropdownElem?.el?.nativeElement.querySelector('input') || null;
   }
+
+
 }

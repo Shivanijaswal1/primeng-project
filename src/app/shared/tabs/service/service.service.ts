@@ -11,7 +11,7 @@ export class ServiceService {
   
  constructor(private http:HttpClient) { }
   getDummyData(): Observable<any> {
-    const section = [
+    const studentDetailForm = [
       {
         section: 'studentDetails',
         sectionName: 'Student form detail',
@@ -19,7 +19,7 @@ export class ServiceService {
           {
             field: 'firstname',
             fieldName: 'FirstName',
-            editable: true,
+            editable: false,
             displayOrder: 1,
             type: 'text',
           },
@@ -48,7 +48,45 @@ export class ServiceService {
         ],
       },
     ];
-    return of(section);
+
+    const pendingStudentFees = [
+      {
+        section: 'studentDetails',
+        sectionName: 'Pending Fee Student form',
+        field: [
+          {
+            field: 'firstname',
+            fieldName: 'FirstName',
+            editable: true,
+            displayOrder: 1,
+            type: 'text',
+          },
+          {
+            field: 'lastname',
+            fieldName: 'LastName',
+            editable: true,
+            displayOrder: 2,
+            type: 'text',
+          },
+          {
+            field: 'enrollmentno',
+            fieldName: 'Enrollment No',
+            editable: true,                     
+            displayOrder: 3,
+            type: 'number',
+          },
+          {
+            type: 'select',
+            field: 'gender',
+            fieldName: 'Gender',
+            options: ['Male', 'Female', 'Other'],
+            displayOrder: 4,
+            editable: true,
+          },
+        ],
+      },
+    ];
+    return of({ studentDetailForm, pendingStudentFees });
   }
   
 getProductsMini(): Promise<any[]> {

@@ -48,7 +48,7 @@ export class TableComponent {
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
   student: any[] = [];
   expandedRows: any = {};
-  columns: any[] = [];
+  columns: { field: string; header: string }[] = [];
   globalFields: string[] | undefined;
   globalFilter: string = '';
   ref: DynamicDialogRef | undefined;
@@ -100,18 +100,11 @@ export class TableComponent {
       { field: 'selectedValue', header: 'Department' },
       { field: 'age', header: 'Amount' },
       { field: 'id', header: 'second Amount' },
-      { field: 'fathername', header: 'Fathername' },
-      { field: 'email', header: '' },
-      { field: 'age', header: 'Age' },
-      { field: 'selectedValue', header: 'Department' },
-      { field: 'payment', header: 'Payment' },
-      { field: 'gyyd', header: 'assignTo' },
-      { field: 'dfv', header: 'Project' },
-      { field: 'payment', header: 'Payment' },
-      { field: 'email', header: 'Email' },
-      { field: 'age', header: 'Age' },
-      { field: 'selectedValue', header: 'Department' },
-      { field: 'selectedValue', header: 'Department' },
+      { field: 'father', header: 'Fathername' },
+      { field: 'address', header: 'Address' },
+      { field: 'city', header: 'City' },
+      { field: 'state', header: 'State' },
+      { field: 'postalCode', header: 'Postal Code' }
     ];
 
     this.dynamicHeaders = [

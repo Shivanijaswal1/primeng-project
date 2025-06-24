@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Component, Input } from '@angular/core';
+import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-submit-message',
@@ -7,8 +7,18 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
   styleUrls: ['./submit-message.component.scss'],
 })
 export class SubmitMessageComponent {
-  constructor(private DynamicDialogRef: DynamicDialogRef) {}
-  close(){
+  message: string = '';
+
+  constructor(
+    private DynamicDialogRef: DynamicDialogRef,
+    public Config: DynamicDialogConfig
+  ) {}
+  
+  close() {
     this.DynamicDialogRef.close();
+  }
+
+  ngOnInit() {
+    this.message = this.Config.data.message;
   }
 }

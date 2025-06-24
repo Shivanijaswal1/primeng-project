@@ -76,12 +76,12 @@
         <tr>
        <th></th>
           <th><app-checkbox (checkedChange)="onSelectAllChange($event)" [checked]="isChecked"></app-checkbox></th>
-          <th *ngFor="let Parent of columns ; let i = index" [ngClass]="{'sorted-column': isSorted(Parent.field)}"
+          <th  *ngFor="let Parent of columns ;let i = index" [ngClass]="{'sorted-column': isSorted(Parent.field)}"
             [pSortableColumn]="Parent.field" #headerCell 
             [attr.id]="'header-' + Parent.field"
             >
-          <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
 
+          <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
             <p-sortIcon [field]="Parent.field"></p-sortIcon>
             <i class="pi pi-filter" [style]="{'margin-left':'10px'}" style="cursor: pointer"
               (click)="openFilterMenu($event, Parent.field)"></i>
@@ -89,6 +89,7 @@
                <i class="pi pi-times delete-icon" (click)="confirmDeleteColumn(Parent.field)"></i>
                   </div>
           </th>
+          
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded">
@@ -132,6 +133,7 @@
         </td>
       </ng-template>
     </td>
+
         </tr>
       </ng-template>
       <ng-template pTemplate="rowexpansion" let-rowData>

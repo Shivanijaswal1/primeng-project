@@ -1,58 +1,147 @@
-.p-fluid {
-  padding: 10px;
+
+::ng-deep .custom-dialog-header .p-dialog-header {
+  background-color: #4f55d4;
+  color: white;
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 16px;
+  padding: 1rem;
+  display: flex;
+  text-align: center;
+}
+
+::ng-deep .custom-dialog-header .p-dialog-header-icon {
+  color: black; 
+}
+
+#content {
+  padding: 20px;
   max-width: 900px;
   margin: auto;
+  background-color: #fff;
 }
 
-.form-css {
-  margin-bottom: 10px;
+
+.address-group {
+    margin-top: 1.5rem;
 }
 
-form {
+.form-css-inline {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-css-half {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-css,
+
+.form-css4,
+.form-css5 {
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #333;
+}
+
+.error-text {
+  font-size: 13px;
+  margin-top: 4px;
+  color: red;
+}
+
+.box,
+.box1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.box > div,
+.box1 > div {
+  flex: 1;
+  min-width: 250px;
+}
+
+
+.footer-button {
+  width: 100%;
+  margin-top: 10px;
+  background-color: #f4f4f4;
 }
 
 .form-button {
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-::ng-deep label {
-  display: block;
-  font-weight: 600;
-  margin-top: 10px;
-  color: #222;
+  gap: 10px;
+  margin-top: 30px;
 }
 
 .btn1, .btn2 {
-  min-width: 120px;
+  min-width: 100px;
+}
+
+
+.pdf-preview {
+  padding: 20px;
+//   position: sticky;
+  // background-color: #fcf9f9;
+  border-left: 1px solid #ddd;
+}
+
+.pdf-card {
+  cursor: pointer;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #e9ecef;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.pdf-card:hover {
+  background-color: #d6d8db;
+}
+
+.card-content {
+  font-weight: 500;
+  color: #212529;
+}
+
+.pdf-label {
+  font-size: 15px;
+}
+
+// .submission-time {
+//   font-size: 14px;
+//   color: #6c757d;
+//   margin-bottom: 15px;
+// }
+
+.footer {
+  // // width:28vw;
+  // height: 25vh;
+  position: fixed;
+  top: 55vh
+
 }
 
 @media (max-width: 768px) {
+  .box, .box1 {
+    flex-direction: column;
+  }
+
   .form-button {
-    justify-content: center;
-  }
-
-  .form-css {
-    margin-bottom: 1rem;
-  }
-
-  .p-fluid {
-    padding: 0.75rem;
+    flex-direction: column;
+    align-items: stretch;
   }
 }
-
-.box .form-css2{
-    width: 15vw;
-}
-.box .form-css3{
-    position: fixed;
-    top:20vh;
-    left:18vw;
-    width: 16vw;
-}
-
-

@@ -27,6 +27,9 @@ export class TabsComponent {
   cols!: Column[];
   selectedColumns!: Column[];
   tabs: { title: string; value: number; content: string }[] = [];
+  studentDetailFormConfig: any;
+  pendingStudentFeesConfig: any;
+  activeTabIndex = 2; 
 
   constructor(
     public config: DynamicDialogConfig,
@@ -42,11 +45,11 @@ export class TabsComponent {
       { title: 'Tab 2', value: 1, content: 'Tab 2 Content' },
       { title: 'Tab 3', value: 2, content: 'Tab 3 Content' },
     ];
-
-    this._service.getDummyData().subscribe((sections) => {
-      if (sections.length > 0) {
-        this.configData = sections[0];
-      }
+    let x = this._service.getDummyData();
+    x.subscribe((data: any) => {
+      this.studentDetailFormConfig = data.studentDetailForm[0];
+      this.pendingStudentFeesConfig = data.pendingStudentFees[0];
+      this.configData = this.studentDetailFormConfig;
     });
 
     this.cols = [
@@ -62,5 +65,14 @@ export class TabsComponent {
   }
   set selectedColumn(val: Column[]) {
     this.selectedColumns = this.cols.filter((col) => val.includes(col));
+  }
+
+  onTabChange(event: any) {
+   debugger;
+    if (event.index === 2) {
+      this.configData = this.studentDetailFormConfig;
+    } else if (event.index === 3) {
+      this.configData = this.pendingStudentFeesConfig;
+    }
   }
 }
