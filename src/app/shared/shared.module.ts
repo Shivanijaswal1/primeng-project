@@ -61,7 +61,8 @@ import { SubmitMessageComponent } from './submit-message/submit-message.componen
     TabsComponent,
     ShowDataComponent,
     AdvanceSortingComponent,
-    FileUpload
+    FileUpload,
+    ConfigurationBasedFormComponent
 
   ],
 })

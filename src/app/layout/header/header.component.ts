@@ -25,7 +25,7 @@ export class HeaderComponent {
   }
     show() {
       this.ref = this.dialogservice.open(FormComponent, {
-        header: 'Student form',
+        header: 'Student Registration form',
         width: '65%',
         height: 'auto',
         contentStyle: { overflow: 'auto' },

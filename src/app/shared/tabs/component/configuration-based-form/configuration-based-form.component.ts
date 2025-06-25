@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ServiceService } from '../../service/service.service';
 
@@ -24,9 +24,12 @@ export interface FormSection {
 })
 export class ConfigurationBasedFormComponent {
   @Input() formConfig!: FormSection;
+  @Output() formSubmitted = new EventEmitter<any>();
   configForm: FormGroup = new FormGroup({});
   fields: FormField[] = [];
   sectionName: string = '';
+  
+  @Output() childAdded = new EventEmitter<any>();
   constructor(private _Service: ServiceService, private _fb: FormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -49,5 +52,7 @@ export class ConfigurationBasedFormComponent {
 
   onSubmit(): void {
     console.log('Submitted values:', this.configForm.value);
+    this.formSubmitted.emit(this.configForm.value);
   }
+  
 }

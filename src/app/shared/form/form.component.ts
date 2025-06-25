@@ -29,7 +29,7 @@ interface UploadEvent {
 export class FormComponent {
   @ViewChild('dropdownElem') dropdownElem: any;
   @ViewChild('content', { static: false })
-  panelSize: number[] = [80, 10];
+  panelSize: number[] = [60, 40];
   minSize: number[] = [50, 10];
   content!: ElementRef;
   name: string = '';
@@ -67,8 +67,15 @@ export class FormComponent {
   mostRecentType: 'pdf' | 'file' | null = null;
   mostRecentIndex: number = -1;
 
-
   showSection: 'pdf' | 'file' = 'pdf';
+
+  activeTab: 'pdf' | 'book' = 'pdf';
+
+  // Book input for footer
+  showBookInput: boolean = false;
+  bookInputValue: string = '';
+  bookValues: string[] = [];
+  bookTimes: string[] = [];
 
   constructor(
     public ref: DynamicDialogRef,
@@ -264,4 +271,22 @@ export class FormComponent {
   }
 
 
+  setActiveTab(tab: 'pdf' | 'book') {
+    this.activeTab = tab;
+  }
+
+  saveBookInput() {
+    if (this.bookInputValue.trim()) {
+      this.bookValues.push(this.bookInputValue.trim());
+      this.bookTimes.push(new Date().toLocaleString());
+    }
+ 
+    this.bookInputValue = '';
+  }
+
+  cancelBookInput() {
+   
+    this.bookInputValue = '';
+  }
+  
 }
