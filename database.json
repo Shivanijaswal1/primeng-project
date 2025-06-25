@@ -13,80 +13,62 @@
           "status": "true",
           "joinDate": "20/03/2022",
           "dateofbirth": "20/07/2004"
+        },
+        {
+          "project": "cfgh",
+          "role": "cvghb",
+          "status": "gfhj",
+          "joinDate": "vbnm"
+        },
+        {
+          "project": "cv",
+          "role": "vghbjnkm",
+          "status": "false",
+          "joinDate": "vhbjnkm"
+        },
+        {
+          "project": "project B",
+          "role": "admin",
+          "status": "true",
+          "joinDate": "20/05/2020",
+          "dateofbirth": "20/05/2001"
         }
       ]
     },
     {
-      "id": "caf7",
-      "name": "jh",
-      "email": "asdfg@gmail.com",
-      "age": "21",
-      "selectedValue": "Medical",
-      "father": "ww",
-      "address": "abc",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "3224"
-    },
-    {
-      "id": "5783",
-      "name": "nameww",
-      "email": "shivani@gmail.com",
-      "age": "23",
-      "selectedValue": "ART",
-      "father": "eeeeer",
-      "address": "dfghjk",
-      "city": "dcsg",
-      "state": "bn",
-      "postalCode": "3225"
-    },
-    {
-      "id": "22bb",
+      "id": "0d09",
       "name": "name",
-      "email": "shivani@gmail.com",
-      "age": "23",
-      "selectedValue": "ART",
-      "father": "eeeeer",
-      "address": "dfghjk",
-      "city": "dcsg",
-      "state": "bn",
-      "postalCode": "3225"
-    },
-    {
-      "id": "ef2c",
-      "name": "nameww",
-      "email": "shivaniwinss@gmail.com",
-      "age": "21",
+      "email": "asdfg@gmail.com",
+      "age": "34",
       "selectedValue": "Medical",
-      "father": "eeeeer",
-      "address": "abc",
-      "city": "una",
-      "state": "bn",
-      "postalCode": "2322"
-    },
-    {
-      "id": "fafb",
-      "name": "jh",
-      "email": "asdfg@gmail.com",
-      "age": "21",
-      "selectedValue": "Commerce",
-      "father": "eeeeer",
+      "father": "vg",
       "address": "dfghjk",
       "city": "dcsg",
-      "state": "HP",
-      "postalCode": "2211"
-    },
-    {
-      "id": "50c9",
-      "name": "jhsdfghjk",
-      "email": "asdfg@gmail.com",
-      "age": "21",
-      "selectedValue": "Commerce",
-      "father": "eeeeer",
-      "address": "dfghjk",
-      "city": "dcsg",
-      "state": "HP",
-      "postalCode": "2211"
+      "state": "cjj",
+      "postalCode": "2211",
+      "children": [
+        {
+          "project": "fcgvhbjn",
+          "role": "cfvghbjn",
+          "status": "false",
+          "joinDate": "12/06/2025",
+          "dateofbirth": "20/07/2004"
+        },
+        {
+          "project": "bb",
+          "role": "hbbh",
+          "status": "false",
+          "joinDate": "20/03/2024",
+          "dateofbirth": "30/04/2003"
+        },
+        {
+          "project": "project5",
+          "role": "admin",
+          "status": "true",
+          "joinDate": "20/04/2394",
+          "dateofbirth": "20/09/2034"
+        }
+      ]
     }
   ],
   "data": [

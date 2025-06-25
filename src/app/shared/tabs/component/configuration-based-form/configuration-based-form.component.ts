@@ -1,6 +1,7 @@
 import { Component, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ServiceService } from '../../service/service.service';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 export interface FormField {
   field: string;
@@ -23,15 +24,20 @@ export interface FormSection {
   styleUrls: ['./configuration-based-form.component.scss'],
 })
 export class ConfigurationBasedFormComponent {
+   parentId: any;
   @Input() formConfig!: FormSection;
-  @Output() formSubmitted = new EventEmitter<any>();
   configForm: FormGroup = new FormGroup({});
   fields: FormField[] = [];
   sectionName: string = '';
   
   @Output() childAdded = new EventEmitter<any>();
-  constructor(private _Service: ServiceService, private _fb: FormBuilder) {}
+  constructor(private _Service: ServiceService, private _fb: FormBuilder, public ref: DynamicDialogRef,  public config: DynamicDialogConfig,) {}
 
+
+    ngOnInit(): void {
+    this.parentId = this.config.data?.parentId;
+    console.log('Received parentId:', this.parentId);
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['formConfig'] && this.formConfig?.field) {
       this.sectionName = this.formConfig.sectionName;
@@ -51,8 +57,12 @@ export class ConfigurationBasedFormComponent {
   }
 
   onSubmit(): void {
-    console.log('Submitted values:', this.configForm.value);
-    this.formSubmitted.emit(this.configForm.value);
+    const formData = { ...this.configForm.value, parentId: this.parentId };
+    if (this.ref) {
+      this.ref.close(formData);
+      console.log('Form submitted:', formData);
+    }
   }
+
   
 }

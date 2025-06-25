@@ -51,7 +51,7 @@
         </div>
       </div>
         <i 
-    [style]="{'margin-left': '96vw','color':'white','font-size':'20px'}" 
+    [style]="{'margin-left': '9vw','color':'white','font-size':'20px'}" 
     class="pi pi-sort-alpha-down"
     (click)="advanceSorting()"
 > </i>
@@ -65,7 +65,7 @@
       [resizableColumns]="true" [globalFilterFields]="globalFields"
         [sortField]="sortField"
   [sortOrder]="sortOrder"
-      [dataKey]="'id'"
+  dataKey="id"
       [expandedRowKeys]="expandedRows" (onRowToggle)="onRowToggle($event)"
       [value]="filteredstudent"
       (onRowExpand)="onRowExpand($event)"
@@ -94,15 +94,15 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded">
         <tr [pEditableRow]="rowData">
-         <td>
-            <ng-container
-              *ngIf="rowData.children && rowData.children.length > 0">
+          <td>
+            <ng-container *ngIf="rowData.children && rowData.children.length > 0">
               <app-z-button
                 [icon]="expanded ? 'pi pi-chevron-down':'pi pi-chevron-right'"
                 [rounded]="true"
                 [text]="true"
                 [plain]="true"
-                [pRowToggler]="rowData">
+                [pRowToggler]="rowData"
+                >
               </app-z-button>
             </ng-container>
           </td>
@@ -112,57 +112,49 @@
               [checked]="selectedStudentIds.includes(rowData.id)">
             </app-checkbox>
           </td>
-           <td *ngFor="let parent of columns">
-         <ng-container *ngIf="parent.field !== 'name'; else nonEditableName">
-        <td pEditableColumn [pEditableColumnField]="parent.field">
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData[parent.field]" required />
+          <td *ngFor="let parent of columns">
+            <ng-container *ngIf="parent.field !== 'name'; else nonEditableName">
+              <td pEditableColumn [pEditableColumnField]="parent.field">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" [(ngModel)]="rowData[parent.field]" required />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{rowData[parent.field] }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+            </ng-container>
+            <ng-template #nonEditableName>
+              <td>
+                <a href="javascript:void(0)" (click)="handleNameClick(rowData)">
+                  {{ rowData[parent.field] }}
+                </a>
+              </td>
             </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData[parent.field] }}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-      </ng-container>
-      <ng-template #nonEditableName>
-        <td>
-          <a href="javascript:void(0)" (click)="handleNameClick(rowData)">
-            {{ rowData[parent.field] }}
-          </a>
-        </td>
-      </ng-template>
-    </td>
-
+          </td>
         </tr>
       </ng-template>
-      <ng-template pTemplate="rowexpansion" let-rowData>
+      <ng-template pTemplate="rowexpansion"  let-rowData>
         <tr>
           <td colspan="7">
-            <div class="p-4">
-              <p-table class="child-table" [value]="rowData.children"
-                dataKey="id">
+            <div class="p-4" style="margin-left: 5vw;">
+              <p-table class="child-table" [value]="rowData.children" dataKey="id">
                 <ng-template pTemplate="header">
                   <tr>
-                    <th *ngFor="let header of dynamicHeaders"
-                      [pSortableColumn]="header.field">
-                      {{ header.header }}
-                      <p-sortIcon [field]="header.field"></p-sortIcon>
+                    <th *ngFor="let key of rowData.children?.length ? (rowData.children[0] | keyvalue) : []">
+                      {{ key.key }}
                     </th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-children>
+                <ng-template pTemplate="body" let-child>
                   <tr>
-                    <td>{{children.project}}</td>
-                    <td>{{children.role}}</td>
-                    <td>{{children.status}}</td>
-                    <td>{{children.joinDate}}</td>
-                    <td>{{children.dateofbirth}}</td>
+                    <td *ngFor="let key of child | keyvalue">{{ key.value }}</td>
                   </tr>
                 </ng-template>
                 <ng-template #emptymessage>
                   <tr>
-                    <td colspan="6"> There are no orders for this product yet.</td>
+                    <td colspan="6"> There are no child records yet.</td>
                   </tr>
                 </ng-template>
               </p-table>
@@ -198,4 +190,4 @@
     </p-overlayPanel>
     <p-menu #filterMenu [popup]="true" [model]="filterMenuItems"></p-menu>
   </div>
-</div>
+</div>  

@@ -39,9 +39,9 @@ a:hover{
 
 
 .custom-search-bar {
-  position: fixed;
-  top: 180px;
-  right: 50px;
+  position:sticky;
+  bottom: 5vh;
+  left: 73vw;
   background: #ffffff;
   border: 1px solid #ccc;
   padding: 8px 12px;
@@ -146,4 +146,46 @@ mark.highlight-active {
 .sorted-column {
   background-color: #d1e7fd; 
   font-weight: bold;
+}
+
+
+::ng-deep .child-table {
+  margin-left: 5vw !important; 
+  margin-top: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background-color: #f9f9f9;
+}
+
+
+
+::ng-deep .child-table th {
+  background-color: #e9ecef;
+  color: #333;
+  font-weight: 600;
+  padding: 0.75rem;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  margin-left: 20vw;
+}
+
+::ng-deep .child-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e1e1e1;
+  text-align: left;
+  color: #555;
+}
+
+
+::ng-deep .child-table td[colspan] {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  background-color: #fff;
+}
+
+
+::ng-deep .child-table tr:hover td {
+  background-color: #f1f1f1;
 }

@@ -7,7 +7,6 @@
       [type]="field.type"
       [formControlName]="field.field"
       [readonly]="!field.editable"/>
-
     <select
       *ngIf="field.type === 'select'"
       [formControlName]="field.field"

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
 
 
@@ -51,6 +51,20 @@ export class ServiceService {
       });
     });
 }
+
+updateParentWithChild(parentId: string, childData: any): Observable<any> {
+  return this.http.get<any>(`http://localhost:3000/form/${parentId}`).pipe(
+    switchMap((parent: { children: any[]; }) => {
+      
+      if (!parent.children) parent.children = [];
+      console.log(childData);
+      parent.children.push(childData);
+      return this.http.put<any>(`http://localhost:3000/form/${parentId}`, parent);
+    })
+  );
+}
+
+
 getDummyData(): Observable<any> {
   const dummyResponse = [
     {

@@ -40,11 +40,7 @@ interface ExtendedConfirmation extends Confirmation {
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
-  @ViewChild('dt') dt: any;
-  @ViewChild('filterMenu') filterMenu!: Menu;
-  @ViewChild('op') overlayPanel!: OverlayPanel;
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
-  @ViewChild('searchInput') searchInput!: ElementRef;
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
   student: any[] = [];
   expandedRows: any = {};
@@ -55,17 +51,11 @@ export class TableComponent {
   selectedStudentIds: any[] = [];
   dynamicHeaders: any[] = [];
   showDeleteButton: boolean = false;
-  isEditing = false;
-  editingRow: any = null;
-  splitterVisible: boolean = true;
   isChecked: boolean = false;
   filteredstudent: any[] = [];
   filterMenuItems: MenuItem[] = [];
   selectedField: string = '';
-  selectedCheckboxValue: string = '';
   uniqueValues: string[] = [];
-  showApplyButton: boolean = false;
-  filteredEmployee: any[] = [];
   searchTerm = '';
   searchBarVisible = false;
   selectedValue: string[] = [];
@@ -73,10 +63,7 @@ export class TableComponent {
   checkboxStates: { [key: string]: boolean } = {};
   matches: number[] = [];
   currentMatchIndex: number = -1;
-  highlightedHeaders: { [key: number]: string } = {};
   activeHighlightedHeader: number | null = null;
-  selectedColumns: any[] = [];
-  selectedEmployee: any;
   loading: boolean = false;
   currentSortFields: string[] = [];
   sortField: string = '';
@@ -104,7 +91,7 @@ export class TableComponent {
       { field: 'address', header: 'Address' },
       { field: 'city', header: 'City' },
       { field: 'state', header: 'State' },
-      { field: 'postalCode', header: 'Postal Code' }
+      { field: 'postalCode', header: 'Postal Code' },
     ];
 
     this.dynamicHeaders = [
@@ -196,19 +183,44 @@ export class TableComponent {
 
   handleNameClick(rowData: any) {
     this.ref = this.dialogservice.open(TabsComponent, {
-      data: rowData,
-      header: `Student Name :${rowData.name}`,
+      data: {
+        parentId: rowData.id,
+        ...rowData,
+      },
+      header: `Student Name: ${rowData.name}`,
       width: '40%',
       height: '79vh',
       styleClass: 'custom-dialog-header',
     });
-    this.ref.onClose.subscribe(() => {
-      this.loading = true;
-      setTimeout(() => {
-        this.getstudentData();
-      }, 1000);
+    
+    this.ref.onClose.subscribe((formValue) => {
+  if (formValue && rowData.id) {
+    const childData = {
+      project: formValue.project,
+      role: formValue.role,
+      status: formValue.status,
+      joinDate: formValue.joinDate,
+      dateofbirth: formValue.dateofbirth
+    };
+
+    this._studentService.updateParentWithChild(rowData.id, childData).subscribe({
+      next: (updatedParent) => {
+        console.log('Parent updated in JSON server:', updatedParent);
+        this.getstudentData(); 
+      },
+      error: (err) => {
+        console.error('Error updating parent:', err);
+      }
     });
   }
+  
+ this.loading = true;
+    setTimeout(() => {
+      this.getstudentData();
+    }, 2000);
+});
+  }
+
 
   handleCheckboxRefesh(checked: boolean, id: number) {
     if (checked) {
@@ -445,4 +457,5 @@ export class TableComponent {
       },
     });
   }
+
 }

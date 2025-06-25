@@ -42,7 +42,6 @@ export class FormComponent {
   city: string = '';
   state: string = '';
   postalCode: string = '';
-  dataService: any;
   formData: any = {};
   payload: {} | undefined;
   selectedValue: any;
@@ -50,28 +49,16 @@ export class FormComponent {
   childOptions: any[] = [];
   selectedParent: string = '';
   selectedChild: any;
-  selectedParentId: number = 0;
   isEditable: boolean = false;
-  newChildValue: string = '';
-  isTyping: boolean = false;
   childExistsError: boolean = false;
-  pdfUrl: SafeResourceUrl | null = null;
   rawPdfUrl: string | null = null;
   submissionTime: string | null = null;
   pdfUrls: any[] = [];
-  previousPdfUrl: any;
   uploadedFiles: any = [];
   message: string = 'Please Complete all required fields';
-  formattedSubmissionTime: any;
-
   mostRecentType: 'pdf' | 'file' | null = null;
   mostRecentIndex: number = -1;
-
-  showSection: 'pdf' | 'file' = 'pdf';
-
   activeTab: 'pdf' | 'book' = 'pdf';
-
-  // Book input for footer
   showBookInput: boolean = false;
   bookInputValue: string = '';
   bookValues: string[] = [];
@@ -151,7 +138,7 @@ export class FormComponent {
       this.pdfUrls.push({
         url: this.rawPdfUrl,
         name: this.name,
-        submissionTime: this.submissionTime
+        submissionTime: this.submissionTime,
       });
 
       this.updateMostRecentHighlight();
@@ -189,16 +176,19 @@ export class FormComponent {
       this.uploadedFiles.push(file);
     }
     this.updateMostRecentHighlight();
-   
   }
 
-
   updateMostRecentHighlight() {
-    debugger
-    let lastPdfTime = this.pdfUrls.length ? new Date(this.pdfUrls[this.pdfUrls.length - 1].submissionTime).getTime() : 0;
+    let lastPdfTime = this.pdfUrls.length
+      ? new Date(this.pdfUrls[this.pdfUrls.length - 1].submissionTime).getTime()
+      : 0;
     let lastFileTime = 0;
-    if (this.uploadedFiles.length && this.uploadedFiles[this.uploadedFiles.length - 1].lastModified) {
-      lastFileTime = this.uploadedFiles[this.uploadedFiles.length - 1].lastModified;
+    if (
+      this.uploadedFiles.length &&
+      this.uploadedFiles[this.uploadedFiles.length - 1].lastModified
+    ) {
+      lastFileTime =
+        this.uploadedFiles[this.uploadedFiles.length - 1].lastModified;
     }
     if (lastPdfTime === 0 && lastFileTime === 0) {
       this.mostRecentType = null;
@@ -265,11 +255,9 @@ export class FormComponent {
     this.isEditable = true;
   }
 
-
   private getInput(): HTMLInputElement | null {
     return this.dropdownElem?.el?.nativeElement.querySelector('input') || null;
   }
-
 
   setActiveTab(tab: 'pdf' | 'book') {
     this.activeTab = tab;
@@ -280,13 +268,11 @@ export class FormComponent {
       this.bookValues.push(this.bookInputValue.trim());
       this.bookTimes.push(new Date().toLocaleString());
     }
- 
+
     this.bookInputValue = '';
   }
 
   cancelBookInput() {
-   
     this.bookInputValue = '';
   }
-  
 }
