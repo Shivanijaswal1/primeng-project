@@ -80,7 +80,6 @@
             [pSortableColumn]="Parent.field" #headerCell 
             [attr.id]="'header-' + Parent.field"
             >
-
           <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
             <p-sortIcon [field]="Parent.field"></p-sortIcon>
             <i class="pi pi-filter" [style]="{'margin-left':'10px'}" style="cursor: pointer"
@@ -144,6 +143,7 @@
                   <tr>
                     <th *ngFor="let key of rowData.children?.length ? (rowData.children[0] | keyvalue) : []">
                       {{ key.key }}
+                    
                     </th>
                   </tr>
                 </ng-template>

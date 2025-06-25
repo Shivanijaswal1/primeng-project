@@ -15,7 +15,6 @@ import {
   MessageService,
 } from 'primeng/api';
 import { FilterService } from 'primeng/api';
-import { Menu } from 'primeng/menu';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';

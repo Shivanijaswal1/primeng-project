@@ -39,7 +39,7 @@ export class ServiceService {
           },
           {
             field: 'status',
-            options:['true', 'false'],
+            options:['True', 'False'],
             fieldName: ' Status',
             editable: true,
             displayOrder: 3,

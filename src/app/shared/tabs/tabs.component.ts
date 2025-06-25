@@ -68,7 +68,6 @@ export class TabsComponent {
   }
 
   onTabChange(event: any) {
-   debugger;
     if (event.index === 2) {
       this.configData = this.studentDetailFormConfig;
     } else if (event.index === 3) {
