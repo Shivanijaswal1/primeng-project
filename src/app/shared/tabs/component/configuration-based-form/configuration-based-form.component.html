@@ -1,16 +1,25 @@
 <h2 *ngIf="sectionName">{{ sectionName }}</h2>
 <form *ngIf="configForm && fields.length" [formGroup]="configForm"> 
- <div *ngFor="let field of fields">
-    <label>{{ field.fieldName }}</label>
+  <div *ngFor="let field of fields">
+    <label>
+      {{ field.fieldName }}
+      <span *ngIf="field.required" style="color: red">*</span>
+    </label>
     <input pInputText
       *ngIf="field.type === 'text' || field.type === 'number'"
       [type]="field.type"
       [formControlName]="field.field"
-      [readonly]="!field.editable"/>
+      [required]="field.required"
+      [readonly]="!field.editable"
+      [ngClass]="{'invalid-field': formSubmitted && configForm.get(field.field)?.invalid}"
+    />
     <select
       *ngIf="field.type === 'select'"
       [formControlName]="field.field"
-      [disabled]="!field.editable">
+      [disabled]="!field.editable"
+      [required]="field.required"
+      [ngClass]="{'invalid-field': formSubmitted && configForm.get(field.field)?.invalid}"
+    >
       <option *ngFor="let option of field.options" [value]="option">
         {{ option }}
       </option>
@@ -19,3 +28,5 @@
   <button class="btn2" pButton type="button"
     (click)="onSubmit()">Submit</button>
 </form>
+
+

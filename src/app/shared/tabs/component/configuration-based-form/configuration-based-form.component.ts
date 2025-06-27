@@ -10,6 +10,7 @@ export interface FormField {
   displayOrder: number;
   type: string;
   options?: string[];
+  required: boolean;
 }
 
 export interface FormSection {
@@ -29,6 +30,7 @@ export class ConfigurationBasedFormComponent {
   configForm: FormGroup = new FormGroup({});
   fields: FormField[] = [];
   sectionName: string = '';
+  formSubmitted: boolean = false;
   
   @Output() childAdded = new EventEmitter<any>();
   constructor(private _Service: ServiceService, private _fb: FormBuilder, public ref: DynamicDialogRef,  public config: DynamicDialogConfig,) {}
@@ -57,12 +59,17 @@ export class ConfigurationBasedFormComponent {
   }
 
   onSubmit(): void {
+    this.formSubmitted = true;
+    if (this.configForm.invalid) {
+      return;
+    }
     const formData = { ...this.configForm.value, parentId: this.parentId };
     if (this.ref) {
       this.ref.close(formData);
       console.log('Form submitted:', formData);
     }
   }
-
   
-}
+  }
+
+

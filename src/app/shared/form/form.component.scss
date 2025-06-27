@@ -110,9 +110,6 @@ label {
   color:white;
 }
 
-// .pdf-card:hover {
-//   background-color: #a6bde1;
-// }
 
 .card-content {
   font-weight: 500;
@@ -123,15 +120,8 @@ label {
   font-size: 15px;
 }
 
-// .submission-time {
-//   font-size: 14px;
-//   color: #6c757d;
-//   margin-bottom: 15px;
-// }
 
 .footer {
-  // // width:28vw;
-  // height: 25vh;
   position: fixed;
   top: 55vh
 
@@ -153,26 +143,6 @@ label {
   }
 }
 
-// .pdf-card {
-//     background-color: #f8f9fa;
-//     border: 1px solid #ccc;
-//     border-radius: 6px;
-//     padding: 12px 16px;
-//     margin: 8px 0;
-//     font-family: Arial, sans-serif;
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-//     transition: background-color 0.3s ease;
-// }
-
-
-// .recent-pdf {
-//     background-color: #0ea063;
-//     border-color: #91d5ff;
-//     font-weight: bold;
-// }
-
 
 .pdf-card i {
     color: #007ad9;
@@ -190,12 +160,13 @@ label {
   width: 25vw;
 }
 
-// .footer .card {
-//     padding: 15px;
-//     background-color: #f4f4f4;
-//     border-radius: 8px;
-// }
 
+
+
+.invalid-field {
+  border: 1.5px solid red !important;
+  box-shadow: 0 0 2px red;
+}
 
 p-fileUpload {
     display: block;
@@ -230,14 +201,6 @@ p-fileUpload {
   color: #2d3a4a;
   letter-spacing: 0.5px;
 }
-
-// .book-footer {
-//   gap: 8px;
-//   margin-bottom: 1rem;
-//   margin-top: 60vh;
-//   po
-
-
 
 .footer button[label="Save"] {
   background: #4f55d4;

@@ -22,6 +22,7 @@ export class ServiceService {
             fieldName: 'Date of Birth',
             displayOrder: 4,
             editable: true,
+            required: true,
           },
           {
             field: 'project',
@@ -29,6 +30,7 @@ export class ServiceService {
             editable: true,
             displayOrder: 1,
             type: 'text',
+            required: true,
           },
           {
             field: 'role',
@@ -36,6 +38,7 @@ export class ServiceService {
             editable: true,
             displayOrder: 2,
             type: 'text',
+            required: true,
           },
           {
             field: 'status',
@@ -44,6 +47,7 @@ export class ServiceService {
             editable: true,
             displayOrder: 3,
             type: 'select',
+            required: true,
           },
           {
             type: 'text',
@@ -51,6 +55,7 @@ export class ServiceService {
             fieldName: 'Join Date',
             displayOrder: 4,
             editable: true,
+            required: true,
           },
         ],
       },

@@ -11,7 +11,9 @@
                         <app-input [(ngModel)]="name" name="name"
                             [required]="true" type="text"
                             pattern="^[A-Za-z]+\s?[A-Za-z]+$"
-                            #nameCtrl="ngModel"></app-input>
+                            #nameCtrl="ngModel"
+                            [ngClass]="{'invalid-field': nameCtrl.invalid && nameCtrl.touched}"
+                            ></app-input>
                         <div *ngIf="nameCtrl.invalid && nameCtrl.touched"
                             class="error-text" style="color: red;">
                             Name is required and should contain only letters.
@@ -29,7 +31,9 @@
                                 optionValue="key"
                                 placeholder="Select Parent"
                                 [required]="true"
-                                (onChange)="onParentChange($event)">
+                                (onChange)="onParentChange($event)"
+                                [ngClass]="{'invalid-field': myForm.submitted && !selectedParent}"
+                                >
                                 <ng-template let-option pTemplate="item">
                                     <div [pTooltip]="option.value"
                                         tooltipPosition="right">
@@ -53,7 +57,9 @@
                                     placeholder="Select Child"
                                     (onChange)="onDropdownChange($event)"
                                     (onBlur)="onDropdownBlur()"
-                                    #childCtrl="ngModel">
+                                    #childCtrl="ngModel"
+                                    [ngClass]="{'invalid-field': childCtrl.invalid && childCtrl.touched}"
+                                     >
                                     <ng-template pTemplate="footer">
                                         <div class="p-3"
                                             *ngIf="selectedParent ">
@@ -87,7 +93,9 @@
                             </label>
                             <app-input [(ngModel)]="email" name="email"
                                 [required]="true"
-                                type="email" #emailCtrl="ngModel"></app-input>
+                                type="email" #emailCtrl="ngModel"
+                                [ngClass]="{'invalid-field': emailCtrl.invalid && emailCtrl.touched}"
+                            ></app-input>
                             <div *ngIf="emailCtrl.invalid && emailCtrl.touched"
                                 class="error-text" style="color: red;">
                                 Please enter a valid email address.
@@ -102,7 +110,9 @@
                         <app-input [(ngModel)]="Father"
                             name="father" pattern="^[A-Za-z]+\s?[A-Za-z]+$"
                             [required]="true" type="text"
-                            #fatherCtrl="ngModel"></app-input>
+                            #fatherCtrl="ngModel"
+                            [ngClass]="{'invalid-field': fatherCtrl.invalid && fatherCtrl.touched}"
+                        ></app-input>
                         <div *ngIf="fatherCtrl.invalid && fatherCtrl.touched"
                             class="error-text" style="color: red;">
                             Father Name is required and should contain only
@@ -118,7 +128,9 @@
                             </label>
                             <app-input [(ngModel)]="address" name="address"
                                 type="text" [required]="true"
-                                #addressCtrl="ngModel"></app-input>
+                                #addressCtrl="ngModel"
+                                [ngClass]="{'invalid-field': addressCtrl.invalid && addressCtrl.touched}"
+                            ></app-input>
                             <div
                                 *ngIf="addressCtrl.invalid && addressCtrl.touched"
                                 class="error-text" style="color: red;">
@@ -134,7 +146,9 @@
                                 </label>
                                 <app-input [(ngModel)]="city" name="city"
                                     type="text" [required]="true"
-                                    #cityCtrl="ngModel"></app-input>
+                                    #cityCtrl="ngModel"
+                                    [ngClass]="{'invalid-field': cityCtrl.invalid && cityCtrl.touched}"
+                                ></app-input>
                                 <div
                                     *ngIf="cityCtrl.invalid && cityCtrl.touched"
                                     class="error-text" style="color: red;">
@@ -148,7 +162,9 @@
                                 </label>
                                 <app-input [(ngModel)]="state" name="state"
                                     type="text" [required]="true"
-                                    #stateCtrl="ngModel"></app-input>
+                                    #stateCtrl="ngModel"
+                                    [ngClass]="{'invalid-field': stateCtrl.invalid && stateCtrl.touched}"
+                                ></app-input>
                                 <div
                                     *ngIf="stateCtrl.invalid && stateCtrl.touched"
                                     class="error-text" style="color: red;">
@@ -164,7 +180,9 @@
                             </label>
                             <app-input [(ngModel)]="postalCode"
                                 name="postalCode" type="text" [required]="true"
-                                #postalCtrl="ngModel"></app-input>
+                                #postalCtrl="ngModel"
+                                [ngClass]="{'invalid-field': postalCtrl.invalid && postalCtrl.touched}"
+                            ></app-input>
                             <div
                                 *ngIf="postalCtrl.invalid && postalCtrl.touched"
                                 class="error-text" style="color: red;">
@@ -185,8 +203,9 @@
                             [options]="dropdownOptions"
                             [required]="true"
                             (valueChange)="handleValueChange($event)"
-                            #genericDropdownCtrl="ngModel">
-                        </app-dropdown>
+                            #genericDropdownCtrl="ngModel"
+                            [ngClass]="{'invalid-field': genericDropdownCtrl.invalid && genericDropdownCtrl.touched}"
+                        ></app-dropdown>
                         <div
                             *ngIf="genericDropdownCtrl.invalid && genericDropdownCtrl.touched"
                             class="error-text" style="color: red;">
@@ -201,7 +220,9 @@
                         <app-input [(ngModel)]="age" name="age"
                             [required]="true" type="number" [min]="18"
                             [max]="100"
-                            #ageCtrl="ngModel"></app-input>
+                            #ageCtrl="ngModel"
+                            [ngClass]="{'invalid-field': ageCtrl.invalid && ageCtrl.touched}"
+                        ></app-input>
                         <div *ngIf="ageCtrl.invalid && ageCtrl.touched"
                             class="error-text" style="color: red;">
                             Age must be between 18 and 100.
@@ -252,7 +273,7 @@
                   </ng-template>
                   <div *ngIf="uploadedFiles.length">
                     <div class="pdf-card"
-                        *ngFor="let file of uploadedFiles; let i = index"
+                        *ngFor="let file of uploadedFiles, let i = index"
                       [ngClass]="{ 'recent-pdf': mostRecentType === 'file' && mostRecentIndex === i }">
                         {{ file.name }} - {{ file.size }} bytes 
                     </div>
@@ -295,3 +316,5 @@
         </ng-template>
     </p-splitter>
 </div>
+
+
