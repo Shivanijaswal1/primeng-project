@@ -20,6 +20,7 @@ import { ShowDataComponent } from './show-data/show-data.component';
 import { AdvanceSortingComponent } from './advance-sorting/advance-sorting.component';
 import { FileUpload } from 'primeng/fileupload';
 import { SubmitMessageComponent } from './submit-message/submit-message.component';
+import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
 
 
 
@@ -38,9 +39,7 @@ import { SubmitMessageComponent } from './submit-message/submit-message.componen
     ConfigurationBasedFormComponent,
     ShowDataComponent,
     AdvanceSortingComponent,
-    SubmitMessageComponent
-    
-   
+    SubmitMessageComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -49,9 +48,7 @@ import { SubmitMessageComponent } from './submit-message/submit-message.componen
     FormsModule,
     InputTextModule,
     MultiSelectModule,
-    ReactiveFormsModule,
-
-  
+    ReactiveFormsModule
   ],
   exports: [
     ZButtonComponent,
@@ -62,8 +59,10 @@ import { SubmitMessageComponent } from './submit-message/submit-message.componen
     ShowDataComponent,
     AdvanceSortingComponent,
     FileUpload,
-    ConfigurationBasedFormComponent
+    ConfigurationBasedFormComponent,
+  
 
   ],
+  providers:[HighlightPipe]
 })
 export class SharedModule {}

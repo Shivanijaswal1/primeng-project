@@ -14,6 +14,7 @@ interface FormPayload {
   age: number;
   selectedValue: string | null;
   father: string;
+  seletedfees:string |null;
 }
 
 interface UploadEvent {
@@ -63,6 +64,7 @@ export class FormComponent {
   bookInputValue: string = '';
   bookValues: string[] = [];
   bookTimes: string[] = [];
+  selectedfees: any;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -97,8 +99,18 @@ export class FormComponent {
     { name: 'Commerce', code: 'O3' },
   ];
 
+  feesprocess=[
+    {name:'Pending',code:'pending'},
+    {name:'complete',code:'complete'}
+  ]
+
+
   handleValueChange(value: any) {
     this.selectedValue = value;
+  }
+
+  handlefeesprocessing(value:any){
+  this.selectedfees=value
   }
 
   closeDialog() {
@@ -114,12 +126,13 @@ export class FormComponent {
         email: this.email,
         age: this.age,
         selectedValue: this.selectedValue ? this.selectedValue.name : null,
+        selectedfees: this.selectedfees ? this.selectedfees.name : null,
         father: this.Father,
         address: this.address,
         city: this.city,
         state: this.state,
         postalCode: this.postalCode,
-      } as FormPayload;
+      } as unknown as FormPayload;
       console.log(this.payload);
       const doc = new jsPDF();
       doc.text(`Name: ${this.name}`, 10, 10);

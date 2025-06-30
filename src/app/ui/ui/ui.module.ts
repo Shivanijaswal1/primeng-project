@@ -20,6 +20,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FileUploadModule } from 'primeng/fileupload';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 
 const primengModule = [
@@ -41,12 +43,13 @@ const primengModule = [
   MultiSelectModule,
   ProgressSpinnerModule,
   RadioButtonModule,
-  FileUploadModule
+  FileUploadModule,
+  SelectButtonModule,TabMenuModule
 
 ];
 @NgModule({
   declarations: [],
-  imports: [CommonModule, primengModule, ConfirmDialogModule,MultiSelectModule,FormsModule,TableModule],
-  exports: [primengModule, ConfirmDialogModule],
+  imports: [CommonModule, primengModule, ConfirmDialogModule,MultiSelectModule,FormsModule,TableModule,SelectButtonModule],
+  exports: [primengModule, ConfirmDialogModule,SelectButtonModule],
 })
 export class UiModule {}

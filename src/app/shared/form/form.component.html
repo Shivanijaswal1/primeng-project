@@ -62,7 +62,7 @@
                                      >
                                     <ng-template pTemplate="footer">
                                         <div class="p-3"
-                                            *ngIf="selectedParent ">
+                                            *ngIf="selectedParent">
                                             <app-z-button
                                                 label="Add New"
                                                 icon="pi pi-plus"
@@ -208,6 +208,27 @@
                         ></app-dropdown>
                         <div
                             *ngIf="genericDropdownCtrl.invalid && genericDropdownCtrl.touched"
+                            class="error-text" style="color: red;">
+                            Selection is required
+                        </div>
+                    </div>
+                     <div class="form-css">
+                        <label for="chooseoption">
+                         Fees Procssing  <span
+                                *ngIf="feesprocessCtrl.errors "
+                                style="color: red;">*</span>
+                        </label>
+                        <app-dropdown
+                            name="feesprocess"
+                            [(ngModel)]="selectedfees"
+                            [options]="feesprocess"
+                            [required]="true"
+                            (valueChange)="handlefeesprocessing($event)"
+                            #feesprocessCtrl="ngModel"
+                            [ngClass]="{'invalid-field': feesprocessCtrl.invalid && feesprocessCtrl.touched}"
+                        ></app-dropdown>
+                        <div
+                            *ngIf="feesprocessCtrl.invalid && feesprocessCtrl.touched"
                             class="error-text" style="color: red;">
                             Selection is required
                         </div>

@@ -20,18 +20,6 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
 import { AdvanceSortingComponent } from 'src/app/shared/advance-sorting/advance-sorting.component';
 
-interface ExtendedConfirmation extends Confirmation {
-  rejectButtonProps?: {
-    label: string;
-    severity: string;
-    outlined: boolean;
-  };
-  acceptButtonProps?: {
-    label: string;
-    severity: string;
-  };
-}
-
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -69,12 +57,25 @@ export class TableComponent {
   sortOrder: number = 1;
   sortingActive: boolean = false;
 
+  statusOptions = [
+    { label: 'Pending', value: 'pending' },
+    { label: 'Complete', value: 'complete' },
+  ];
+  selectedStatus: string = 'pending';
+
+  tabs = [
+    { header: 'Pending', status: 'pending' },
+    { Header: 'Complete', status: 'complete' },
+  ];
+
   constructor(
     private _studentService: ServiceService,
     public dialogservice: DialogService,
     private _deleteservice: ConfirmationService,
     private _messageservice: MessageService
   ) {}
+
+  activeStatus: 'pending' | 'complete' = 'pending';
 
   ngOnInit() {
     this.getstudentData();
@@ -84,6 +85,7 @@ export class TableComponent {
       { field: 'email', header: 'Email' },
       { field: 'age', header: 'Age' },
       { field: 'selectedValue', header: 'Department' },
+      { field: 'selectedfees', header: 'Fees Status' },
       { field: 'age', header: 'Amount' },
       { field: 'id', header: 'second Amount' },
       { field: 'father', header: 'Fathername' },
@@ -100,6 +102,8 @@ export class TableComponent {
       { header: 'Join Date', field: 'joinDate', sortable: true },
       { header: 'Date of Birth', filed: 'dateofbirth', sortable: true },
     ];
+    
+  this.setStatus(this.activeTab.id as 'pending' | 'complete');
   }
 
   getstudentData() {
@@ -107,12 +111,37 @@ export class TableComponent {
       this.student = data;
       this.loading = false;
       this.filteredstudent = [...this.student];
+      this.setStatus(this.activeStatus);
     });
+  }
+
+  tabMenuItems = [
+    { label: 'Pending', id: 'pending' },
+    { label: 'Complete', id: 'complete' },
+  ];
+  activeTab = this.tabMenuItems[0];
+
+onTabChange(index: any) {
+  const selectedTab = this.tabMenuItems[index];
+  console.log(selectedTab)
+  this.activeTab = selectedTab;
+  this.setStatus(selectedTab.id as 'pending' | 'complete');
+}
+
+
+  setStatus(status: 'pending' | 'complete') {
+    this.activeStatus = status;
+    this.filteredstudent = this.student.filter(
+      (stu) => (stu.selectedfees || '').toLowerCase() === status.toLowerCase()  
+    );
+    console.log(`Filtered list for status "${status}":`, this.filteredstudent);
   }
 
   openFilterMenu(event: MouseEvent, field: string) {
     this.selectedField = field;
-    this.uniqueValues = [...new Set(this.student.map((emp) => emp[field]))];
+    this.uniqueValues = [
+      ...new Set(this.student.map((student) => student[field])),
+    ];
     this.tempSelectedValue = [...this.selectedValue];
     this.filterOverlay.show(event);
   }
@@ -127,7 +156,6 @@ export class TableComponent {
       this.tempSelectedValue.push(value);
     }
   }
-
   advanceSorting() {
     this.ref = this.dialogservice.open(AdvanceSortingComponent, {
       header: 'Advance Sorting',
@@ -191,35 +219,36 @@ export class TableComponent {
       height: '79vh',
       styleClass: 'custom-dialog-header',
     });
-    
-    this.ref.onClose.subscribe((formValue) => {
-  if (formValue && rowData.id) {
-    const childData = {
-      project: formValue.project,
-      role: formValue.role,
-      status: formValue.status,
-      joinDate: formValue.joinDate,
-      dateofbirth: formValue.dateofbirth
-    };
 
-    this._studentService.updateParentWithChild(rowData.id, childData).subscribe({
-      next: (updatedParent) => {
-        console.log('Parent updated in JSON server:', updatedParent);
-        this.getstudentData(); 
-      },
-      error: (err) => {
-        console.error('Error updating parent:', err);
+    this.ref.onClose.subscribe((formValue) => {
+      if (formValue && rowData.id) {
+        const childData = {
+          project: formValue.project,
+          role: formValue.role,
+          status: formValue.status,
+          joinDate: formValue.joinDate,
+          dateofbirth: formValue.dateofbirth,
+        };
+
+        this._studentService
+          .updateParentWithChild(rowData.id, childData)
+          .subscribe({
+            next: (updatedParent) => {
+              console.log('Parent updated in JSON server:', updatedParent);
+              this.getstudentData();
+            },
+            error: (err) => {
+              console.error('Error updating parent:', err);
+            },
+          });
       }
+
+      this.loading = true;
+      setTimeout(() => {
+        this.getstudentData();
+      }, 2000);
     });
   }
-  
- this.loading = true;
-    setTimeout(() => {
-      this.getstudentData();
-    }, 2000);
-});
-  }
-
 
   handleCheckboxRefesh(checked: boolean, id: number) {
     if (checked) {
@@ -456,5 +485,4 @@ export class TableComponent {
       },
     });
   }
-
 }

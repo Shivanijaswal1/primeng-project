@@ -9,6 +9,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +19,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
     FeatureModule,
     BrowserAnimationsModule,
     FormsModule,
-    MultiSelectModule
+    MultiSelectModule,
+    SelectButtonModule
   ],
   providers: [
     DialogService,

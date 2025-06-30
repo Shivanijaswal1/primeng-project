@@ -9,22 +9,32 @@
           pInputText
           [(ngModel)]="globalFilter"
           (input)="onGlobalFilter()"
-          placeholder="Search all columns"/>
+          placeholder="Search all columns" />
       </div>
     </div>
-    <p-toolbar [style]="{ 'background-color': 'rgb(70, 89, 181)','margin-bottom':'20px','padding':'30','height':'10vh'}"
+    <p-toolbar
+      [style]="{ 'background-color': 'rgb(70, 89, 181)','margin-bottom':'20px','padding':'30','height':'11vh'}"
       styleClass="sub-toolbar">
       <app-z-button [style]="{'background-color':'white'}" label="Delete"
         *ngIf="showDeleteButton"
         (handleclick)="del(selectedStudentIds)">
       </app-z-button>
-<app-z-button 
-  [style]="{'background-color':'white','margin-left':'63vw'}" 
-  label="Clear Sorting"
-  (handleclick)="clearSorting()"
-    *ngIf="sortingActive" 
-></app-z-button>
-
+      <button pButton
+        pbutton
+        class="status-btn clear"
+        [style]="{'background-color':'white','margin-left':'63vw'}"
+        label="Clear Sorting"
+        (click)="clearSorting()"
+        *ngIf="sortingActive"></button>
+        
+  <p-selectButton 
+    [options]="statusOptions" 
+    [(ngModel)]="selectedStatus"
+    optionLabel="label" 
+    optionValue="value"
+    aria-labelledby="status"
+    styleClass="status-toggle-btn"
+  ></p-selectButton>
       <div class="custom-search-bar">
         <div class="p-input-icon-left">
           <input
@@ -32,8 +42,7 @@
             type="text"
             [(ngModel)]="searchTerm"
             (input)="onSearchInputChange()"
-            placeholder="Search headers..."
-           />
+            placeholder="Search headers..." />
           <span class="match-info">
             {{ currentMatchIndex + 1 }} / {{ matches.length }}
           </span>
@@ -50,58 +59,65 @@
           </button>
         </div>
       </div>
-        <i 
-    [style]="{'margin-left': '9vw','color':'white','font-size':'20px'}" 
-    class="pi pi-sort-alpha-down"
-    (click)="advanceSorting()"
-> </i>
+      <i
+        [style]="{'margin-left': '9vw','color':'white','font-size':'20px'}"
+        class="pi pi-sort-alpha-down"
+        (click)="advanceSorting()"> </i>
     </p-toolbar>
     <p-toast></p-toast>
     <p-confirmDialog></p-confirmDialog>
-      <div *ngIf="loading" class="table-spinner-overlay">
-    <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
-  </div>
-    <p-table #dt [value]="student" [paginator]="true" [rows]="5"
+    <div *ngIf="loading" class="table-spinner-overlay">
+      <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
+    </div>
+
+
+    <p-table #dt [paginator]="true" [rows]="5"
+    [value]="student"
+    [value]="filteredstudent"
       [resizableColumns]="true" [globalFilterFields]="globalFields"
-        [sortField]="sortField"
-  [sortOrder]="sortOrder"
-  dataKey="id"
+      [sortField]="sortField"
+      [sortOrder]="sortOrder"
+      dataKey="id"
       [expandedRowKeys]="expandedRows" (onRowToggle)="onRowToggle($event)"
-      [value]="filteredstudent"
       (onRowExpand)="onRowExpand($event)"
       (onRowCollapse)="onRowCollapse($event)"
       scrollDirection="horizontal"
-      *ngIf="student.length > 0; else noData">
+      *ngIf="filteredstudent.length > 0; else noData">
+
+
       <ng-template pTemplate="header">
         <tr>
-       <th></th>
-          <th><app-checkbox (checkedChange)="onSelectAllChange($event)" [checked]="isChecked"></app-checkbox></th>
-          <th  *ngFor="let Parent of columns ;let i = index" [ngClass]="{'sorted-column': isSorted(Parent.field)}"
-            [pSortableColumn]="Parent.field" #headerCell 
-            [attr.id]="'header-' + Parent.field"
-            >
-          <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
+          <th></th>
+          <th><app-checkbox (checkedChange)="onSelectAllChange($event)"
+              [checked]="isChecked"></app-checkbox></th>
+          <th *ngFor="let Parent of columns ;let i = index"
+            [ngClass]="{'sorted-column': isSorted(Parent.field)}"
+            [pSortableColumn]="Parent.field" #headerCell
+            [attr.id]="'header-' + Parent.field">
+            <span
+              [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
             <p-sortIcon [field]="Parent.field"></p-sortIcon>
-            <i class="pi pi-filter" [style]="{'margin-left':'10px'}" style="cursor: pointer"
+            <i class="pi pi-filter" [style]="{'margin-left':'10px'}"
+              style="cursor: pointer"
               (click)="openFilterMenu($event, Parent.field)"></i>
-          <div class="icon-hover-wrapper">
-               <i class="pi pi-times delete-icon" (click)="confirmDeleteColumn(Parent.field)"></i>
-                  </div>
+            <div class="icon-hover-wrapper">
+              <i class="pi pi-times delete-icon"
+                (click)="confirmDeleteColumn(Parent.field)"></i>
+            </div>
           </th>
-          
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded">
         <tr [pEditableRow]="rowData">
           <td>
-            <ng-container *ngIf="rowData.children && rowData.children.length > 0">
+            <ng-container
+              *ngIf="rowData.children && rowData.children.length > 0">
               <app-z-button
                 [icon]="expanded ? 'pi pi-chevron-down':'pi pi-chevron-right'"
                 [rounded]="true"
                 [text]="true"
                 [plain]="true"
-                [pRowToggler]="rowData"
-                >
+                [pRowToggler]="rowData">
               </app-z-button>
             </ng-container>
           </td>
@@ -116,7 +132,8 @@
               <td pEditableColumn [pEditableColumnField]="parent.field">
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <input pInputText type="text" [(ngModel)]="rowData[parent.field]" required />
+                    <input pInputText type="text"
+                      [(ngModel)]="rowData[parent.field]" required />
                   </ng-template>
                   <ng-template pTemplate="output">
                     {{rowData[parent.field] }}
@@ -134,22 +151,25 @@
           </td>
         </tr>
       </ng-template>
-      <ng-template pTemplate="rowexpansion"  let-rowData>
+      <ng-template pTemplate="rowexpansion" let-rowData>
         <tr>
           <td colspan="7">
             <div class="p-4" style="margin-left: 5vw;">
-              <p-table class="child-table" [value]="rowData.children" dataKey="id">
+              <p-table class="child-table" [value]="rowData.children"
+                dataKey="id">
                 <ng-template pTemplate="header">
                   <tr>
-                    <th *ngFor="let key of rowData.children?.length ? (rowData.children[0] | keyvalue) : []">
+                    <th
+                      *ngFor="let key of rowData.children?.length ? (rowData.children[0] | keyvalue) : []">
                       {{ key.key }}
-                    
+
                     </th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-child>
                   <tr>
-                    <td *ngFor="let key of child | keyvalue">{{ key.value }}</td>
+                    <td *ngFor="let key of child | keyvalue">{{ key.value
+                      }}</td>
                   </tr>
                 </ng-template>
                 <ng-template #emptymessage>
@@ -162,12 +182,35 @@
           </td>
         </tr>
       </ng-template>
+
+  <ng-template pTemplate="footer">
+  <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;" >
+    <!-- <p-tabMenu 
+      class="tabmenu-buttons"
+       [model]="tabMenuItems" 
+      [activeItem]="activeTab"
+     (click)="onTabChange($event)">
+    </p-tabMenu> -->
+    <ul style="list-style: none; display: flex; gap: 1rem; padding: 0; margin: 0;">
+    <li *ngFor="let tab of tabMenuItems; let i = index" (click)="onTabChange(i)"
+     [ngClass]="{'active-tab': activeTab.id === tab.id}"
+        style="cursor: pointer; padding: 0.5rem 1.5rem; border-radius: 5px; border: 1px solid #4660b5; background: #fff; color: #4660b5; font-weight: 500;   transition: background 0.2s, color 0.2s, border 0.2s;"
+        [style.background]="activeTab.id === tab.id ? '#4660b5' : '#fff'"
+        [style.color]="activeTab.id === tab.id ? '#fff' : '#4660b5'">
+  {{ tab.label }}
+</li>
+</ul>
+  </div>
+</ng-template>
+
+
     </p-table>
-    <ng-template #noData>
+      <ng-template #noData>
       <div style="text-align: center; padding: 4rem; color: red;">
         No data found.
       </div>
     </ng-template>
+
     <p-overlayPanel #filterOverlay [dismissable]="true"
       [style]="{'width':'15vw'}">
       <div *ngFor="let val of uniqueValues" class="p-field-checkbox"
@@ -190,4 +233,4 @@
     </p-overlayPanel>
     <p-menu #filterMenu [popup]="true" [model]="filterMenuItems"></p-menu>
   </div>
-</div>  
+</div>

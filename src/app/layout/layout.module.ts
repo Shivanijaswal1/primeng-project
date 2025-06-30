@@ -6,10 +6,11 @@ import { UiModule } from '../ui/ui/ui.module';
 import { SharedModule } from "../shared/shared.module";
 import { LayoutComponent } from './layout.component';
 
+
 @NgModule({
   declarations: [
     HeaderComponent,
-    LayoutComponent
+    LayoutComponent,
   ],
   imports: [
     CommonModule,
@@ -17,6 +18,6 @@ import { LayoutComponent } from './layout.component';
     UiModule,
     SharedModule
 ],
-exports:[LayoutComponent]
+exports:[LayoutComponent,]
 })
 export class LayoutModule { }
