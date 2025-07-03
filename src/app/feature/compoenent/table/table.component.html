@@ -26,15 +26,17 @@
         label="Clear Sorting"
         (click)="clearSorting()"
         *ngIf="sortingActive"></button>
-        
-  <p-selectButton 
+  
+   <p-selectButton 
     [options]="statusOptions" 
     [(ngModel)]="selectedStatus"
     optionLabel="label" 
     optionValue="value"
     aria-labelledby="status"
     styleClass="status-toggle-btn"
+    (onChange)="setStatusAndTab($event.value)"
   ></p-selectButton>
+     <span class="studentCount">{{completeStudent.length}} Complete fee Student - {{ pendingStudent.length}} Pending Student - {{filteredstudent.length}} all student </span>
       <div class="custom-search-bar">
         <div class="p-input-icon-left">
           <input
@@ -168,8 +170,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-child>
                   <tr>
-                    <td *ngFor="let key of child | keyvalue">{{ key.value
-                      }}</td>
+                    <td *ngFor="let key of child | keyvalue">{{ key.value }}</td>
                   </tr>
                 </ng-template>
                 <ng-template #emptymessage>
@@ -182,35 +183,24 @@
           </td>
         </tr>
       </ng-template>
-
-  <ng-template pTemplate="footer">
-  <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;" >
-    <!-- <p-tabMenu 
-      class="tabmenu-buttons"
-       [model]="tabMenuItems" 
-      [activeItem]="activeTab"
-     (click)="onTabChange($event)">
-    </p-tabMenu> -->
-    <ul style="list-style: none; display: flex; gap: 1rem; padding: 0; margin: 0;">
-    <li *ngFor="let tab of tabMenuItems; let i = index" (click)="onTabChange(i)"
-     [ngClass]="{'active-tab': activeTab.id === tab.id}"
-        style="cursor: pointer; padding: 0.5rem 1.5rem; border-radius: 5px; border: 1px solid #4660b5; background: #fff; color: #4660b5; font-weight: 500;   transition: background 0.2s, color 0.2s, border 0.2s;"
-        [style.background]="activeTab.id === tab.id ? '#4660b5' : '#fff'"
-        [style.color]="activeTab.id === tab.id ? '#fff' : '#4660b5'">
-  {{ tab.label }}
-</li>
-</ul>
-  </div>
-</ng-template>
-
-
     </p-table>
+    
+    <div class="fixed-footer-tab-panel">
+      <div class="footer-tab-panel-inner">
+        <p-tabView [(activeIndex)]="activeTabIndex" class="tabview-button-style" [scrollable]="true" (onChange)="onTabChange($event)">
+          <p-tabPanel *ngFor="let tab of tabMenuItems" [header]="tab.label">
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+
+
+
       <ng-template #noData>
       <div style="text-align: center; padding: 4rem; color: red;">
         No data found.
       </div>
     </ng-template>
-
     <p-overlayPanel #filterOverlay [dismissable]="true"
       [style]="{'width':'15vw'}">
       <div *ngFor="let val of uniqueValues" class="p-field-checkbox"

@@ -154,18 +154,16 @@ label {
     margin-top: 20px;
     padding: 20px;
     background-color: #ffffff;
-    // border: 1px solid #ddd;
+
 }
 .pdf-card{
   width: 25vw;
 }
 
-
-
-
 .invalid-field {
   border: 1.5px solid red !important;
   box-shadow: 0 0 2px red;
+  border-radius:7px;
 }
 
 p-fileUpload {

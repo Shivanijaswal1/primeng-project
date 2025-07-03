@@ -8,12 +8,7 @@ import {
 } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ServiceService } from 'src/app/core/service.service';
-import {
-  Confirmation,
-  ConfirmationService,
-  MenuItem,
-  MessageService,
-} from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { FilterService } from 'primeng/api';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
@@ -56,17 +51,15 @@ export class TableComponent {
   sortField: string = '';
   sortOrder: number = 1;
   sortingActive: boolean = false;
+  pendingStudent: any[] = [];
+  completeStudent: any[] = [];
 
   statusOptions = [
-    { label: 'Pending', value: 'pending' },
-    { label: 'Complete', value: 'complete' },
+    { label:  'Pending',  value: 'pending' },
+    { label:  'Complete', value: 'complete' },
   ];
-  selectedStatus: string = 'pending';
 
-  tabs = [
-    { header: 'Pending', status: 'pending' },
-    { Header: 'Complete', status: 'complete' },
-  ];
+  selectedStatus: string = 'complete';
 
   constructor(
     private _studentService: ServiceService,
@@ -74,8 +67,6 @@ export class TableComponent {
     private _deleteservice: ConfirmationService,
     private _messageservice: MessageService
   ) {}
-
-  activeStatus: 'pending' | 'complete' = 'pending';
 
   ngOnInit() {
     this.getstudentData();
@@ -102,40 +93,54 @@ export class TableComponent {
       { header: 'Join Date', field: 'joinDate', sortable: true },
       { header: 'Date of Birth', filed: 'dateofbirth', sortable: true },
     ];
-    
-  this.setStatus(this.activeTab.id as 'pending' | 'complete');
   }
 
   getstudentData() {
     this._studentService.getStudent().subscribe((data) => {
       this.student = data;
       this.loading = false;
-      this.filteredstudent = [...this.student];
-      this.setStatus(this.activeStatus);
+      this.activeTab = this.tabMenuItems[1];
+      this.tabchange('complete');
     });
   }
 
   tabMenuItems = [
-    { label: 'Pending', id: 'pending' },
-    { label: 'Complete', id: 'complete' },
+    { label: 'pending ', id: 'pending' },
+    { label: 'complete ', id: 'complete' },
+    { label: 'All Student ', id: 'all student' },
   ];
-  activeTab = this.tabMenuItems[0];
+  activeTab = this.tabMenuItems[1];
+  activeStatus!: 'complete' | 'pending' | 'all student';
 
-onTabChange(index: any) {
-  const selectedTab = this.tabMenuItems[index];
-  console.log(selectedTab)
-  this.activeTab = selectedTab;
-  this.setStatus(selectedTab.id as 'pending' | 'complete');
-}
-
-
-  setStatus(status: 'pending' | 'complete') {
-    this.activeStatus = status;
-    this.filteredstudent = this.student.filter(
-      (stu) => (stu.selectedfees || '').toLowerCase() === status.toLowerCase()  
-    );
-    console.log(`Filtered list for status "${status}":`, this.filteredstudent);
+  onTabChange(event: any) {
+    const index = event?.index;
+    if (index !== undefined && this.tabMenuItems[index]) {
+      const selectedTab = this.tabMenuItems[index];
+      this.activeTab = selectedTab;
+      this.tabchange(selectedTab.id as 'complete' | 'pending' | 'all student');
+    }
   }
+
+  tabchange(status: 'complete' | 'pending' | 'all student') {
+    this.pendingStudent =  [];
+    this.completeStudent = [];
+    this.filteredstudent = [];
+    this.activeStatus = status;
+    if (status === 'all student') {
+      this.filteredstudent = [...this.student];
+    } else {
+      this.filteredstudent = this.student.filter(
+        (stu) => (stu.selectedfees || '').toLowerCase() === status.toLowerCase()
+      );
+    }
+    this.pendingStudent = this.student.filter(
+      (stu) => (stu.selectedfees || '').toLowerCase() === 'pending'
+    );
+    this.completeStudent = this.student.filter(
+      (stu) => (stu.selectedfees || '').toLowerCase() === 'complete'
+    );
+  }
+  activeTabIndex: number = 1;
 
   openFilterMenu(event: MouseEvent, field: string) {
     this.selectedField = field;
@@ -156,6 +161,7 @@ onTabChange(index: any) {
       this.tempSelectedValue.push(value);
     }
   }
+
   advanceSorting() {
     this.ref = this.dialogservice.open(AdvanceSortingComponent, {
       header: 'Advance Sorting',
@@ -172,10 +178,10 @@ onTabChange(index: any) {
       }
     });
   }
+
   isSorted(field: string): boolean {
     return this.currentSortFields.includes(field);
   }
-
   applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
     this.sortingActive = true;
     this.currentSortFields = sortData.map((s) => s.sortField);
@@ -183,7 +189,6 @@ onTabChange(index: any) {
       for (const { sortField, sortOrder } of sortData) {
         let valueA = a[sortField];
         let valueB = b[sortField];
-
         if (valueA == null && valueB == null) return 0;
         if (valueA == null) return sortOrder;
         if (valueB == null) return -sortOrder;
@@ -234,7 +239,6 @@ onTabChange(index: any) {
           .updateParentWithChild(rowData.id, childData)
           .subscribe({
             next: (updatedParent) => {
-              console.log('Parent updated in JSON server:', updatedParent);
               this.getstudentData();
             },
             error: (err) => {
@@ -485,4 +489,19 @@ onTabChange(index: any) {
       },
     });
   }
+
+  setStatusAndTab(status: 'pending' | 'complete') {
+    this.selectedStatus = status;
+    if (status === 'pending') {
+      this.activeTab = this.tabMenuItems[0];
+      this.activeTabIndex = 0;
+      this.tabchange('pending');
+    } else if (status === 'complete') {
+      this.activeTab = this.tabMenuItems[1];
+      this.activeTabIndex = 1;
+      this.tabchange('complete');
+    }
+  }
+
+ 
 }

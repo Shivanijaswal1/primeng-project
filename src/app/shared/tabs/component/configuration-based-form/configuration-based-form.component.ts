@@ -25,20 +25,18 @@ export interface FormSection {
   styleUrls: ['./configuration-based-form.component.scss'],
 })
 export class ConfigurationBasedFormComponent {
-   parentId: any;
+  parentId: any;
   @Input() formConfig!: FormSection;
   configForm: FormGroup = new FormGroup({});
   fields: FormField[] = [];
   sectionName: string = '';
   formSubmitted: boolean = false;
   
-  @Output() childAdded = new EventEmitter<any>();
   constructor(private _Service: ServiceService, private _fb: FormBuilder, public ref: DynamicDialogRef,  public config: DynamicDialogConfig,) {}
 
 
     ngOnInit(): void {
     this.parentId = this.config.data?.parentId;
-    console.log('Received parentId:', this.parentId);
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['formConfig'] && this.formConfig?.field) {
