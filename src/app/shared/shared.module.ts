@@ -23,7 +23,6 @@ import { SubmitMessageComponent } from './submit-message/submit-message.componen
 import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
 
 
-
 @NgModule({
   declarations: [
     ZButtonComponent,
@@ -40,6 +39,7 @@ import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
     ShowDataComponent,
     AdvanceSortingComponent,
     SubmitMessageComponent,
+   
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -48,8 +48,9 @@ import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
     FormsModule,
     InputTextModule,
     MultiSelectModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+],
+
   exports: [
     ZButtonComponent,
     CheckboxComponent,
@@ -60,7 +61,6 @@ import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
     AdvanceSortingComponent,
     FileUpload,
     ConfigurationBasedFormComponent,
-  
 
   ],
   providers:[HighlightPipe]

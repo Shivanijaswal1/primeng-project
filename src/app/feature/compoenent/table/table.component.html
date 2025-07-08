@@ -12,49 +12,55 @@
           placeholder="Search all columns" />
       </div>
     </div>
-    <p-toolbar
-      [style]="{ 'background-color': 'rgb(70, 89, 181','margin-bottom':'20px','padding':'30','height':'11vh)'}"
-      styleClass="sub-toolbar">
-      <app-z-button [style]="{'background-color':'white'}" label="Delete"
-        *ngIf="showDeleteButton"
-        (handleclick)="del(selectedStudentIds)">
-      </app-z-button>
-      <button pButton
-        pbutton
-        class="status-btn clear"
-        [style]="{'background-color':'white','margin-left':'63vw'}"
-        label="Clear Sorting"
-        (click)="clearSorting()"
-        *ngIf="sortingActive"></button>
-        
-   <p-selectButton 
-    [options]="statusOptions" 
-    [(ngModel)]="selectedStatus"
-    optionLabel="label" 
-    optionValue="value"
-    aria-labelledby="status"
-    styleClass="status-toggle-btn"
-    (onChange)="setStatusAndTab($event.value)"
-  ></p-selectButton> 
-<span *ngIf="showInvalidError" class="toolbar-error" style="color:rgb(192, 28, 28); margin-left:36vw;">
-   <i class="pi pi-exclamation-triangle" style="margin-right: 8px;"></i>
-     This field is not editable
-  </span>
 
+    <div class="sub-toolbar">
+      <div class="toolbar-left">
+        <app-z-button
+          class="white-button-small"
+          *ngIf="showDeleteButton"
+          label="Delete"
+          (handleclick)="del(selectedStudentIds)">
+        </app-z-button>
+       
+        <p-selectButton
+          [options]="statusOptions"
+          [(ngModel)]="selectedStatus"
+          optionLabel="label"
+          optionValue="value"
+          aria-labelledby="status"
+          (onChange)="setStatusAndTab($event.value)">
+        </p-selectButton>
+       <span class="selected-count-toolbar" *ngIf="selectedStudentIds && selectedStudentIds.length > 0">
+          {{ selectedStudentIds.length }} Student selected
+        </span>
+      </div>
+      <span class="studentCount"
+        *ngIf="activeTab?.id=='pending'">{{completeStudent.length}} Complete fee
+        Student - {{ pendingStudent.length}} Pending Student -
+        {{filteredstudent.length}} all student </span>
 
+      <div class="toolbar-right">
+        <span *ngIf="showInvalidError" class="toolbar-error">
+          <i class="pi pi-exclamation-triangle"></i>
+          This field is not editable
+        </span>
+        <button
+          *ngIf="sortingActive"
+          pButton
+          class="clear-sorting-btn"
+          label="Clear Sorting"
+          (click)="clearSorting()">
+        </button>
 
-     <!-- <span class="studentCount">{{completeStudent.length}} Complete fee Student - {{ pendingStudent.length}} Pending Student - {{filteredstudent.length}} all student </span> -->
-      <div class="custom-search-bar">
-        <div class="p-input-icon-right">
+        <div class="search-container">
           <input
             #searchInput
             type="text"
             [(ngModel)]="searchTerm"
             (input)="onSearchInputChange()"
             placeholder="Search headers..." />
-          <span class="match-info">
-            {{ currentMatchIndex + 1 }} / {{ matches.length }}
-          </span>
+          <span class="match-info">{{ currentMatchIndex + 1 }} / {{
+            matches.length }}</span>
           <button class="icon-button" (click)="prevMatch()"
             title="Previous match">
             <i class="pi pi-chevron-left"></i>
@@ -67,12 +73,11 @@
             <i class="pi pi-times"></i>
           </button>
         </div>
+
+        <i class="pi pi-sort-alpha-down sort-icon"
+          (click)="advanceSorting()"></i>
       </div>
-      <i
-        [style]="{'margin-left': '10vw','color':'white','font-size':'14px'}"
-        class="pi pi-sort-alpha-down"
-        (click)="advanceSorting()"> </i>
-    </p-toolbar>
+    </div>
     <p-toast></p-toast>
     <p-confirmDialog></p-confirmDialog>
     <div *ngIf="loading" class="table-spinner-overlay">
@@ -94,7 +99,8 @@
       <ng-template pTemplate="header">
         <tr>
           <th></th>
-          <th><app-checkbox (checkedChange)="onSelectAllChange($event)"
+          <th>
+            <app-checkbox (checkedChange)="onSelectAllChange($event)"
               [checked]="isChecked"></app-checkbox></th>
           <th *ngFor="let Parent of columns ;let i = index"
             [ngClass]="{'sorted-column': isSorted(Parent.field)}"
@@ -133,27 +139,29 @@
               [checked]="selectedStudentIds.includes(rowData.id)">
             </app-checkbox>
           </td>
-          <td *ngFor="let parent of columns" (click)="onCellClick(rowData, parent.field)">
+          <td *ngFor="let parent of columns"
+            (click)="onCellClick(rowData, parent.field)">
             <ng-container *ngIf="parent.field !== 'name'; else nonEditableName">
               <td pEditableColumn [pEditableColumnField]="parent.field">
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <ng-container *ngIf="parent.editable !== false && !rowData.disabled; else disabledCell">
+                    <ng-container
+                      *ngIf="parent.editable !== false && !rowData.disabled; else disabledCell">
                       <input pInputText type="text"
                         [(ngModel)]="rowData[parent.field]" required
-                        [ngClass]="{'invalid-input': !rowData[parent.field]}"
-                      />
+                        [ngClass]="{'invalid-input': !rowData[parent.field]}" />
                     </ng-container>
-
                     <ng-template #disabledCell>
-                      <span class="disabled-cell">{{ rowData[parent.field] }}</span>
+                      <span class="disabled-cell">{{ rowData[parent.field]
+                        }}</span>
                     </ng-template>
                   </ng-template>
-                  
                   <ng-template pTemplate="output">
-                    <span [ngClass]="{'invalid-span': !rowData[parent.field] && rowData._clickedField === parent.field}">
-                      {{ rowData[parent.field] }}
+                    <span (click)="$event.stopPropagation()"
+                      [ngClass]="{'invalid-span': !rowData[parent.field] && rowData._clickedField === parent.field}">
+                      <!-- {{ rowData[parent.field] }} -->
                     </span>
+                    {{ rowData[parent.field] }}
                   </ng-template>
                 </p-cellEditor>
               </td>
@@ -184,7 +192,8 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-child>
                   <tr>
-                    <td *ngFor="let key of child | keyvalue">{{ key.value }}</td>
+                    <td *ngFor="let key of child | keyvalue">{{ key.value
+                      }}</td>
                   </tr>
                 </ng-template>
                 <ng-template #emptymessage>
@@ -200,13 +209,14 @@
     </p-table>
     <div class="fixed-footer-tab-panel">
       <div class="footer-tab-panel-inner">
-        <p-tabView [(activeIndex)]="activeTabIndex" class="tabview-button-style" [scrollable]="true" (onChange)="onTabChange($event)">
+        <p-tabView [(activeIndex)]="activeTabIndex" class="tabview-button-style"
+          [scrollable]="true" (onChange)="onTabChange($event)">
           <p-tabPanel *ngFor="let tab of tabMenuItems" [header]="tab.label">
           </p-tabPanel>
         </p-tabView>
       </div>
     </div>
-      <ng-template #noData>
+    <ng-template #noData>
       <div style="text-align: center; padding: 4rem; color: red;">
         No data found.
       </div>

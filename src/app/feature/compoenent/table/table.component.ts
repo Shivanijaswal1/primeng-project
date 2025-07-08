@@ -75,7 +75,7 @@ export class TableComponent {
   ngOnInit() {
     this.getstudentData();
     this.columns = [
-      { field: 'id', header: 'Enrollment No', editable: false },
+      { field: 'id', header: 'Enrollment No', editable: true },
       { field: 'name', header: 'FullName', editable: false },
       { field: 'email', header: 'Email', editable: true },
       { field: 'age', header: 'Age', editable: false },
@@ -176,7 +176,7 @@ export class TableComponent {
         (col) => !row[col.field] && row._clickedField === col.field
       )
     );
-
+    this.showInvalidError = hasInvalid;
     if (hasInvalid) {
       this.showInvalidError = true;
       if (this.errorTimeout) clearTimeout(this.errorTimeout);
@@ -193,11 +193,9 @@ export class TableComponent {
     this.filteredstudent.forEach((r) => {
       r._clickedField = null;
     });
-
     if (!row[field]) {
       row._clickedField = field;
     }
-
     this.checkInvalidCells();
   }
 
@@ -221,6 +219,7 @@ export class TableComponent {
   isSorted(field: string): boolean {
     return this.currentSortFields.includes(field);
   }
+
   applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
     this.sortingActive = true;
     this.currentSortFields = sortData.map((s) => s.sortField);
@@ -540,6 +539,4 @@ export class TableComponent {
       this.tabchange('complete');
     }
   }
-
-
 }
