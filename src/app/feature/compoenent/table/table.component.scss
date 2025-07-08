@@ -45,7 +45,7 @@ a:hover{
   left: 73vw;
   background: #ffffff;
   border: 1px solid #ccc;
-  padding: 8px 12px;
+  padding: 8px 1px;
   border-radius: 5px;
   box-shadow: 0 3px 10px rgbba(0, 0, 0, 0.2);
   display: flex;
@@ -149,7 +149,6 @@ mark.highlight-active {
   font-weight: bold;
 }
 
-
 ::ng-deep .child-table {
   margin-left: 5vw !important; 
   border: 1px solid #dee2e6;
@@ -157,8 +156,6 @@ mark.highlight-active {
   font-size: 24px;
   background-color: #f9f9f9;
 }
-
-
 
 ::ng-deep .child-table th {
   background-color: #e9ecef;
@@ -185,51 +182,187 @@ mark.highlight-active {
   background-color: #fff;
 }
 
-
 ::ng-deep .child-table tr:hover td {
   background-color: #f1f1f1;
 }
 
 ::ng-deep .status-toggle-btn .p-button {
   padding: 2px 8px !important;
-  // font-size: 12px !important;
   height: 28px !important;
   min-width: 60px !important;
   line-height: 1 !important;
   border-radius: 4px;
 }
 
+.studentCount{
+  color:white !important;
+  font-size: 17px;
+  font-weight: bold;
+  margin-left: 23vw;
+}
 
-::ng-deep .tabmenu-buttons .p-tabmenu-nav {
-  border: none !important;
-  background: transparent !important;
-  gap: 10px;
+::ng-deep .tabview-button-style .p-tabview-nav {
+  display: flex;
+  justify-content: center;
+  border: none;
+
+  gap: 0.5rem;
+
+}
+
+::ng-deep .tabview-button-style .p-tabview-nav li {
+  border: 1px solid #007bff;
+  background: #1254cd;
+  border-color: #3B82F6;
+  color: #bfdbfe;
+  // padding: 10px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+::ng-deep .tabview-button-style .p-tabview-nav li.p-highlight {
+  background-color: #007bff;
+  color: white;
+}
+
+::ng-deep .tabview-button-style .p-tabview-nav li:hover:not(.p-highlight) {
+  background-color: #dae1eb;
+  color: #0056b3;
+}
+
+::ng-deep .tabview-button-style .p-tabview-panels {
+  display: none; 
+}
+
+.fixed-footer-tab-panel {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  padding: 0.5rem 0;
+  
+}
+.footer-tab-panel-inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
   justify-content: center;
 }
+.tabview-button-style {
+  width: 100%;
+}
+::ng-deep .sub-toolbar {
+  background: linear-gradient(90deg, #4659b5, #5f77d1);
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
-// ::ng-deep .tabmenu-buttons .p-tabmenuitem {
-//   margin: 0 0.25rem;
-// }
-
-::ng-deep .tabmenu-buttons .p-tabmenuitem .p-menuitem-link {
-  border-radius: 4px;
-  background: #f4f4f4;
-  border: 1px solid #bdbdbd;
-  color:black;
-  padding: 10px 30px;
-  transition: background 0.2s, color 0.2s, border 0.2s;
+.status-btn.clear {
+  background-color: #ffffff !important;
+  color: #4659b5;
   font-weight: 500;
-  box-shadow: none;
+  border: 1px solid #cfd8dc;
+  margin-left: auto;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
-::ng-deep .tabmenu-buttons .p-tabmenuitem.p-highlight .p-menuitem-link {
-  background: rgb(45, 45, 108);
+.status-btn.clear:hover {
+  background-color: #e8eaf6;
+}
+
+.status-toggle-btn {
+  margin-left: auto;
+  border-radius: 6px;
+}
+
+.studentCount {
+  color: white;
+  font-weight: 500;
+  margin-left: auto;
+  margin-right: 0.1rem;
+  white-space: nowrap;
+}
+
+.custom-search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.custom-search-bar input {
+  padding: 0.5rem 30px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.p-input-icon-left {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
   color: #fff;
-  border-color: #4660b5;
+  font-size: 1.2rem;
+  transition: color 0.2s;
 }
 
-::ng-deep .tabmenu-buttons .p-tabmenuitem .p-menuitem-link:hover {
+.icon-button {
+  color: #ffd54f;
+}
 
-   background: rgb(61, 61, 161);
-  border-color: rgb(30, 30, 163);
+.close-btn {
+  color: #ff5252;
+}
+
+.pi-sort-alpha-down {
+  margin-left: 100px;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.pi-sort-alpha-down:hover {
+  color: #ffd54f;
+}
+
+.invalid-span {
+  border: 1px solid rgb(231, 2, 2);
+  padding: 15px 70px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+
+
+.toolbar-msg.error-msg {
+  color: red;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+}
+
+
+
+.info-icon-inside {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  color: red;
+  font-size: 14px;
 }

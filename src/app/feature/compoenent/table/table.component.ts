@@ -26,7 +26,7 @@ export class TableComponent {
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
   student: any[] = [];
   expandedRows: any = {};
-  columns: { field: string; header: string }[] = [];
+  columns: { field: string; header: string; editable?: boolean }[] = [];
   globalFields: string[] | undefined;
   globalFilter: string = '';
   ref: DynamicDialogRef | undefined;
@@ -53,13 +53,17 @@ export class TableComponent {
   sortingActive: boolean = false;
   pendingStudent: any[] = [];
   completeStudent: any[] = [];
-
+  toolbarMessage: string = '';
   statusOptions = [
-    { label:  'Pending',  value: 'pending' },
-    { label:  'Complete', value: 'complete' },
+    { label: 'Pending', value: 'pending' },
+    { label: 'Complete', value: 'complete' },
   ];
 
   selectedStatus: string = 'complete';
+  selectedCell: { rowId: any; field: string } | null = null;
+  errorMsg: string = '';
+  errorTimeout: any;
+  currentEditableRowId: any;
 
   constructor(
     private _studentService: ServiceService,
@@ -71,19 +75,19 @@ export class TableComponent {
   ngOnInit() {
     this.getstudentData();
     this.columns = [
-      { field: 'id', header: 'Enrollment No' },
-      { field: 'name', header: 'FullName' },
-      { field: 'email', header: 'Email' },
-      { field: 'age', header: 'Age' },
-      { field: 'selectedValue', header: 'Department' },
-      { field: 'selectedfees', header: 'Fees Status' },
-      { field: 'age', header: 'Amount' },
-      { field: 'id', header: 'second Amount' },
-      { field: 'father', header: 'Fathername' },
-      { field: 'address', header: 'Address' },
-      { field: 'city', header: 'City' },
-      { field: 'state', header: 'State' },
-      { field: 'postalCode', header: 'Postal Code' },
+      { field: 'id', header: 'Enrollment No', editable: false },
+      { field: 'name', header: 'FullName', editable: false },
+      { field: 'email', header: 'Email', editable: true },
+      { field: 'age', header: 'Age', editable: false },
+      { field: 'selectedValue', header: 'Department', editable: false },
+      { field: 'selectedfees', header: 'Fees Status', editable: false },
+      { field: 'age', header: 'Amount', editable: true },
+      { field: 'id', header: 'second Amount', editable: false },
+      { field: 'father', header: 'Fathername', editable: false },
+      { field: 'address', header: 'Address', editable: false },
+      { field: 'city', header: 'City', editable: false },
+      { field: 'state', header: 'State', editable: false },
+      { field: 'postalCode', header: 'Postal Code', editable: false },
     ];
 
     this.dynamicHeaders = [
@@ -109,6 +113,7 @@ export class TableComponent {
     { label: 'complete ', id: 'complete' },
     { label: 'All Student ', id: 'all student' },
   ];
+
   activeTab = this.tabMenuItems[1];
   activeStatus!: 'complete' | 'pending' | 'all student';
 
@@ -122,7 +127,7 @@ export class TableComponent {
   }
 
   tabchange(status: 'complete' | 'pending' | 'all student') {
-    this.pendingStudent =  [];
+    this.pendingStudent = [];
     this.completeStudent = [];
     this.filteredstudent = [];
     this.activeStatus = status;
@@ -140,6 +145,7 @@ export class TableComponent {
       (stu) => (stu.selectedfees || '').toLowerCase() === 'complete'
     );
   }
+
   activeTabIndex: number = 1;
 
   openFilterMenu(event: MouseEvent, field: string) {
@@ -160,6 +166,39 @@ export class TableComponent {
     } else {
       this.tempSelectedValue.push(value);
     }
+  }
+
+  showInvalidError = false;
+
+  checkInvalidCells() {
+    const hasInvalid = this.filteredstudent.some((row) =>
+      this.columns.some(
+        (col) => !row[col.field] && row._clickedField === col.field
+      )
+    );
+
+    if (hasInvalid) {
+      this.showInvalidError = true;
+      if (this.errorTimeout) clearTimeout(this.errorTimeout);
+      this.errorTimeout = setTimeout(() => {
+        this.showInvalidError = false;
+      }, 2000);
+    } else {
+      this.showInvalidError = false;
+      if (this.errorTimeout) clearTimeout(this.errorTimeout);
+    }
+  }
+
+  onCellClick(row: any, field: string) {
+    this.filteredstudent.forEach((r) => {
+      r._clickedField = null;
+    });
+
+    if (!row[field]) {
+      row._clickedField = field;
+    }
+
+    this.checkInvalidCells();
   }
 
   advanceSorting() {
@@ -278,7 +317,6 @@ export class TableComponent {
       this.activeHighlightedHeader = null;
     }
   }
-
   onSearchInputChange() {
     const term = this.searchTerm.toLowerCase().trim();
     this.matches = [];
@@ -503,5 +541,5 @@ export class TableComponent {
     }
   }
 
- 
+
 }
