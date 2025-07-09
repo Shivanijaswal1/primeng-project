@@ -1,3 +1,4 @@
+
 <div>
   <app-layout></app-layout>
   <div class="main">
@@ -44,8 +45,9 @@
           <i class="pi pi-exclamation-triangle"></i>
           This field is not editable
         </span>
+        
         <button
-          *ngIf="sortingActive"
+         *ngIf="sortingActive"
           pButton
           class="clear-sorting-btn"
           label="Clear Sorting"
@@ -138,7 +140,9 @@
               (checkedChange)="handleCheckboxChange($event, rowData.id)"
               [checked]="selectedStudentIds.includes(rowData.id)">
             </app-checkbox>
+
           </td>
+          
           <td *ngFor="let parent of columns"
             (click)="onCellClick(rowData, parent.field)">
             <ng-container *ngIf="parent.field !== 'name'; else nonEditableName">
@@ -165,6 +169,7 @@
                   </ng-template>
                 </p-cellEditor>
               </td>
+    
             </ng-container>
             <ng-template #nonEditableName>
               <td>

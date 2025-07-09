@@ -14,6 +14,7 @@ import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
 import { AdvanceSortingComponent } from 'src/app/shared/advance-sorting/advance-sorting.component';
+import { Sidebar } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-table',
@@ -24,6 +25,7 @@ import { AdvanceSortingComponent } from 'src/app/shared/advance-sorting/advance-
 export class TableComponent {
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
+  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   student: any[] = [];
   expandedRows: any = {};
   columns: { field: string; header: string; editable?: boolean }[] = [];
@@ -97,8 +99,7 @@ export class TableComponent {
       { header: 'Join Date', field: 'joinDate', sortable: true },
       { header: 'Date of Birth', filed: 'dateofbirth', sortable: true },
     ];
-  }
-
+  }  
   getstudentData() {
     this._studentService.getStudent().subscribe((data) => {
       this.student = data;

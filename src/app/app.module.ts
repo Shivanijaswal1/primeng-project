@@ -20,7 +20,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     BrowserAnimationsModule,
     FormsModule,
     MultiSelectModule,
-    SelectButtonModule
+    SelectButtonModule,
+
   ],
   providers: [
     DialogService,

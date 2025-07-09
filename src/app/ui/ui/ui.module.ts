@@ -22,7 +22,13 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TabMenuModule } from 'primeng/tabmenu';
-
+import { SidebarModule } from 'primeng/sidebar';
+import { Sidebar } from 'primeng/sidebar';
+import { AvatarModule } from 'primeng/avatar';
+import { StyleClassModule } from 'primeng/styleclass';
+import { PasswordModule } from 'primeng/password';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 
 const primengModule = [
   ButtonModule,
@@ -44,12 +50,38 @@ const primengModule = [
   ProgressSpinnerModule,
   RadioButtonModule,
   FileUploadModule,
-  SelectButtonModule,TabMenuModule
-
+  SelectButtonModule,
+  TabMenuModule,
+  SidebarModule,
+  AvatarModule,
+  StyleClassModule,
+  DialogModule,
+  PasswordModule,
+  ReactiveFormsModule,
 ];
 @NgModule({
   declarations: [],
-  imports: [CommonModule, primengModule, ConfirmDialogModule,MultiSelectModule,FormsModule,TableModule,SelectButtonModule],
-  exports: [primengModule, ConfirmDialogModule,SelectButtonModule],
+  imports: [
+    CommonModule,
+    primengModule,
+    ConfirmDialogModule,
+    MultiSelectModule,
+    FormsModule,
+    TableModule,
+    SelectButtonModule,
+    SidebarModule,
+  ],
+  exports: [
+    primengModule,
+    ConfirmDialogModule,
+    SelectButtonModule,
+    SidebarModule,
+    Sidebar,
+    AvatarModule,
+    StyleClassModule,
+    DialogModule,
+    PasswordModule,
+    ReactiveFormsModule,
+  ],
 })
 export class UiModule {}

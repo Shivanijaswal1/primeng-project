@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Sidebar } from 'primeng/sidebar';
 import { ServiceService } from 'src/app/core/service.service';
 import { FormComponent } from 'src/app/shared/form/form.component';
 
@@ -11,7 +12,13 @@ import { FormComponent } from 'src/app/shared/form/form.component';
 })
 export class HeaderComponent {
   ref: DynamicDialogRef | undefined;
+  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
+  favoritesExpanded = true;
+  reportsExpanded = false;
+
   employees: any[] = [];
+meetingDate: any;
+selectedDate: Date | null = null;
   constructor(
     private _studnetService: ServiceService,
     private _route: Router,
@@ -23,22 +30,40 @@ export class HeaderComponent {
       this.employees = data;
     });
   }
-    show() {
-      this.ref = this.dialogservice.open(FormComponent, {
-        header: 'Student Registration form',
-        width: '65%',
-        height: 'auto',
-        contentStyle: { overflow: 'auto' },
-        baseZIndex: 10000,
-        maximizable: true,
-        styleClass: 'custom-dialog-header',
-      });
-      this.ref.onClose.subscribe(() => {
-        this.getEmployeeData();
-      });
-    }
+  show() {
+    this.ref = this.dialogservice.open(FormComponent, {
+      header: 'Student Registration form',
+      width: '65%',
+      height: 'auto',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      styleClass: 'custom-dialog-header',
+    });
+    this.ref.onClose.subscribe(() => {
+      this.getEmployeeData();
+    });
+  }
 
   openChart() {
     this._route.navigateByUrl('dashboard');
+  }
+
+  sidebarVisible: boolean = false;
+
+  closeCallback(e: Event): void {
+    this.sidebarRef.close(e);
+  }
+
+  showCalendar: boolean = false;
+
+  openCalendar() {
+    this.showCalendar = true;
+  }
+
+  onDateSelect(event: Date) {
+    debugger
+    console.log("Selected date:", event);
+    this.selectedDate = event;
   }
 }

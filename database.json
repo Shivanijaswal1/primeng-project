@@ -89,19 +89,6 @@
       "postalCode": "3225"
     },
     {
-      "id": "eaed",
-      "name": "nameww",
-      "email": "asdfg@gmail.com",
-      "age": "21",
-      "selectedValue": "Commerce",
-      "selectedfees": "complete",
-      "father": "vg",
-      "address": "dfghjk",
-      "city": "yuu",
-      "state": "HP",
-      "postalCode": "2322"
-    },
-    {
       "id": "1dd4",
       "name": "nameww",
       "email": "shivani@gmail.com",
@@ -125,6 +112,32 @@
       "address": "dfghjk",
       "city": "yuu",
       "state": "bn",
+      "postalCode": "3225"
+    },
+    {
+      "id": "7281",
+      "name": "wrt",
+      "email": "asdfg@gmail.com",
+      "age": "21",
+      "selectedValue": "Medical",
+      "selectedfees": "Pending",
+      "father": "ww",
+      "address": "abc",
+      "city": "una",
+      "state": "HP",
+      "postalCode": "3225"
+    },
+    {
+      "id": "c570",
+      "name": "nameww",
+      "email": "shivani@gmail.com",
+      "age": "31",
+      "selectedValue": "Medical",
+      "selectedfees": "Pending",
+      "father": "vg",
+      "address": "abc",
+      "city": "una",
+      "state": "HP",
       "postalCode": "3225"
     }
   ],
