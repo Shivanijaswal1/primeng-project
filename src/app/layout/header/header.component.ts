@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Sidebar } from 'primeng/sidebar';
@@ -10,21 +10,26 @@ import { FormComponent } from 'src/app/shared/form/form.component';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
+
 export class HeaderComponent {
   ref: DynamicDialogRef | undefined;
+  @Output() bookmarkClicked = new EventEmitter<void>();
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   favoritesExpanded = true;
-  reportsExpanded = false;
-
+  reportsExpanded = true;
   employees: any[] = [];
-meetingDate: any;
-selectedDate: Date | null = null;
+  meetingDate: any;
+  selectedDate: Date | null = null;
   constructor(
     private _studnetService: ServiceService,
     private _route: Router,
     public dialogservice: DialogService
   ) {}
 
+onBookmarkClick() {
+  localStorage.setItem('showFeeChart', 'true');
+  this._route.navigateByUrl('student-fee'); 
+}
   getEmployeeData() {
     this._studnetService.getStudent().subscribe((data) => {
       this.employees = data;
@@ -44,8 +49,11 @@ selectedDate: Date | null = null;
       this.getEmployeeData();
     });
   }
-
   openChart() {
+    this._route.navigateByUrl('student-details');
+  }
+
+  openCharts() {
     this._route.navigateByUrl('dashboard');
   }
 
@@ -62,8 +70,6 @@ selectedDate: Date | null = null;
   }
 
   onDateSelect(event: Date) {
-    debugger
-    console.log("Selected date:", event);
     this.selectedDate = event;
   }
 }

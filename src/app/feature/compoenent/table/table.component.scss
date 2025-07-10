@@ -320,7 +320,9 @@ mark.highlight-active {
   text-align: left;
   color: #555;
 }
-
+.selected-count-toolbar{
+  color:rgb(96, 166, 194)  !important
+}
 
 ::ng-deep .child-table td[colspan] {
   text-align: center;

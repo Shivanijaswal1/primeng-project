@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 
 
 interface Parent {
+  feeStatus: string;
   id: number;
   name: string;
   email:string;
