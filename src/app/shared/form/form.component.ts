@@ -14,7 +14,7 @@ interface FormPayload {
   age: number;
   selectedValue: string | null;
   father: string;
-  seletedfees:string |null;
+  seletedfees: string | null;
 }
 
 interface UploadEvent {
@@ -99,18 +99,17 @@ export class FormComponent {
     { name: 'Commerce', code: 'O3' },
   ];
 
-  feesprocess=[
-    {name:'Pending',code:'pending'},
-    {name:'complete',code:'complete'}
-  ]
-
+  feesprocess = [
+    { name: 'Pending', code: 'pending' },
+    { name: 'complete', code: 'complete' },
+  ];
 
   handleValueChange(value: any) {
     this.selectedValue = value;
   }
 
-  handlefeesprocessing(value:any){
-  this.selectedfees=value
+  handlefeesprocessing(value: any) {
+    this.selectedfees = value;
   }
 
   closeDialog() {

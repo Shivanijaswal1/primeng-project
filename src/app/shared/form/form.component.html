@@ -12,8 +12,7 @@
                             [required]="true" type="text"
                             pattern="^[A-Za-z]+\s?[A-Za-z]+$"
                             #nameCtrl="ngModel"
-                            [ngClass]="{'invalid-field': nameCtrl.invalid && nameCtrl.touched}"
-                            ></app-input>
+                            [ngClass]="{'invalid-field': nameCtrl.invalid && nameCtrl.touched}"></app-input>
                         <div *ngIf="nameCtrl.invalid && nameCtrl.touched"
                             class="error-text" style="color: red;">
                             Name is required and should contain only letters.
@@ -32,8 +31,7 @@
                                 placeholder="Select Parent"
                                 [required]="true"
                                 (onChange)="onParentChange($event)"
-                                [ngClass]="{'invalid-field': myForm.submitted && !selectedParent}"
-                                >
+                                [ngClass]="{'invalid-field': myForm.submitted && !selectedParent}">
                                 <ng-template let-option pTemplate="item">
                                     <div [pTooltip]="option.value"
                                         tooltipPosition="right">
@@ -58,8 +56,7 @@
                                     (onChange)="onDropdownChange($event)"
                                     (onBlur)="onDropdownBlur()"
                                     #childCtrl="ngModel"
-                                    [ngClass]="{'invalid-field': childCtrl.invalid && childCtrl.touched}"
-                                     >
+                                    [ngClass]="{'invalid-field': childCtrl.invalid && childCtrl.touched}">
                                     <ng-template pTemplate="footer">
                                         <div class="p-3"
                                             *ngIf="selectedParent">
@@ -94,8 +91,7 @@
                             <app-input [(ngModel)]="email" name="email"
                                 [required]="true"
                                 type="email" #emailCtrl="ngModel"
-                                [ngClass]="{'invalid-field': emailCtrl.invalid && emailCtrl.touched}"
-                            ></app-input>
+                                [ngClass]="{'invalid-field': emailCtrl.invalid && emailCtrl.touched}"></app-input>
                             <div *ngIf="emailCtrl.invalid && emailCtrl.touched"
                                 class="error-text" style="color: red;">
                                 Please enter a valid email address.
@@ -111,8 +107,7 @@
                             name="father" pattern="^[A-Za-z]+\s?[A-Za-z]+$"
                             [required]="true" type="text"
                             #fatherCtrl="ngModel"
-                            [ngClass]="{'invalid-field': fatherCtrl.invalid && fatherCtrl.touched}"
-                        ></app-input>
+                            [ngClass]="{'invalid-field': fatherCtrl.invalid && fatherCtrl.touched}"></app-input>
                         <div *ngIf="fatherCtrl.invalid && fatherCtrl.touched"
                             class="error-text" style="color: red;">
                             Father Name is required and should contain only
@@ -129,8 +124,7 @@
                             <app-input [(ngModel)]="address" name="address"
                                 type="text" [required]="true"
                                 #addressCtrl="ngModel"
-                                [ngClass]="{'invalid-field': addressCtrl.invalid && addressCtrl.touched}"
-                            ></app-input>
+                                [ngClass]="{'invalid-field': addressCtrl.invalid && addressCtrl.touched}"></app-input>
                             <div
                                 *ngIf="addressCtrl.invalid && addressCtrl.touched"
                                 class="error-text" style="color: red;">
@@ -147,8 +141,7 @@
                                 <app-input [(ngModel)]="city" name="city"
                                     type="text" [required]="true"
                                     #cityCtrl="ngModel"
-                                    [ngClass]="{'invalid-field': cityCtrl.invalid && cityCtrl.touched}"
-                                ></app-input>
+                                    [ngClass]="{'invalid-field': cityCtrl.invalid && cityCtrl.touched}"></app-input>
                                 <div
                                     *ngIf="cityCtrl.invalid && cityCtrl.touched"
                                     class="error-text" style="color: red;">
@@ -163,8 +156,7 @@
                                 <app-input [(ngModel)]="state" name="state"
                                     type="text" [required]="true"
                                     #stateCtrl="ngModel"
-                                    [ngClass]="{'invalid-field': stateCtrl.invalid && stateCtrl.touched}"
-                                ></app-input>
+                                    [ngClass]="{'invalid-field': stateCtrl.invalid && stateCtrl.touched}"></app-input>
                                 <div
                                     *ngIf="stateCtrl.invalid && stateCtrl.touched"
                                     class="error-text" style="color: red;">
@@ -181,8 +173,7 @@
                             <app-input [(ngModel)]="postalCode"
                                 name="postalCode" type="text" [required]="true"
                                 #postalCtrl="ngModel"
-                                [ngClass]="{'invalid-field': postalCtrl.invalid && postalCtrl.touched}"
-                            ></app-input>
+                                [ngClass]="{'invalid-field': postalCtrl.invalid && postalCtrl.touched}"></app-input>
                             <div
                                 *ngIf="postalCtrl.invalid && postalCtrl.touched"
                                 class="error-text" style="color: red;">
@@ -204,17 +195,16 @@
                             [required]="true"
                             (valueChange)="handleValueChange($event)"
                             #genericDropdownCtrl="ngModel"
-                            [ngClass]="{'invalid-field': genericDropdownCtrl.invalid && genericDropdownCtrl.touched}"
-                        ></app-dropdown>
+                            [ngClass]="{'invalid-field': genericDropdownCtrl.invalid && genericDropdownCtrl.touched}"></app-dropdown>
                         <div
                             *ngIf="genericDropdownCtrl.invalid && genericDropdownCtrl.touched"
                             class="error-text" style="color: red;">
                             Selection is required
                         </div>
                     </div>
-                     <div class="form-css">
+                    <div class="form-css">
                         <label for="chooseoption">
-                         Fees Procssing  <span
+                            Fees Procssing <span
                                 *ngIf="feesprocessCtrl.errors "
                                 style="color: red;">*</span>
                         </label>
@@ -225,8 +215,7 @@
                             [required]="true"
                             (valueChange)="handlefeesprocessing($event)"
                             #feesprocessCtrl="ngModel"
-                            [ngClass]="{'invalid-field': feesprocessCtrl.invalid && feesprocessCtrl.touched}"
-                        ></app-dropdown>
+                            [ngClass]="{'invalid-field': feesprocessCtrl.invalid && feesprocessCtrl.touched}"></app-dropdown>
                         <div
                             *ngIf="feesprocessCtrl.invalid && feesprocessCtrl.touched"
                             class="error-text" style="color: red;">
@@ -242,8 +231,7 @@
                             [required]="true" type="number" [min]="18"
                             [max]="100"
                             #ageCtrl="ngModel"
-                            [ngClass]="{'invalid-field': ageCtrl.invalid && ageCtrl.touched}"
-                        ></app-input>
+                            [ngClass]="{'invalid-field': ageCtrl.invalid && ageCtrl.touched}"></app-input>
                         <div *ngIf="ageCtrl.invalid && ageCtrl.touched"
                             class="error-text" style="color: red;">
                             Age must be between 18 and 100.
@@ -259,7 +247,7 @@
                 </div>
             </form>
         </ng-template>
-        
+
         <ng-template pTemplate>
             <div class="pdf-preview">
                 <div class="pdf-header">
@@ -269,73 +257,92 @@
                     <i class="pi pi-book" aria-hidden="true"
                         style="font-size: 1.5rem; margin-right: 8px; margin-left: 8px; cursor: pointer;"
                         (click)="activeTab = 'book'; showBookInput = true;"></i>
-                        <span>Notes</span>
+                    <span>Notes</span>
                 </div>
                 <ng-container *ngIf="activeTab === 'pdf'">
-                  <div *ngIf="pdfUrls.length; else noPdfData">
-                    <div *ngFor="let pdf of pdfUrls; let i = index" class="pdf-card" 
-                        [ngClass]="{ 'recent-pdf': mostRecentType === 'pdf' && mostRecentIndex === i }"
-                        (click)="openPdf(i)">
-                        <div class="card-content">
-                            <span class="pdf-label">
-                                Student Detail form Assigned by: {{ pdf.name }}
-                            </span>
-                        </div>
-                        <div class="pdf-icon">
-                            <i class="pi pi-user" aria-hidden="true"></i>
-                            <time [attr.datetime]="pdf.submissionTime">
-                                Submitted on: {{ pdf.submissionTime }}
-                            </time>
+                    <div *ngIf="pdfUrls.length; else noPdfData">
+                        <div *ngFor="let pdf of pdfUrls; let i = index"
+                            class="pdf-card"
+                            [ngClass]="{ 'recent-pdf': mostRecentType === 'pdf' && mostRecentIndex === i }"
+                            (click)="openPdf(i)">
+                            <div class="card-content">
+                                <span class="pdf-label">
+                                    Student Detail form Assigned by: {{ pdf.name
+                                    }}
+                                </span>
+                            </div>
+                            <div class="pdf-icon">
+                                <i class="pi pi-user" aria-hidden="true"></i>
+                                <time [attr.datetime]="pdf.submissionTime">
+                                    Submitted on: {{ pdf.submissionTime }}
+                                </time>
+                            </div>
                         </div>
                     </div>
-                  </div>
-                  <ng-template #noPdfData>
-                    <div class="no-data-message" style="color: #888; margin-bottom: 10px;">No PDF data</div>
-                  </ng-template>
-                  <div *ngIf="uploadedFiles.length">
-                    <div class="pdf-card"
-                        *ngFor="let file of uploadedFiles, let i = index"
-                      [ngClass]="{ 'recent-pdf': mostRecentType === 'file' && mostRecentIndex === i }">
-                        {{ file.name }} - {{ file.size }} bytes 
+                    <ng-template #noPdfData>
+                        <div class="no-data-message"
+                            style="color: #888; margin-bottom: 10px;">No PDF
+                            data</div>
+                    </ng-template>
+                    <div *ngIf="uploadedFiles.length">
+                        <div class="pdf-card"
+                            *ngFor="let file of uploadedFiles, let i = index"
+                            [ngClass]="{ 'recent-pdf': mostRecentType === 'file' && mostRecentIndex === i }">
+                            {{ file.name }} - {{ file.size }} bytes
+                        </div>
                     </div>
-                  </div>
-                  <div class="footer">
-                      <div class="card">
-                          <p-toast />
-                          <div class="card">
-                              <p-fileUpload name="demo[]"
-                                  url="https://www.primefaces.org/cdn/api/upload.php"
-                                  (onUpload)="onUpload($event)" [multiple]="true"
-                                  accept="image/*" [maxFileSize]="1000000"
-                                  mode="advanced">
-                              </p-fileUpload>
-                          </div>
-                      </div>
-                  </div>
+                    <div class="footer">
+                        <div class="card">
+                            <p-toast />
+                            <div class="card">
+                                <p-fileupload name="demo[]"
+                                    url="https://www.primefaces.org/cdn/api/upload.php"
+                                    (onUpload)="onUpload($event)"
+                                    [multiple]="true"
+                                    accept="image/*" [maxFileSize]="1000000"
+                                    mode="advanced">
+                                </p-fileupload>
+                            </div>
+                        </div>
+                    </div>
                 </ng-container>
                 <ng-container *ngIf="activeTab === 'book'">
-                  <div *ngIf="bookValues.length; else noBookData">
-                    <div class="book-value-list" style="margin-bottom: 10px;">
-                      <div class="pdf-card" *ngFor="let value of bookValues; let i = index">
-                        <span class="book-value" style="display: block; margin-bottom: 2px; color:white">{{ value }}</span>
-                        <span class="submission-time" style="font-size: 13px; color: #888;">Submitted on: {{ bookTimes[i] }}</span>
-                      </div>
+                    <div *ngIf="bookValues.length; else noBookData">
+                        <div class="book-value-list"
+                            style="margin-bottom: 10px;">
+                            <div class="pdf-card"
+                                *ngFor="let value of bookValues; let i = index">
+                                <span class="book-value"
+                                    style="display: block; margin-bottom: 2px; color:white">{{
+                                    value }}</span>
+                                <span class="submission-time"
+                                    style="font-size: 13px; color: #888;">Submitted
+                                    on: {{ bookTimes[i] }}</span>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <ng-template #noBookData>
-                    <div class="no-data-message" style="color: #888; margin-bottom: 10px;">No book data</div>
-                  </ng-template>
-               
-                      <div *ngIf="showBookInput" class="footer" style="margin-bottom: 1rem;">
-                          <input type="text" pInputText [(ngModel)]="bookInputValue" placeholder="Enter book info..." style="margin-right: 8px; width: 25vw; " />
-                          <button pButton type="button" label="Save" (click)="saveBookInput()" style="margin-right: 4px;"></button>
-                          <button pButton type="button" label="Cancel" class="p-button-secondary" (click)="cancelBookInput()"></button>
-                      </div>
-                  
+                    <ng-template #noBookData>
+                        <div class="no-data-message"
+                            style="color: #888; margin-bottom: 10px;">No book
+                            data</div>
+                    </ng-template>
+
+                    <div *ngIf="showBookInput" class="footer"
+                        style="margin-bottom: 1rem;">
+                        <input type="text" pInputText
+                            [(ngModel)]="bookInputValue"
+                            placeholder="Enter book info..."
+                            style="margin-right: 8px; width: 25vw; " />
+                        <button pButton type="button" label="Save"
+                            (click)="saveBookInput()"
+                            style="margin-right: 4px;"></button>
+                        <button pButton type="button" label="Cancel"
+                            class="p-button-secondary"
+                            (click)="cancelBookInput()"></button>
+                    </div>
+
                 </ng-container>
             </div>
         </ng-template>
     </p-splitter>
 </div>
-
-

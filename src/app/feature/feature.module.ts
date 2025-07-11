@@ -17,7 +17,7 @@ import { ChartModule } from 'primeng/chart';
     SharedModule,
     UiModule,
     LayoutModule,
-    ChartModule
+    ChartModule,
   ],
 
   exports: [SharedModule],

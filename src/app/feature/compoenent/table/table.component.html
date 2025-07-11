@@ -22,7 +22,7 @@
           label="Delete"
           (handleclick)="del(selectedStudentIds)">
         </app-z-button>
-       
+
         <p-selectButton
           [options]="statusOptions"
           [(ngModel)]="selectedStatus"
@@ -31,7 +31,8 @@
           aria-labelledby="status"
           (onChange)="setStatusAndTab($event.value)">
         </p-selectButton>
-       <span class="selected-count-toolbar" *ngIf="selectedStudentIds && selectedStudentIds.length > 0">
+        <span class="selected-count-toolbar"
+          *ngIf="selectedStudentIds && selectedStudentIds.length > 0">
           {{ selectedStudentIds.length }} Student selected
         </span>
       </div>
@@ -45,9 +46,9 @@
           <i class="pi pi-exclamation-triangle"></i>
           This field is not editable
         </span>
-        
+
         <button
-         *ngIf="sortingActive"
+          *ngIf="sortingActive"
           pButton
           class="clear-sorting-btn"
           label="Clear Sorting"
@@ -140,7 +141,7 @@
             </app-checkbox>
 
           </td>
-          
+
           <td *ngFor="let parent of columns"
             (click)="onCellClick(rowData, parent.field)">
             <ng-container *ngIf="parent.field !== 'name'; else nonEditableName">
@@ -167,7 +168,7 @@
                   </ng-template>
                 </p-cellEditor>
               </td>
-    
+
             </ng-container>
             <ng-template #nonEditableName>
               <td>

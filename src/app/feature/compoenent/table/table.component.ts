@@ -55,18 +55,20 @@ export class TableComponent {
   sortingActive: boolean = false;
   pendingStudent: any[] = [];
   completeStudent: any[] = [];
-  toolbarMessage: string = '';
+  activeTabIndex: number = 1;
+  selectedStatus: string = 'complete';
+  errorTimeout: any;
+  tabMenuItems = [
+    { label: 'pending ', id: 'pending' },
+    { label: 'complete ', id: 'complete' },
+    { label: 'All Student ', id: 'all student' },
+  ];
+  activeTab = this.tabMenuItems[1];
+  activeStatus!: 'complete' | 'pending' | 'all student';
   statusOptions = [
     { label: 'Pending', value: 'pending' },
     { label: 'Complete', value: 'complete' },
   ];
-
-  selectedStatus: string = 'complete';
-  selectedCell: { rowId: any; field: string } | null = null;
-  errorMsg: string = '';
-  errorTimeout: any;
-  currentEditableRowId: any;
-
   constructor(
     private _studentService: ServiceService,
     public dialogservice: DialogService,
@@ -99,7 +101,7 @@ export class TableComponent {
       { header: 'Join Date', field: 'joinDate', sortable: true },
       { header: 'Date of Birth', filed: 'dateofbirth', sortable: true },
     ];
-  }  
+  }
   getstudentData() {
     this._studentService.getStudent().subscribe((data) => {
       this.student = data;
@@ -108,15 +110,6 @@ export class TableComponent {
       this.tabchange('complete');
     });
   }
-
-  tabMenuItems = [
-    { label: 'pending ', id: 'pending' },
-    { label: 'complete ', id: 'complete' },
-    { label: 'All Student ', id: 'all student' },
-  ];
-
-  activeTab = this.tabMenuItems[1];
-  activeStatus!: 'complete' | 'pending' | 'all student';
 
   onTabChange(event: any) {
     const index = event?.index;
@@ -146,8 +139,6 @@ export class TableComponent {
       (stu) => (stu.selectedfees || '').toLowerCase() === 'complete'
     );
   }
-
-  activeTabIndex: number = 1;
 
   openFilterMenu(event: MouseEvent, field: string) {
     this.selectedField = field;

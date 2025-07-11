@@ -10,13 +10,12 @@ import { FormComponent } from 'src/app/shared/form/form.component';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-
 export class HeaderComponent {
   ref: DynamicDialogRef | undefined;
   @Output() bookmarkClicked = new EventEmitter<void>();
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
-  favoritesExpanded:boolean = true;
-  reportsExpanded:boolean = false;
+  favoritesExpanded: boolean = true;
+  reportsExpanded: boolean = false;
   employees: any[] = [];
   meetingDate: any;
   selectedDate: Date | null = null;
@@ -27,17 +26,17 @@ export class HeaderComponent {
     public dialogservice: DialogService
   ) {}
 
-onBookmarkClick() {
-  localStorage.setItem('showFeeChart', 'true');
-  this._route.navigateByUrl('student-fee'); 
-}
+  onBookmarkClick() {
+    localStorage.setItem('showFeeChart', 'true');
+    this._route.navigateByUrl('student-fee');
+  }
 
   getEmployeeData() {
     this._studnetService.getStudent().subscribe((data) => {
       this.employees = data;
     });
   }
-  
+
   show() {
     this.ref = this.dialogservice.open(FormComponent, {
       header: 'Student Registration form',

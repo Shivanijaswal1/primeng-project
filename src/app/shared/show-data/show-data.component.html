@@ -1,45 +1,44 @@
  <form #myForm="ngForm">
-             <div class="form-css">
-            <app-input label="Enrollment No" [(ngModel)]="user.id" name="id"
-                [required]="true" type="text"
-                #ageCtrl="ngModel"></app-input>
-            <div *ngIf="ageCtrl.invalid && ageCtrl.touched" class="error-text"
-                style="color: red;">
-                Enrollment Number is required
-            </div>
+    <div class="form-css">
+        <app-input label="Enrollment No" [(ngModel)]="user.id" name="id"
+            [required]="true" type="text"
+            #ageCtrl="ngModel"></app-input>
+        <div *ngIf="ageCtrl.invalid && ageCtrl.touched" class="error-text"
+            style="color: red;">
+            Enrollment Number is required
         </div>
-        <div class="form-css">
-            <app-input label="FullName" [(ngModel)]="user.name" name="name"
-                [required]="true" type="text" #nameCtrl="ngModel"></app-input>
-            <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="error-text"
-                style="color: red;">
-                Name is required
-            </div>
+    </div>
+    <div class="form-css">
+        <app-input label="FullName" [(ngModel)]="user.name" name="name"
+            [required]="true" type="text" #nameCtrl="ngModel"></app-input>
+        <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="error-text"
+            style="color: red;">
+            Name is required
         </div>
-                <div class="form-css">
-            <app-input label="Email ID" [(ngModel)]="user.email" name="email"
-                [required]="true" type="email" #emailCtrl="ngModel"></app-input>
-            <div *ngIf="emailCtrl.invalid && emailCtrl.touched"
-                class="error-text" style="color: red;">
-                Email is required
-            </div>
+    </div>
+    <div class="form-css">
+        <app-input label="Email ID" [(ngModel)]="user.email" name="email"
+            [required]="true" type="email" #emailCtrl="ngModel"></app-input>
+        <div *ngIf="emailCtrl.invalid && emailCtrl.touched"
+            class="error-text" style="color: red;">
+            Email is required
         </div>
-        
-        <div class="form-css">
-            <app-input label="Age" [(ngModel)]="user.age" name="age"
-                [required]="true" type="number" [min]="18" [max]="100"
-                #ageCtrl="ngModel"></app-input>
-            <div *ngIf="ageCtrl.invalid && ageCtrl.touched" class="error-text"
-                style="color: red;">
-                Age is required
-            </div>
-        </div>
-          <div class="form-button">
-            <app-z-button class="btn1" label="Cancel"
-                [class]="'p-button-danger mr-2'"
-                (handleclick)="closeDialog()"></app-z-button>
-            <app-z-button class="btn2" label="Submit"
-                (handleclick)="onSubmit(myForm)"></app-z-button>
-        </div>
-        </form>
+    </div>
 
+    <div class="form-css">
+        <app-input label="Age" [(ngModel)]="user.age" name="age"
+            [required]="true" type="number" [min]="18" [max]="100"
+            #ageCtrl="ngModel"></app-input>
+        <div *ngIf="ageCtrl.invalid && ageCtrl.touched" class="error-text"
+            style="color: red;">
+            Age is required
+        </div>
+    </div>
+    <div class="form-button">
+        <app-z-button class="btn1" label="Cancel"
+            [class]="'p-button-danger mr-2'"
+            (handleclick)="closeDialog()"></app-z-button>
+        <app-z-button class="btn2" label="Submit"
+            (handleclick)="onSubmit(myForm)"></app-z-button>
+    </div>
+</form>
