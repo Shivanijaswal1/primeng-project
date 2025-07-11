@@ -219,3 +219,9 @@ p-sidebar .overflow-y-auto::-webkit-scrollbar-track {
 .gap-2 {
   gap: 0.5rem;
 }
+
+.calendar-full-width {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block;
+}

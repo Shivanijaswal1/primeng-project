@@ -21,6 +21,8 @@ import { AdvanceSortingComponent } from './advance-sorting/advance-sorting.compo
 import { FileUpload } from 'primeng/fileupload';
 import { SubmitMessageComponent } from './submit-message/submit-message.component';
 import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
+import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-message.component';
+
 
 
 @NgModule({
@@ -39,6 +41,8 @@ import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
     ShowDataComponent,
     AdvanceSortingComponent,
     SubmitMessageComponent,
+    DialogMessageComponent,
+
    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

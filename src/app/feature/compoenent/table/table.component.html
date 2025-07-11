@@ -75,7 +75,6 @@
             <i class="pi pi-times"></i>
           </button>
         </div>
-
         <i class="pi pi-sort-alpha-down sort-icon"
           (click)="advanceSorting()"></i>
       </div>
@@ -85,7 +84,6 @@
     <div *ngIf="loading" class="table-spinner-overlay">
       <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
     </div>
-
     <p-table #dt [paginator]="true" [rows]="5"
       [value]="student"
       [value]="filteredstudent"

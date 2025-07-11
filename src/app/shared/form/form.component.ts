@@ -4,7 +4,7 @@ import { ServiceService } from 'src/app/core/service.service';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { jsPDF } from 'jspdf';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { SubmitMessageComponent } from '../submit-message/submit-message.component';
 import { FileUploadEvent } from 'primeng/fileupload';
 

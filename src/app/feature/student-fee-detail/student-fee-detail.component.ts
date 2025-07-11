@@ -17,9 +17,9 @@ export class StudentFeeDetailComponent implements OnInit {
 
   ngOnInit() {
     this.studentService.getStudent().subscribe((students: any[]) => {
-      const pending  = students.filter((s) => s.selectedfees === 'Pending');
+      const pending = students.filter((s) => s.selectedfees === 'Pending');
       const complete = students.filter((s) => s.selectedfees === 'complete');
-      this.pendingCount  = pending.length;
+      this.pendingCount = pending.length;
       this.completeCount = complete.length;
       this.feeChartData = {
         labels: ['Pending Fee', 'Complete Fee'],
@@ -33,11 +33,9 @@ export class StudentFeeDetailComponent implements OnInit {
       this.feeChartOptions = {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {legend: { position: 'bottom' }},
+        plugins: { legend: { position: 'bottom' } },
       };
       this.showChart = true;
-      console.log('Chart ready', this.feeChartData);
     });
   }
-  
 }

@@ -15,11 +15,12 @@ export class HeaderComponent {
   ref: DynamicDialogRef | undefined;
   @Output() bookmarkClicked = new EventEmitter<void>();
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
-  favoritesExpanded = true;
-  reportsExpanded = true;
+  favoritesExpanded:boolean = true;
+  reportsExpanded:boolean = false;
   employees: any[] = [];
   meetingDate: any;
   selectedDate: Date | null = null;
+
   constructor(
     private _studnetService: ServiceService,
     private _route: Router,
@@ -30,11 +31,13 @@ onBookmarkClick() {
   localStorage.setItem('showFeeChart', 'true');
   this._route.navigateByUrl('student-fee'); 
 }
+
   getEmployeeData() {
     this._studnetService.getStudent().subscribe((data) => {
       this.employees = data;
     });
   }
+  
   show() {
     this.ref = this.dialogservice.open(FormComponent, {
       header: 'Student Registration form',
