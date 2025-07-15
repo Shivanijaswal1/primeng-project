@@ -79,6 +79,20 @@
           "status": "True",
           "joinDate": "67890",
           "dateofbirth": "56789"
+        },
+        {
+          "project": "432RD",
+          "role": "HJKL",
+          "status": "True",
+          "joinDate": "4322",
+          "dateofbirth": "34211"
+        },
+        {
+          "project": "ertyu",
+          "role": "45678",
+          "status": "False",
+          "joinDate": "56789",
+          "dateofbirth": "5678"
         }
       ]
     },
@@ -93,7 +107,16 @@
       "address": "dfghjk",
       "city": "una",
       "state": "HP",
-      "postalCode": "3225"
+      "postalCode": "3225",
+      "children": [
+        {
+          "project": "project k",
+          "role": "admin",
+          "status": "True",
+          "joinDate": "20/02/2024",
+          "dateofbirth": "20/03/2003"
+        }
+      ]
     },
     {
       "id": "1dd4",
@@ -106,32 +129,6 @@
       "address": "abc",
       "city": "una",
       "state": "bn",
-      "postalCode": "3225"
-    },
-    {
-      "id": "905d",
-      "name": "shivani",
-      "email": "shivani@gmail.com",
-      "age": "21",
-      "selectedValue": "Medical",
-      "selectedfees": "Pending",
-      "father": "eeeeer",
-      "address": "dfghjk",
-      "city": "yuu",
-      "state": "bn",
-      "postalCode": "3225"
-    },
-    {
-      "id": "7281",
-      "name": "wrt",
-      "email": "asdfg@gmail.com",
-      "age": "21",
-      "selectedValue": "Medical",
-      "selectedfees": "Pending",
-      "father": "ww",
-      "address": "abc",
-      "city": "una",
-      "state": "HP",
       "postalCode": "3225"
     },
     {
@@ -161,59 +158,44 @@
       "address": "dfghjk",
       "city": "una",
       "state": "HP",
-      "postalCode": "3225"
-    },
-    {
-      "id": "e159",
-      "name": "nameww",
-      "email": "shivani@gmail.com",
-      "age": "21",
-      "selectedValue": "Medical",
-      "selectedfees": "Pending",
-      "father": "ww",
-      "address": "dfghjk",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "3225"
-    },
-    {
-      "id": "24c3",
-      "name": "nameww",
-      "email": "shivani@gmail.com",
-      "age": "22",
-      "selectedValue": "Medical",
-      "selectedfees": "complete",
-      "father": "eeeeer",
-      "address": "abc",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "2322"
-    },
-    {
-      "id": "5f99",
-      "name": "wrt",
-      "email": "shivani@gmail.com",
-      "age": "22",
-      "selectedValue": "Medical",
-      "selectedfees": "Pending",
-      "father": "eeeeer",
-      "address": "abc",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "3225"
-    },
-    {
-      "id": "64c7",
-      "name": "shivani",
-      "email": "wertyui@gmail.com",
-      "age": "21",
-      "selectedValue": "Medical",
-      "selectedfees": "Pending",
-      "father": "eeeeer",
-      "address": "abc",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "3225"
+      "postalCode": "3225",
+      "children": [
+        {
+          "project": "3E2",
+          "role": "567890",
+          "status": "False",
+          "joinDate": "4567",
+          "dateofbirth": "56789"
+        },
+        {
+          "project": "project 02",
+          "role": "employee",
+          "status": "True",
+          "joinDate": "20/04/2023",
+          "dateofbirth": "20/03/2003"
+        },
+        {
+          "project": "project02",
+          "role": "admin",
+          "status": "True",
+          "joinDate": "23/04/2003",
+          "dateofbirth": "20/03/2003"
+        },
+        {
+          "project": "678",
+          "role": "dfghj",
+          "status": "False",
+          "joinDate": "rtyui",
+          "dateofbirth": "45678"
+        },
+        {
+          "project": "fghj",
+          "role": "drfgyhj",
+          "status": "True",
+          "joinDate": "98765",
+          "dateofbirth": "345678"
+        }
+      ]
     }
   ],
   "data": [

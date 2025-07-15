@@ -43,7 +43,6 @@ import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-m
     SubmitMessageComponent,
     DialogMessageComponent,
 
-   
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -53,6 +52,7 @@ import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-m
     InputTextModule,
     MultiSelectModule,
     ReactiveFormsModule,
+  
 ],
 
   exports: [

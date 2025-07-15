@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
+import { SocialUser } from '@abacritt/angularx-social-login';
 
 interface Parent {
   feeStatus: string;
@@ -127,5 +128,16 @@ export class ServiceService {
 
   getDataPieChart(): Observable<any> {
     return this.http.get<any>('http://localhost:3000/pieChart');
+  }
+
+   private _user$ = new BehaviorSubject<SocialUser | null>(null);
+  user$ = this._user$.asObservable();
+
+  set user(user: SocialUser | null) {
+    this._user$.next(user);
+  }
+
+  get user(): SocialUser | null {
+    return this._user$.value;
   }
 }

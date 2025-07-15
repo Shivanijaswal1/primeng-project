@@ -1,0 +1,54 @@
+.auth-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: #2c78e2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.logo {
+  width: 400px;
+  height: auto;
+  margin-bottom: 30px;
+}
+
+.google-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+asl-google-signin-button {
+  width: 100%;
+  max-width: 300px;
+  height: 50px;
+  display: inline-block;
+}
+
+.google-label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+.google-button-container asl-google-signin-button {
+  display: inline-block;
+  border: none;
+  background-color: #4285f4;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+}
+
+.google-button-container asl-google-signin-button:hover {
+  background-color: #357ae8;
+}

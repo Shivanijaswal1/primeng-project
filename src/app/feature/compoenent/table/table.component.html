@@ -1,4 +1,3 @@
-
 <div>
   <app-layout></app-layout>
   <div class="main">
@@ -43,8 +42,8 @@
 
       <div class="toolbar-right">
         <span *ngIf="showInvalidError" class="toolbar-error">
-          <i class="pi pi-exclamation-triangle"></i>
-          This field is not editable
+          <i class="pi pi-info-circle"></i>
+         Editing not allowed
         </span>
 
         <button
@@ -196,8 +195,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-child>
                   <tr>
-                    <td *ngFor="let key of child | keyvalue">{{ key.value
-                      }}</td>
+                    <td *ngFor="let key of child | keyvalue">{{ key.value }}</td>
                   </tr>
                 </ng-template>
                 <ng-template #emptymessage>
