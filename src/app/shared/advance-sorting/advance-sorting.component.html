@@ -8,19 +8,20 @@
             optionValue="field"
             [(ngModel)]="sortFields[i].field"
             placeholder="Select Field">
-        </p-dropdown>
-        <p-radiobutton
+        </p-dropdown> 
+         <p-radioButton
             name="sortOrder{{i}}"
             value="asc"
             [(ngModel)]="sortFields[i].order"
-            inputId="asc{{i}}" />
+            inputId="asc{{i}}"/>
         <label for="asc{{i}}" class="ml-2">A - Z</label>
-        <p-radiobutton
+        <p-radioButton
             name="sortOrder{{i}}"
             value="desc"
             [(ngModel)]="sortFields[i].order"
-            inputId="desc{{i}}" />
+            inputId="desc{{i}}"/>
         <label for="desc{{i}}" class="ml-2">Z - A</label>
+
     </div>
     <div class="add-button">
         <button

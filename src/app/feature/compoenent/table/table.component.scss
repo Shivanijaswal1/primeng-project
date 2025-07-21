@@ -295,46 +295,53 @@ mark.highlight-active {
   width: 50px;
   height: 50px;
 }
-
 ::ng-deep .child-table {
-  margin-left: 5vw !important; 
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  font-size: 24px;
-  background-color: #f9f9f9;
-}
-
-::ng-deep .child-table th {
-  background-color: #e9ecef;
-  color: #333;
-  font-weight: 600;
-  padding: 0.75rem;
-  border-bottom: 1px solid #ccc;
-  text-align: left;
-  margin-left: 20vw;
-}
-
-::ng-deep .child-table td {
-  padding: 0.75rem;
-  border-bottom: 1px solid #e1e1e1;
-  text-align: left;
-  color: #555;
-}
-.selected-count-toolbar{
-  color:rgb(96, 166, 194)  !important
-}
-
-::ng-deep .child-table td[colspan] {
-  text-align: center;
-  color: #999;
-  font-style: italic;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
   background-color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-::ng-deep .child-table tr:hover td {
-  background-color: #f1f1f1;
+::ng-deep .child-table .p-datatable-thead > tr > th {
+  background-color: #f9fafb;
+  color: #111827;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
 }
 
+::ng-deep .child-table .p-datatable-tbody > tr > td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+  color: #374151;
+  background-color: #ffffff;
+}
+
+::ng-deep .child-table .p-datatable-tbody > tr:hover {
+  background-color: #f3f4f6;
+  transition: background-color 0.2s ease;
+}
+
+::ng-deep .child-table .p-datatable-tbody td:first-child,
+::ng-deep .child-table .p-datatable-thead th:first-child {
+  width: 50px;
+  text-align: center;
+}
+
+::ng-deep .child-table app-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .studentCount{
   color:white !important;

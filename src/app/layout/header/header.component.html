@@ -1,215 +1,173 @@
-<p-toolbar class="student-toolbar"
-    [style]="{'background-color': 'rgb(70, 89, 181',' padding': '10px 15px','width':'98vw','boder':'none'}">
-    <div class="toolbar-left"
-        style="display: flex; align-items: center; gap: 1rem;">
-        <button pButton type="button" icon="pi pi-bars"
-            class="p-button-text p-button-rounded"
-            [style]="{'color':'white','font-size':'25px'}"
-            (click)="sidebarVisible = true"></button>
-        <p-sidebar #sidebarRef [(visible)]="sidebarVisible">
-            <ng-template pTemplate="headless">
-                <div class="flex flex-column h-full">
-                    <div
-                        class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0">
-                    </div>
-                    <div class="overflow-y-auto">
-                        <ul class="list-none p-3 m-0">
+<p-toolbar class="student-toolbar" [style]="{'background-color': 'rgb(70, 89, 181',' padding': '10px 15px','width':'98vw','boder':'none'}">
+      <div class="toolbar-left" style="display: flex; align-items: center; gap: 1rem;">
+     <button pButton type="button" icon="pi pi-bars" class="p-button-text p-button-rounded"[style]="{'color':'white','font-size':'25px'}" (click)="sidebarVisible = true"></button>
+  <p-sidebar #sidebarRef [(visible)]="sidebarVisible">
+ <ng-template pTemplate="headless">
+        <div class="flex flex-column h-full">
+            <div class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0">
+            </div>
+            <div class="overflow-y-auto">
+                <ul class="list-none p-3 m-0">
+                    <li>
+                        <div
+                            pRipple
+                            pStyleClass="@next"
+                            enterClass="hidden"
+                            enterActiveClass="slidedown"
+                            leaveToClass="hidden"
+                            leaveActiveClass="slideup"
+                            class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple"
+                             (click)="favoritesExpanded = !favoritesExpanded">
+                            <span class="font-medium">FAVORITES</span>
+                             <i class="pi" [ngClass]="favoritesExpanded ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+                        </div>
+                        <ul class="list-none p-0 m-0 overflow-hidden" *ngIf="favoritesExpanded">
                             <li>
-                                <div
-                                    pRipple
-                                    pStyleClass="@next"
-                                    enterClass="hidden"
-                                    enterActiveClass="slidedown"
-                                    leaveToClass="hidden"
-                                    leaveActiveClass="slideup"
-                                    class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple"
-                                    (click)="favoritesExpanded = !favoritesExpanded">
-                                    <span class="font-medium">FAVORITES</span>
-                                    <i class="pi"
-                                        [ngClass]="favoritesExpanded ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
-                                </div>
-                                <ul class="list-none p-0 m-0 overflow-hidden"
-                                    *ngIf="favoritesExpanded">
+                                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                    <i class="pi pi-home mr-2"></i>
+                                    <span class="font-medium" (click)="openChart()">Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                    <i class="pi pi-bookmark mr-2"></i>
+                                    <span class="font-medium" (click)="onBookmarkClick()">Student Fee Details</span>  
+                                </a>
+                            </li>
+                            <li>
+                         <div class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100"
+                         pRipple
+                         pStyleClass="@next"
+                         enterClass="hidden" enterActiveClass="slidedown"
+                         leaveToClass="hidden" leaveActiveClass="slideup"
+                         (click)="reportsExpanded = !reportsExpanded">
+                      <i class="pi pi-chart-line mr-2"></i>
+                      <span class="font-medium" (click)="openCharts()">Reports</span>
+                      <i class="pi" [ngClass]="reportsExpanded ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+                    </div>
+                    <ul *ngIf="reportsExpanded" class="list-none py-0 pl-3 pr-0 m-0 overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out" >
                                     <li>
-                                        <a pRipple
-                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                            <i class="pi pi-home mr-2"></i>
-                                            <span class="font-medium"
-                                                (click)="openChart()">Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a pRipple
-                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                            <i class="pi pi-bookmark mr-2"></i>
-                                            <span class="font-medium"
-                                                (click)="onBookmarkClick()">Student
-                                                Fee Details</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div
-                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100"
+                                        <a
                                             pRipple
                                             pStyleClass="@next"
                                             enterClass="hidden"
                                             enterActiveClass="slidedown"
                                             leaveToClass="hidden"
                                             leaveActiveClass="slideup"
-                                            (click)="reportsExpanded = !reportsExpanded">
-                                            <i
-                                                class="pi pi-chart-line mr-2"></i>
-                                            <span class="font-medium"
-                                                (click)="openCharts()">Reports</span>
-                                            <i class="pi"
-                                                [ngClass]="reportsExpanded ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
-                                        </div>
-                                        <ul *ngIf="reportsExpanded"
-                                            class="list-none py-0 pl-3 pr-0 m-0 overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out">
+                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple" >
+                                            <i class="pi pi-chart-line mr-2"></i>
+                                            <span class="font-medium">Revenue</span>
+                                            <i class="pi pi-chevron-down ml-auto"></i>
+                                        </a>
+                                        <ul class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out" >
                                             <li>
-                                                <a
-                                                    pRipple
-                                                    pStyleClass="@next"
-                                                    enterClass="hidden"
-                                                    enterActiveClass="slidedown"
-                                                    leaveToClass="hidden"
-                                                    leaveActiveClass="slideup"
-                                                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                                    <i
-                                                        class="pi pi-chart-line mr-2"></i>
-                                                    <span
-                                                        class="font-medium">Revenue</span>
-                                                    <i
-                                                        class="pi pi-chevron-down ml-auto"></i>
+                                                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                                    <i class="pi pi-table mr-2"></i>
+                                                    <span class="font-medium">View</span>
                                                 </a>
-                                                <ul
-                                                    class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out">
-                                                    <li>
-                                                        <a pRipple
-                                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                                            <i
-                                                                class="pi pi-table mr-2"></i>
-                                                            <span
-                                                                class="font-medium">View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a pRipple
-                                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                                            <i
-                                                                class="pi pi-search mr-2"></i>
-                                                            <span
-                                                                class="font-medium">Search</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
                                             </li>
                                             <li>
-                                                <a pRipple
-                                                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                                    <i
-                                                        class="pi pi-chart-line mr-2"></i>
-                                                    <span
-                                                        class="font-medium">Expenses</span>
+                                                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                                    <i class="pi pi-search mr-2"></i>
+                                                    <span class="font-medium">Search</span>
                                                 </a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a pRipple
-                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                            <i class="pi pi-users mr-2"></i>
-                                            <span
-                                                class="font-medium">Team</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a pRipple
-                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
-                                            (click)="openCalendar()">
-                                            <i class="pi pi-calendar mr-2"></i>
-                                            <span
-                                                class="font-medium">Calendar</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a pRipple
-                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                            <i class="pi pi-cog mr-2"></i>
-                                            <span
-                                                class="font-medium">Settings</span>
+                                        <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                            <i class="pi pi-chart-line mr-2"></i>
+                                            <span class="font-medium">Expenses</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-                        </ul>
-                        <ul class="list-none p-3 m-0">
                             <li>
-                                <div
-                                    pRipple
-                                    pStyleClass="@next"
-                                    enterClass="hidden"
-                                    enterActiveClass="slidedown"
-                                    leaveToClass="hidden"
-                                    leaveActiveClass="slideup"
-                                    class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple">
-                                    <span class="font-medium">APPLICATION</span>
-                                    <i class="pi pi-chevron-down"></i>
-                                </div>
-                                <ul class="list-none p-0 m-0 overflow-hidden">
-                                    <li>
-                                        <a pRipple
-                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                            <i class="pi pi-folder mr-2"></i>
-                                            <span
-                                                class="font-medium">Projects</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a pRipple
-                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                            <i class="pi pi-chart-bar mr-2"></i>
-                                            <span
-                                                class="font-medium">Performance</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a pRipple
-                                            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                                            <i class="pi pi-cog mr-2"></i>
-                                            <span
-                                                class="font-medium">Settings</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                    <i class="pi pi-users mr-2"></i>
+                                    <span class="font-medium">Team</span>
+                                </a>
+                            </li>
+              <li>
+             <a pRipple 
+              class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple" 
+             (click)="openCalendar()">
+             <i class="pi pi-calendar mr-2"></i>
+             <span class="font-medium">Calendar</span>
+            </a>
+          </li>
+                            <li>
+                                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                    <i class="pi pi-cog mr-2"></i>
+                                    <span class="font-medium">Settings</span>
+                                </a>
                             </li>
                         </ul>
-                    </div>
-                </div>
-            </ng-template>
-        </p-sidebar>
-        <h1 class="toolbar-title">Students Details</h1>
-    </div>
-    <div class="toolbar-right">
-        <app-z-button
-            class="z-button dashboard-btn add-btn"
-            label="+Add Student Details"
-            pTooltip="Enter Student"
-            tooltipPosition="bottom"
-            (handleclick)="show()"></app-z-button>
-        <app-z-button
-            icon="pi pi-home"
-            class="z-button dashboard-btn dashboard-btn-right"
-            label="Dashboard"
-            tooltipPosition="bottom"
-            (handleclick)="openChart()"></app-z-button>
-    </div>
+                    </li>
+                </ul>
+                <ul class="list-none p-3 m-0">
+                    <li>
+                        <div
+                            pRipple
+                            pStyleClass="@next"
+                            enterClass="hidden"
+                            enterActiveClass="slidedown"
+                            leaveToClass="hidden"
+                            leaveActiveClass="slideup"
+                            class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple"
+                        >
+                            <span class="font-medium">APPLICATION</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <ul class="list-none p-0 m-0 overflow-hidden">
+                            <li>
+                                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                    <i class="pi pi-folder mr-2"></i>
+                                    <span class="font-medium">Projects</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                    <i class="pi pi-chart-bar mr-2"></i>
+                                    <span class="font-medium">Performance</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                    <i class="pi pi-cog mr-2"></i>
+                                    <span class="font-medium">Settings</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </ng-template>
+    </p-sidebar>
+    <h1 class="toolbar-title">Students Details</h1>
+  </div>
+  <div class="toolbar-right">
+    <app-z-button
+      class="z-button dashboard-btn add-btn"
+      label="+Add Student Details"
+      pTooltip="Enter Student"
+      tooltipPosition="bottom"
+      (handleclick)="show()"
+    ></app-z-button>
+    <app-z-button
+      icon="pi pi-home"
+      class="z-button dashboard-btn dashboard-btn-right"
+      label="Dashboard"
+      tooltipPosition="bottom"
+      (handleclick)="openChart()"
+    ></app-z-button>
+  </div>
 </p-toolbar>
-<p-dialog header="Calendar" [(visible)]="showCalendar" [modal]="true"
-    [closable]="true" [style]="{width: '30vw','height':'67vh'}">
-    <p-calendar
-        [(ngModel)]="selectedDate"
-        [inline]="true"
-        [showWeek]="true"
-        [style]="{'width':'30vw'}" />
+<p-dialog header="Calendar" [(visible)]="showCalendar" [modal]="true" [closable]="true" [style]="{width: '30vw','height':'67vh'}">
+  <p-calendar 
+    [(ngModel)]="selectedDate" 
+    [inline]="true" 
+    [showWeek]="true"
+    [style]="{'width':'30vw'}"/>
 </p-dialog>

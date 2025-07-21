@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DialogMessageComponent } from './dialog-message.component';
 
 describe('DialogMessageComponent', () => {

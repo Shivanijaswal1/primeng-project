@@ -19,11 +19,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ShowDataComponent } from './show-data/show-data.component';
 import { AdvanceSortingComponent } from './advance-sorting/advance-sorting.component';
 import { FileUpload } from 'primeng/fileupload';
+import { FileUploadModule } from 'primeng/fileupload';
 import { SubmitMessageComponent } from './submit-message/submit-message.component';
 import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
 import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-message.component';
-
-
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,6 @@ import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-m
     AdvanceSortingComponent,
     SubmitMessageComponent,
     DialogMessageComponent,
-
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -52,8 +51,9 @@ import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-m
     InputTextModule,
     MultiSelectModule,
     ReactiveFormsModule,
-  
-],
+    FileUploadModule,
+    RadioButtonModule,
+  ],
 
   exports: [
     ZButtonComponent,
@@ -65,8 +65,8 @@ import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-m
     AdvanceSortingComponent,
     FileUpload,
     ConfigurationBasedFormComponent,
-
+    AdvanceSortingComponent,
   ],
-  providers:[HighlightPipe]
+  providers: [HighlightPipe],
 })
 export class SharedModule {}

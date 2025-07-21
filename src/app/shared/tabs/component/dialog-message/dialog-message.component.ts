@@ -8,7 +8,6 @@ import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 })
 export class DialogMessageComponent {
   message: string = '';
-
   constructor(
     private DynamicDialogRef: DynamicDialogRef,
     public Config: DynamicDialogConfig
@@ -21,4 +20,5 @@ export class DialogMessageComponent {
   ngOnInit() {
     this.message = this.Config.data.message;
   }
+  
 }

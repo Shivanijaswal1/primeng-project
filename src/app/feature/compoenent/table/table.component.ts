@@ -1,16 +1,9 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import {Component,ElementRef,HostListener,QueryList,ViewChild,ViewChildren} from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ServiceService } from 'src/app/core/service.service';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { FilterService } from 'primeng/api';
-import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
+import { TableRowCollapseEvent } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
 import { AdvanceSortingComponent } from 'src/app/shared/advance-sorting/advance-sorting.component';
@@ -69,12 +62,15 @@ export class TableComponent {
     { label: 'Pending', value: 'pending' },
     { label: 'Complete', value: 'complete' },
   ];
+  selectedChildIds: number[] = [];
   constructor(
     private _studentService: ServiceService,
     public dialogservice: DialogService,
     private _deleteservice: ConfirmationService,
     private _messageservice: MessageService
   ) {}
+  selectedParentIdsFromChildren: Set<number> = new Set();
+
 
   ngOnInit() {
     this.getstudentData();
@@ -95,11 +91,11 @@ export class TableComponent {
     ];
 
     this.dynamicHeaders = [
-      { header: 'Project', field: 'project', sortable: true },
-      { header: 'Role', field: 'role', sortable: true },
-      { header: 'Status', field: 'status', sortable: true },
-      { header: 'Join Date', field: 'joinDate', sortable: true },
-      { header: 'Date of Birth', filed: 'dateofbirth', sortable: true },
+      { header: 'Project', field: 'Project', sortable: true },
+      { header: 'Role', field: 'Role', sortable: true },
+      { header: 'Status', field: 'Status', sortable: true },
+      { header: 'Join Date', field: 'Join Date', sortable: true },
+      { header: 'Date of Birth', filed: 'Date of Birth', sortable: true },
     ];
   }
   getstudentData() {
@@ -276,13 +272,137 @@ export class TableComponent {
             },
           });
       }
-
       this.loading = true;
       setTimeout(() => {
         this.getstudentData();
       }, 2000);
     });
   }
+
+onRowExpand(event: any) {
+  const parent = event.data;
+  parent.children = parent.children.map((child: any, index: number) => ({
+    ...child,
+    id: child.id ?? Math.floor(Math.random() * 1000000 + index)
+  }));
+}
+
+handleChildCheckboxChange(checked: boolean, childId: number, parentId: number) {
+  if (checked) {
+    if (!this.selectedChildIds.includes(childId)) {
+      this.selectedChildIds.push(childId);
+    }
+  } else {
+    this.selectedChildIds = this.selectedChildIds.filter(id => id !== childId);
+  }
+  this.showDeleteButton = checked;
+  this.updateSelectedParentsFromChildren();
+}
+
+
+handleCheckboxChange(checked: boolean, parentId: number): void {
+  const parent = this.filteredstudent.find(p => p.id === parentId);
+  if (checked) {
+        this.showDeleteButton = checked;
+    if (!this.selectedStudentIds.includes(parentId)) {
+      this.selectedStudentIds.push(parentId);
+    }
+    if (parent?.children?.length) {
+      parent.children.forEach((child: { id: number; }) => {
+        if (!this.selectedChildIds.includes(child.id)) {
+          this.selectedChildIds.push(child.id);
+        }
+      });
+    }
+  } else { 
+    this.showDeleteButton = checked;
+    this.selectedStudentIds = this.selectedStudentIds.filter(id => id !== parentId);
+    if (parent?.children?.length) {
+      parent.children.forEach((child: { id: number; }) => {
+        this.selectedChildIds = this.selectedChildIds.filter(id => id !== child.id);
+      });
+    }
+  }
+  this.updateSelectedParentsFromChildren(); 
+}
+
+
+onSelectAllChildChange(checked: boolean, children: any[]) {
+  const ids = children.map(c => c.id);
+  if (checked) {
+    ids.forEach(id => {
+      if (!this.selectedChildIds.includes(id)) {
+        this.selectedChildIds.push(id);
+      }
+    });
+  } else {
+    this.selectedChildIds = this.selectedChildIds.filter(id => !ids.includes(id));
+  }
+    this.showDeleteButton = checked;
+}
+
+areAllChildrenSelected(children: any[]): boolean {
+  return children.every(child => this.selectedChildIds.includes(child.id));
+}
+
+getSelectedChildrenCount(): number {
+
+  if (this.selectedStudentIds.length > 0) {
+    return this.filteredstudent
+      .filter(parent => this.selectedStudentIds.includes(parent.id))
+      .reduce((count, parent) => {
+        const childCount = Array.isArray(parent.children) ? parent.children.length : 0;
+        return count + childCount;
+      }, 0);
+  }
+
+  return this.selectedChildIds.length;
+}
+
+
+getTotalChildCount(): number {
+  return this.filteredstudent
+    ?.reduce((count, student) => count + (student.children?.length || 0), 0);
+}
+
+
+getSelectedParentsFromChildren(): Set<number> {
+  const selectedParents = new Set<number>();
+  this.filteredstudent.forEach(parent => {
+    if(parent.children?.some((child: { id: number; }) => this.selectedChildIds.includes(child.id))) {
+      selectedParents.add(parent.id);
+    }
+  });
+  return selectedParents;
+}
+
+
+getTotalSelectedCount(): number {
+  if (this.selectedStudentIds.length > 0) {
+    return this.getTotalUniqueParentCount() + this.getSelectedChildrenCount();
+  } else {
+    return this.selectedChildIds.length;
+  }
+}
+
+getTotalUniqueParentCount(): number {
+  const uniqueParentSet = new Set<number>();
+
+  this.selectedStudentIds.forEach(id => uniqueParentSet.add(id));
+
+  this.filteredstudent.forEach(parent => {
+    const childIds = (parent.children || []).map((c: { id: any; }) => c.id);
+    const match = this.selectedChildIds.find(id => childIds.includes(id));
+    if (match) {
+      uniqueParentSet.add(parent.id);
+    }
+  });
+
+  return uniqueParentSet.size;
+}
+
+
+
 
   handleCheckboxRefesh(checked: boolean, id: number) {
     if (checked) {
@@ -294,8 +414,20 @@ export class TableComponent {
         (empId) => empId !== id
       );
     }
+    this.showDeleteButton = checked;
     this.showDeleteButton = this.selectedStudentIds.length > 0;
   }
+
+updateSelectedParentsFromChildren() {
+  const parentSet = new Set<number>();
+  for (const student of this.filteredstudent) {
+    const selectedChildren = student.children?.filter((c: { id: number; }) => this.selectedChildIds.includes(c.id));
+    if (selectedChildren?.length) {
+      parentSet.add(student.id);
+    }
+  }
+  this.selectedParentIdsFromChildren = parentSet;
+}
 
   @HostListener('window:keydown', ['$event'])
   onKeydown(event: KeyboardEvent) {
@@ -446,19 +578,6 @@ export class TableComponent {
     }
   }
 
-  handleCheckboxChange(checked: boolean, id: number) {
-    if (checked) {
-      if (!this.selectedStudentIds.includes(id)) {
-        this.selectedStudentIds.push(id);
-      }
-    } else {
-      this.selectedStudentIds = this.selectedStudentIds.filter(
-        (empId) => empId !== id
-      );
-    }
-    this.showDeleteButton = checked;
-    this.isChecked = this.selectedStudentIds.length === this.student.length;
-  }
 
   onSelectAllChange(checked: boolean): void {
     this.isChecked = checked;
@@ -474,14 +593,6 @@ export class TableComponent {
     console.log('Row toggle event', event);
   }
 
-  onRowExpand(event: TableRowExpandEvent) {
-    this._messageservice.add({
-      severity: 'info',
-      summary: 'Product Expanded',
-      detail: event.data.name,
-      life: 3000,
-    });
-  }
 
   onRowCollapse(event: TableRowCollapseEvent) {
     this._messageservice.add({

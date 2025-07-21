@@ -30,6 +30,7 @@ import { PasswordModule } from 'primeng/password';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 
+
 const primengModule = [
   ButtonModule,
   ToolbarModule,
@@ -58,6 +59,7 @@ const primengModule = [
   DialogModule,
   PasswordModule,
   ReactiveFormsModule,
+  RippleModule
 ];
 @NgModule({
   declarations: [],
@@ -82,6 +84,7 @@ const primengModule = [
     DialogModule,
     PasswordModule,
     ReactiveFormsModule,
+    RadioButtonModule
   ],
 })
 export class UiModule {}
