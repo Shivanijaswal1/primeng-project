@@ -346,7 +346,6 @@ areAllChildrenSelected(children: any[]): boolean {
 }
 
 getSelectedChildrenCount(): number {
-
   if (this.selectedStudentIds.length > 0) {
     return this.filteredstudent
       .filter(parent => this.selectedStudentIds.includes(parent.id))
@@ -359,12 +358,10 @@ getSelectedChildrenCount(): number {
   return this.selectedChildIds.length;
 }
 
-
 getTotalChildCount(): number {
   return this.filteredstudent
     ?.reduce((count, student) => count + (student.children?.length || 0), 0);
 }
-
 
 getSelectedParentsFromChildren(): Set<number> {
   const selectedParents = new Set<number>();
@@ -376,7 +373,6 @@ getSelectedParentsFromChildren(): Set<number> {
   return selectedParents;
 }
 
-
 getTotalSelectedCount(): number {
   if (this.selectedStudentIds.length > 0) {
     return this.getTotalUniqueParentCount() + this.getSelectedChildrenCount();
@@ -387,9 +383,7 @@ getTotalSelectedCount(): number {
 
 getTotalUniqueParentCount(): number {
   const uniqueParentSet = new Set<number>();
-
   this.selectedStudentIds.forEach(id => uniqueParentSet.add(id));
-
   this.filteredstudent.forEach(parent => {
     const childIds = (parent.children || []).map((c: { id: any; }) => c.id);
     const match = this.selectedChildIds.find(id => childIds.includes(id));
@@ -401,10 +395,7 @@ getTotalUniqueParentCount(): number {
   return uniqueParentSet.size;
 }
 
-
-
-
-  handleCheckboxRefesh(checked: boolean, id: number) {
+handleCheckboxRefesh(checked: boolean, id: number) {
     if (checked) {
       if (!this.selectedStudentIds.includes(id)) {
         this.selectedStudentIds.push(id);

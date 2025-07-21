@@ -1,7 +1,11 @@
-import { Component, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Component, Input, SimpleChanges } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ServiceService } from '../../service/service.service';
-import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import {
+  DialogService,
+  DynamicDialogConfig,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 import { DialogMessageComponent } from '../dialog-message/dialog-message.component';
 
 export interface FormField {
@@ -32,13 +36,16 @@ export class ConfigurationBasedFormComponent {
   fields: FormField[] = [];
   sectionName: string = '';
   formSubmitted: boolean = false;
-   message: string = 'Please Complete all required fields';
+  message: string = 'Please Complete all required fields';
 
-  
-  constructor(private _Service: ServiceService, private _fb: FormBuilder, public ref: DynamicDialogRef,  public config: DynamicDialogConfig, private dialogService:DialogService) {}
+  constructor(
+    private _Service: ServiceService,
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
+    private dialogService: DialogService
+  ) {}
 
-
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.parentId = this.config.data?.parentId;
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -76,14 +83,12 @@ export class ConfigurationBasedFormComponent {
     const today = new Date();
     const dayOfWeek = today.getDay();
     let message: string;
-
     if (dayOfWeek >= 1 && dayOfWeek <= 4) {
       message = '🎉 Great! Your form has been submitted successfully!';
     } else {
       message = '📝 Form submitted successfully! Response expected on Monday.';
     }
     const formData = { ...this.configForm.value, parentId: this.parentId };
-  
     if (this.ref) {
       this.ref.close(formData);
       console.log('Form submitted:', formData);
@@ -91,15 +96,11 @@ export class ConfigurationBasedFormComponent {
     this.ref = this.dialogService.open(DialogMessageComponent, {
       header: 'Message',
       contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
       styleClass: 'custom-dialog-header',
       data: { message: message, formData: formData },
     });
 
-    this.ref.onClose.subscribe((result) => {
-      if (result) {
-        console.log('Dialog closed with result:', result); 
-  }
-  })
   }
 }
-
