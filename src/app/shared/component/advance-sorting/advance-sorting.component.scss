@@ -1,0 +1,74 @@
+
+
+.p-fluid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.sort-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.add-button {
+    display: flex;
+    justify-content: center;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ml-2 {
+    margin-left: 8px;
+}
+
+.p-button-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.p-button-info{
+    background-color: #17a2b8;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.p-button-secondary:hover,
+.p-button-info:hover {
+    opacity: 0.8;
+}
+.sort-field-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.p-dropdown {
+    flex: 1;
+}
+
+
+

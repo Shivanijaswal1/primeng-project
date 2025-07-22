@@ -8,7 +8,7 @@ import { InputComponent } from './component/input/input.component';
 import { FormComponent } from './component/form/form.component';
 import { DropdownComponent } from './component/dropdown/dropdown.component';
 import { CheckboxComponent } from './component/checkbox/checkbox.component';
-import { BarChartComponent } from './component/checkbox/bar-chart/bar-chart.component';
+import { BarChartComponent } from './component/bar-chart/bar-chart.component';
 import { PieChartComponent } from './component/pie-chart/pie-chart.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -17,7 +17,7 @@ import { StudentDetailTableComponent } from './tabs/component/student-detail-tab
 import { ConfigurationBasedFormComponent } from './tabs/component/configuration-based-form/configuration-based-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ShowDataComponent } from './component/show-data/show-data.component';
-import { AdvanceSortingComponent } from './component/checkbox/advance-sorting/advance-sorting.component';
+import { AdvanceSortingComponent } from './component/advance-sorting/advance-sorting.component';
 import { FileUpload } from 'primeng/fileupload';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SubmitMessageComponent } from './submit-message/submit-message.component';

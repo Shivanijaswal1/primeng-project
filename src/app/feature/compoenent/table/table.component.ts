@@ -6,7 +6,7 @@ import { FilterService } from 'primeng/api';
 import { TableRowCollapseEvent } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
-import { AdvanceSortingComponent } from 'src/app/shared/component/checkbox/advance-sorting/advance-sorting.component';
+import { AdvanceSortingComponent } from 'src/app/shared/component/advance-sorting/advance-sorting.component';
 import { Sidebar } from 'primeng/sidebar';
 
 @Component({
@@ -70,7 +70,7 @@ export class TableComponent {
     private _messageservice: MessageService
   ) {}
   selectedParentIdsFromChildren: Set<number> = new Set();
-  
+
   ngOnInit() {
     this.getstudentData();
     this.columns = [
