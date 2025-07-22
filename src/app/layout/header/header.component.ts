@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Sidebar } from 'primeng/sidebar';
 import { ServiceService } from 'src/app/core/service.service';
-import { FormComponent } from 'src/app/shared/form/form.component';
+import { FormComponent } from 'src/app/shared/component/form/form.component';
 
 @Component({
   selector: 'app-header',

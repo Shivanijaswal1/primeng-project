@@ -6,7 +6,7 @@ import { FilterService } from 'primeng/api';
 import { TableRowCollapseEvent } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
-import { AdvanceSortingComponent } from 'src/app/shared/advance-sorting/advance-sorting.component';
+import { AdvanceSortingComponent } from 'src/app/shared/component/checkbox/advance-sorting/advance-sorting.component';
 import { Sidebar } from 'primeng/sidebar';
 
 @Component({
@@ -70,8 +70,7 @@ export class TableComponent {
     private _messageservice: MessageService
   ) {}
   selectedParentIdsFromChildren: Set<number> = new Set();
-
-
+  
   ngOnInit() {
     this.getstudentData();
     this.columns = [
@@ -326,7 +325,6 @@ handleCheckboxChange(checked: boolean, parentId: number): void {
   this.updateSelectedParentsFromChildren(); 
 }
 
-
 onSelectAllChildChange(checked: boolean, children: any[]) {
   const ids = children.map(c => c.id);
   if (checked) {
@@ -354,7 +352,6 @@ getSelectedChildrenCount(): number {
         return count + childCount;
       }, 0);
   }
-
   return this.selectedChildIds.length;
 }
 
@@ -391,7 +388,6 @@ getTotalUniqueParentCount(): number {
       uniqueParentSet.add(parent.id);
     }
   });
-
   return uniqueParentSet.size;
 }
 

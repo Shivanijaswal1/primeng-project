@@ -30,16 +30,16 @@
           (onChange)="setStatusAndTab($event.value)">
         </p-selectButton>
         
-        <div class="action-bar">
+  <div class="action-bar">
   <ng-container *ngIf="selectedStudentIds.length > 0">
-    ({{ getTotalUniqueParentCount()  }} Parent selected)-
+ ({{ getTotalUniqueParentCount()  }} Parent selected)-
  ({{ getSelectedChildrenCount() }} children Selected)-
-({{ getTotalSelectedCount() }} Total )
+ ({{ getTotalSelectedCount() }} Total )
   </ng-container>
   
   <ng-container *ngIf="selectedStudentIds.length === 0 && selectedChildIds.length > 0">
 ({{ getSelectedChildrenCount() }} children selected)
-  ( {{ getTotalSelectedCount() }} Total )
+  ({{ getTotalSelectedCount() }} Total )
   </ng-container>
 </div>
 
@@ -156,14 +156,13 @@
                         [ngClass]="{'invalid-input': !rowData[parent.field]}" />
                     </ng-container>
                     <ng-template #disabledCell>
-                      <span class="disabled-cell">{{ rowData[parent.field]
+                      <span class="disabled-cell">{{rowData[parent.field]
                         }}</span>
                     </ng-template>
                   </ng-template>
                   <ng-template pTemplate="output">
                     <span (click)="$event.stopPropagation()"
                       [ngClass]="{'invalid-span': !rowData[parent.field] && rowData._clickedField === parent.field}">
-                      <!-- {{ rowData[parent.field] }} -->
                     </span>
                     {{ rowData[parent.field] }}
                   </ng-template>

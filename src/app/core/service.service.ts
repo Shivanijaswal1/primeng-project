@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
-import { firstValueFrom } from 'rxjs';
 import { SocialUser } from '@abacritt/angularx-social-login';
 
 interface Parent {
