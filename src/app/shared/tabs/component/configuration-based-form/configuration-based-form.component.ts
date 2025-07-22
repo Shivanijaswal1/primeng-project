@@ -1,5 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+
 import { ServiceService } from '../../service/service.service';
 import {
   DialogService,
@@ -40,31 +41,48 @@ export class ConfigurationBasedFormComponent {
 
   constructor(
     private _Service: ServiceService,
+    private _fb: FormBuilder,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private dialogService: DialogService
   ) {}
 
-  ngOnInit(): void {
-    this.parentId = this.config.data?.parentId;
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['formConfig'] && this.formConfig?.field) {
-      this.sectionName = this.formConfig.sectionName;
-      this.buildForm();
-    }
-  }
 
-  buildForm(): void {
-    this.fields = this.formConfig.field.sort(
-      (a, b) => a.displayOrder - b.displayOrder
+ngOnInit(): void {
+  this.parentId = this.config.data?.parentId;
+  this.buildForm(); 
+}
+
+buildForm(): void {
+  this.fields = this.formConfig.field.sort((a, b) => a.displayOrder - b.displayOrder);
+  this.configForm = this._fb.group({
+    policy: this._fb.array([]),
+  });
+  this.addPolicy(); 
+}
+
+addPolicy(): void {
+  const policies = this.getPolicyArray();
+  if (policies.length >= 3) return;
+  const policyGroup = this._fb.group({});
+  this.fields.forEach(field => {
+    policyGroup.addControl(
+      field.field,
+      this._fb.control('', field.required ? Validators.required : null)
     );
-    const group: any = {};
-    this.fields.forEach((field) => {
-      group[field.field] = new FormControl('');
-    });
-    this.configForm = new FormGroup(group);
+  });
+  policies.push(policyGroup);
+}
+
+getPolicyArray(): FormArray {
+  return this.configForm.get('policy') as FormArray;
+}
+removePolicy(index: number): void {
+  const policies = this.getPolicyArray();
+  if (policies.length > 1) {
+    policies.removeAt(index);
   }
+}
 
   onSubmit(): void {
     this.formSubmitted = true;
@@ -83,6 +101,7 @@ export class ConfigurationBasedFormComponent {
     const today = new Date();
     const dayOfWeek = today.getDay();
     let message: string;
+
     if (dayOfWeek >= 1 && dayOfWeek <= 4) {
       message = '🎉 Great! Your form has been submitted successfully!';
     } else {
@@ -96,11 +115,8 @@ export class ConfigurationBasedFormComponent {
     this.ref = this.dialogService.open(DialogMessageComponent, {
       header: 'Message',
       contentStyle: { overflow: 'auto' },
-      baseZIndex: 10000,
-      maximizable: true,
       styleClass: 'custom-dialog-header',
       data: { message: message, formData: formData },
-    });
-
+    });   
   }
 }

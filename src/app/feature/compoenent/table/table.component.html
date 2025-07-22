@@ -163,6 +163,7 @@
                   <ng-template pTemplate="output">
                     <span (click)="$event.stopPropagation()"
                       [ngClass]="{'invalid-span': !rowData[parent.field] && rowData._clickedField === parent.field}">
+                    
                     </span>
                     {{ rowData[parent.field] }}
                   </ng-template>

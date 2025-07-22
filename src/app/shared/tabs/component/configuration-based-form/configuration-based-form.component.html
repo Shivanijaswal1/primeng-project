@@ -1,28 +1,68 @@
+
 <h2 *ngIf="sectionName">{{ sectionName }}</h2>
-<form *ngIf="configForm && fields.length" [formGroup]="configForm">
-  <div *ngFor="let field of fields">
-    <label>
-      {{ field.fieldName }}
-      <span *ngIf="field.required" style="color: red">*</span>
-    </label>
-    <input pInputText
-      *ngIf="field.type === 'text' || field.type === 'number'"
-      [type]="field.type"
-      [formControlName]="field.field"
-      [required]="field.required"
-      [readonly]="!field.editable"
-      [ngClass]="{'invalid-field': formSubmitted && configForm.get(field.field)?.invalid}" />
-    <select
-      *ngIf="field.type === 'select'"
-      [formControlName]="field.field"
-      [disabled]="!field.editable"
-      [required]="field.required"
-      [ngClass]="{'invalid-field': formSubmitted && configForm.get(field.field)?.invalid}">
-      <option *ngFor="let option of field.options" [value]="option">
-        {{ option }}
-      </option>
-    </select>
+
+<form [formGroup]="configForm">
+  <div formArrayName="policy">
+    <div
+      *ngFor="let group of getPolicyArray().controls; let i = index"
+      [formGroupName]="i"
+      class="policy-section"
+    >
+      <div class="remove-btn" *ngIf="getPolicyArray().length > 1">
+    <button
+      pButton
+      icon="pi pi-trash"
+      class="p-button-rounded p-button-danger p-button-sm"
+      type="button"
+      (click)="removePolicy(i)"
+    ></button>
   </div>
-  <button class="btn2" pButton type="button"
-    (click)="onSubmit()">Submit</button>
+  
+
+      <div *ngFor="let field of fields" class="form-field">
+        <label>
+          {{ field.fieldName }}
+          <span *ngIf="field.required" style="color: red">*</span>
+        </label>
+
+  <p-calendar *ngIf="field.type === 'calendar'"
+              [formControlName]="field.field"
+              [showIcon]="true"
+              [readonlyInput]="true"
+              dateFormat="dd/mm/yy"
+              [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }">
+  </p-calendar>
+
+        <input
+          *ngIf="field.type === 'text' && field.field !== 'dateofbirth' && field.field !== 'joinDate'"
+          pInputText
+          [formControlName]="field.field"
+          [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }"
+        />
+
+        <input
+          *ngIf="field.type === 'number'"
+          pInputText
+          type="number"
+          [formControlName]="field.field"
+          [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }"
+        />
+
+        <select
+          *ngIf="field.type === 'select'"
+          [formControlName]="field.field"
+          [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }"
+        >
+          <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+        </select>
+      </div>
+      <hr />
+    </div>
+  </div>
+
+  <button pButton type="button" (click)="addPolicy()" [disabled]="getPolicyArray().length >= 3">
+    ➕ Add Policy
+  </button>
+
+  <button pButton type="submit" (click)="onSubmit()"> Submit</button>
 </form>

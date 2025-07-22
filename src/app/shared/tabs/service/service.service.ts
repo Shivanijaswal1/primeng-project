@@ -17,10 +17,10 @@ export class ServiceService {
         sectionName: 'Student form detail',
         field: [
            {
-            type: 'text',
+            type: 'calendar',
             field: 'dateofbirth',
-            fieldName: 'Date of Birth',
-            displayOrder: 4,
+            fieldName: 'DOB',
+            displayOrder: 1,
             editable: true,
             required: true,
           },
@@ -28,7 +28,7 @@ export class ServiceService {
             field: 'project',
             fieldName: 'Project',
             editable: true,
-            displayOrder: 1,
+            displayOrder: 2,
             type: 'text',
             required: true,
           },
@@ -36,7 +36,7 @@ export class ServiceService {
             field: 'role',
             fieldName: 'Role',
             editable: true,
-            displayOrder: 2,
+            displayOrder: 3,
             type: 'text',
             required: true,
           },
@@ -45,20 +45,21 @@ export class ServiceService {
             options:['True', 'False'],
             fieldName: ' Status',
             editable: true,
-            displayOrder: 3,
+            displayOrder: 4,
             type: 'select',
             required: true,
           },
           {
-            type: 'text',
+            type: 'calendar',
             field: 'joinDate',
             fieldName: 'Join Date',
-            displayOrder: 4,
+            displayOrder: 5,
             editable: true,
             required: true,
           },
         ],
       },
+   
     ];
 
     const pendingStudentFees = [
