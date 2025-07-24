@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ZButtonComponent } from './z-button/z-button.component';
+import { ZButtonComponent } from './component/z-button/z-button.component';
 import { UiModule } from '../ui/ui/ui.module';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -20,7 +20,7 @@ import { ShowDataComponent } from './component/show-data/show-data.component';
 import { AdvanceSortingComponent } from './component/advance-sorting/advance-sorting.component';
 import { FileUpload } from 'primeng/fileupload';
 import { FileUploadModule } from 'primeng/fileupload';
-import { SubmitMessageComponent } from './submit-message/submit-message.component';
+import { SubmitMessageComponent } from './component/submit-message/submit-message.component';
 import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
 import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-message.component';
 import { RadioButtonModule } from 'primeng/radiobutton';

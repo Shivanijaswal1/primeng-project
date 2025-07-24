@@ -5,7 +5,7 @@ import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { jsPDF } from 'jspdf';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SubmitMessageComponent } from '../../submit-message/submit-message.component';
+import { SubmitMessageComponent } from '../submit-message/submit-message.component';
 import { FileUploadEvent } from 'primeng/fileupload';
 
 interface FormPayload {

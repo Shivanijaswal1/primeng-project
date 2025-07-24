@@ -51,20 +51,32 @@ export class ServiceService {
       });
     });
   }
+  deleteChildFromParent(parentId: number, childId: number): Observable<any> {
+  return this.http.get<any>(`http://localhost:3000/form/${parentId}`).pipe(
+    switchMap((parent) => {
+      parent.children = (parent.children || []).filter(
+        (child: any) => child.id !== childId
+      );
+      return this.http.put(`http://localhost:3000/form/${parentId}`, parent);
+    })
+  );
+}
 
-  updateParentWithChild(parentId: string, childData: any): Observable<any> {
-    return this.http.get<any>(`http://localhost:3000/form/${parentId}`).pipe(
-      switchMap((parent: { children: any[] }) => {
-        if (!parent.children) parent.children = [];
-        console.log(childData);
-        parent.children.push(childData);
-        return this.http.put<any>(
-          `http://localhost:3000/form/${parentId}`,
-          parent
-        );
-      })
-    );
-  }
+
+
+  updateParentWithChildren(parentId: string, childrenData: any[]): Observable<any> {
+  return this.http.get<any>(`http://localhost:3000/form/${parentId}`).pipe(
+    switchMap((parent: { children: any[] }) => {
+      if (!parent.children) parent.children = [];
+      parent.children.push(...childrenData);
+      return this.http.put<any>(
+        `http://localhost:3000/form/${parentId}`,
+        parent
+      );
+    })
+  );
+}
+
 
   getDummyData(): Observable<any> {
     const dummyResponse = [

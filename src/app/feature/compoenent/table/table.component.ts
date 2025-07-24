@@ -8,11 +8,12 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
 import { AdvanceSortingComponent } from 'src/app/shared/component/advance-sorting/advance-sorting.component';
 import { Sidebar } from 'primeng/sidebar';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  providers: [DialogService, ConfirmationService, FilterService],
+  providers: [DialogService, ConfirmationService, FilterService,DatePipe],
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
@@ -67,9 +68,13 @@ export class TableComponent {
     private _studentService: ServiceService,
     public dialogservice: DialogService,
     private _deleteservice: ConfirmationService,
-    private _messageservice: MessageService
+    private _messageservice: MessageService,
+    private datePipe: DatePipe
   ) {}
   selectedParentIdsFromChildren: Set<number> = new Set();
+  selectedParentIds: (number | string)[] = [];
+selectedChildRecords: { parentId: number, childId: number }[] = [];
+
 
   ngOnInit() {
     this.getstudentData();
@@ -97,6 +102,18 @@ export class TableComponent {
       { header: 'Date of Birth', filed: 'Date of Birth', sortable: true },
     ];
   }
+
+  isIsoDate(value: unknown): value is string  {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
+}
+
+formatDate(value: unknown): string {
+  if (this.isIsoDate(value)) {
+    return this.datePipe.transform(value, 'dd/MM/yyyy') ?? '';
+  }
+  return String(value);
+}
+
   getstudentData() {
     this._studentService.getStudent().subscribe((data) => {
       this.student = data;
@@ -249,33 +266,61 @@ export class TableComponent {
       height: '79vh',
       styleClass: 'custom-dialog-header',
     });
+    // this.ref.onClose.subscribe((formValue) => {
+    //   console.log(formValue)
+    //   if (formValue && rowData.id) {
+    //     const childData = {
+    //       id: Math.floor(Math.random() * 1000000), 
+    //       project: formValue.project,
+    //       role: formValue.role,
+    //       status: formValue.status,
+    //       joinDate: formValue.joinDate,
+    //       dateofbirth: formValue.dateofbirth,
+    //     };
 
+    //     this._studentService
+    //       .updateParentWithChild(rowData.id, childData)
+    //       .subscribe({
+    //         next: (updatedParent) => {
+    //           this.getstudentData();
+    //         },
+    //         error: (err) => {
+    //           console.error('Error updating parent:', err);
+    //         },
+    //       });
+    //   }
+    //   this.loading = true;
+    //   setTimeout(() => {
+    //     this.getstudentData();
+    //   }, 3000);
+    // });
     this.ref.onClose.subscribe((formValue) => {
-      if (formValue && rowData.id) {
-        const childData = {
-          project: formValue.project,
-          role: formValue.role,
-          status: formValue.status,
-          joinDate: formValue.joinDate,
-          dateofbirth: formValue.dateofbirth,
-        };
+    if (formValue?.policy?.length > 0 && rowData.id) {
+      const newChildren = formValue.policy.map((policy: any) => ({
+        id: Math.floor(Math.random() * 1000000),
+        ...policy,
+      }));
 
-        this._studentService
-          .updateParentWithChild(rowData.id, childData)
-          .subscribe({
-            next: (updatedParent) => {
-              this.getstudentData();
-            },
-            error: (err) => {
-              console.error('Error updating parent:', err);
-            },
-          });
-      }
+      this.loading = true;
+      this._studentService.updateParentWithChildren(rowData.id, newChildren).subscribe({
+          next: () => {
+            // setTimeout(() => {
+              this.getstudentData(); 
+              // this.loading = false;
+              this.expandedRows[rowData.id] = true; 
+            // }, 3000);
+          },
+          error: (err) => {
+            console.error('Error updating parent:', err);
+            this.loading = false;
+          },
+        });
+    }
       this.loading = true;
       setTimeout(() => {
         this.getstudentData();
-      }, 2000);
-    });
+      }, 3000);
+  });
   }
 
 onRowExpand(event: any) {
@@ -286,7 +331,21 @@ onRowExpand(event: any) {
   }));
 }
 
-handleChildCheckboxChange(checked: boolean, childId: number, parentId: number) {
+childSelections: { [parentId: number]: any[] } = {};
+
+onChildSelect(parentId: number, event: any) {
+  const child = event.data;
+  this.selectedChildRecords.push({ parentId, childId: child.id });
+}
+
+onChildUnselect(parentId: number, event: any) {
+  const child = event.data;
+  this.selectedChildRecords = this.selectedChildRecords.filter(
+    item => !(item.parentId === parentId && item.childId === child.id)
+  );
+}
+
+handleChildCheckboxChange(checked: boolean, childId: number, parentId: number){
   if (checked) {
     if (!this.selectedChildIds.includes(childId)) {
       this.selectedChildIds.push(childId);
@@ -294,7 +353,6 @@ handleChildCheckboxChange(checked: boolean, childId: number, parentId: number) {
   } else {
     this.selectedChildIds = this.selectedChildIds.filter(id => id !== childId);
   }
-  this.showDeleteButton = checked;
   this.updateSelectedParentsFromChildren();
 }
 
@@ -565,7 +623,6 @@ updateSelectedParentsFromChildren() {
     }
   }
 
-
   onSelectAllChange(checked: boolean): void {
     this.isChecked = checked;
     if (checked) {
@@ -579,7 +636,6 @@ updateSelectedParentsFromChildren() {
   onRowToggle(event: any) {
     console.log('Row toggle event', event);
   }
-
 
   onRowCollapse(event: TableRowCollapseEvent) {
     this._messageservice.add({

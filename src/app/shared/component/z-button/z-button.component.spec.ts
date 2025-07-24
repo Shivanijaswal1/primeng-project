@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputComponent } from './input.component';
+import { ZButtonComponent } from './z-button.component';
 
-describe('InputComponent', () => {
-  let component: InputComponent;
-  let fixture: ComponentFixture<InputComponent>;
+describe('ZButtonComponent', () => {
+  let component: ZButtonComponent;
+  let fixture: ComponentFixture<ZButtonComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InputComponent]
+      declarations: [ZButtonComponent]
     });
-    fixture = TestBed.createComponent(InputComponent);
+    fixture = TestBed.createComponent(ZButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
