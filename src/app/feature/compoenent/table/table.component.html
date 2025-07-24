@@ -21,6 +21,7 @@
           label="Delete"
           (handleclick)="del(selectedStudentIds)">
         </app-z-button>
+        
         <p-selectButton
           [options]="statusOptions"
           [(ngModel)]="selectedStatus"
@@ -32,17 +33,17 @@
         
   <div class="action-bar">
   <ng-container *ngIf="selectedStudentIds.length > 0">
- ({{ getTotalUniqueParentCount()  }} Parent selected)-
- ({{ getSelectedChildrenCount() }} children Selected)-
+ ({{ getTotalUniqueParentCount()  }} Parent selected)
+ ({{ getSelectedChildrenCount() }} children Selected)
  ({{ getTotalSelectedCount() }} Total )
   </ng-container>
   
   <ng-container *ngIf="selectedStudentIds.length === 0 && selectedChildIds.length > 0">
+    ({{ getTotalUniqueParentCount() }} Parent selected)
 ({{ getSelectedChildrenCount() }} children selected)
   ({{ getTotalSelectedCount() }} Total )
   </ng-container>
 </div>
-
       </div>
       <div class="toolbar-right">
         <span *ngIf="showInvalidError" class="toolbar-error">
@@ -126,7 +127,7 @@
         <tr [pEditableRow]="rowData" (click)="rowData._clicked = true">
           <td>
             <ng-container
-              *ngIf="rowData.children && rowData.children.length > 0">
+              *ngIf="rowData.children && rowData.children.length > 0 ">
               <app-z-button
                 [icon]="expanded ? 'pi pi-chevron-down':'pi pi-chevron-right'"
                 [rounded]="true"
@@ -191,7 +192,7 @@
                     <app-checkbox
                       (checkedChange)="handleChildCheckboxChange($event, child.id, rowData.id)"
                         [checked]="selectedChildIds.includes(child.id)">
-                      </app-checkbox>
+                      </app-checkbox> 
                     <td *ngFor="let key of child | keyvalue">
                        {{ formatDate(key.value) }}
                     </td>

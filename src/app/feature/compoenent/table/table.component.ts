@@ -73,7 +73,7 @@ export class TableComponent {
   ) {}
   selectedParentIdsFromChildren: Set<number> = new Set();
   selectedParentIds: (number | string)[] = [];
-selectedChildRecords: { parentId: number, childId: number }[] = [];
+  selectedChildRecords: { parentId: number, childId: number }[] = [];
 
 
   ngOnInit() {
@@ -103,12 +103,12 @@ selectedChildRecords: { parentId: number, childId: number }[] = [];
     ];
   }
 
-  isIsoDate(value: unknown): value is string  {
-  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
+  isDate(value: unknown): value is string  {
+   return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
 }
 
 formatDate(value: unknown): string {
-  if (this.isIsoDate(value)) {
+  if (this.isDate(value)) {
     return this.datePipe.transform(value, 'dd/MM/yyyy') ?? '';
   }
   return String(value);
@@ -406,6 +406,7 @@ getTotalSelectedCount(): number {
 }
 
 getTotalUniqueParentCount(): number {
+  
   const uniqueParentSet = new Set<number>();
   this.selectedStudentIds.forEach(id => uniqueParentSet.add(id));
   this.filteredstudent.forEach(parent => {
@@ -654,4 +655,5 @@ updateSelectedParentsFromChildren() {
       this.tabchange('complete');
     }
   }
+
 }

@@ -1,68 +1,75 @@
-
 <h2 *ngIf="sectionName">{{ sectionName }}</h2>
-
-<form [formGroup]="configForm">
+<form [formGroup]="configForm" class="form-container">
   <div formArrayName="policy">
     <div
       *ngFor="let group of getPolicyArray().controls; let i = index"
       [formGroupName]="i"
-      class="policy-section"
-    >
+      class="policy-section">
       <div class="remove-btn" *ngIf="getPolicyArray().length > 1">
-    <button
-      pButton
-      icon="pi pi-trash"
-      class="p-button-rounded p-button-danger p-button-sm"
-      type="button"
-      (click)="removePolicy(i)"
-    ></button>
+        <button
+          pButton
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger p-button-sm"
+          type="button"
+          (click)="removePolicy(i)"></button>
+      </div>
+
+        <div class="form-row dob-join-group">
+  <div class="form-field">
+    <label>
+      Date of Birth
+      <span style="color: red">*</span>
+    </label>
+    <p-calendar
+      formControlName="dateofbirth"
+      [showIcon]="true"
+      [readonlyInput]="true"
+      dateFormat="dd/mm/yy"
+      [ngClass]="{ 'invalid-field': formSubmitted && group.get('dateofbirth')?.invalid }">
+    </p-calendar>
   </div>
-  
 
-      <div *ngFor="let field of fields" class="form-field">
-        <label>
-          {{ field.fieldName }}
-          <span *ngIf="field.required" style="color: red">*</span>
-        </label>
+  <div class="form-field">
+    <label>
+      Join Date
+      <span style="color: red">*</span>
+    </label>
+    <p-calendar
+      formControlName="joinDate"
+      [showIcon]="true"
+      [readonlyInput]="true"
+      dateFormat="dd/mm/yy"
+      [ngClass]="{ 'invalid-field': formSubmitted && group.get('joinDate')?.invalid }">
+    </p-calendar>
+  </div>
+</div>
+<ng-container *ngFor="let field of fields">
+  <div class="form-field" *ngIf="field.field !== 'dateofbirth' && field.field !== 'joinDate'">
+    <label>
+      {{ field.fieldName }}
+      <span *ngIf="field.required" style="color: red">*</span>
+    </label>
 
-  <p-calendar *ngIf="field.type === 'calendar'"
-              [formControlName]="field.field"
-              [showIcon]="true"
-              [readonlyInput]="true"
-              dateFormat="dd/mm/yy"
-              [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }">
-  </p-calendar>
+    <input *ngIf="field.type === 'text'"
+           pInputText
+           [formControlName]="field.field"
+           [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }" />
 
-        <input
-          *ngIf="field.type === 'text' && field.field !== 'dateofbirth' && field.field !== 'joinDate'"
-          pInputText
-          [formControlName]="field.field"
-          [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }"
-        />
-
-        <input
-          *ngIf="field.type === 'number'"
-          pInputText
-          type="number"
-          [formControlName]="field.field"
-          [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }"
-        />
-
-        <select
-          *ngIf="field.type === 'select'"
-          [formControlName]="field.field"
-          [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }"
-        >
-          <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
-        </select>
+    <select *ngIf="field.type === 'select'"
+            [formControlName]="field.field"
+            [ngClass]="{ 'invalid-field': formSubmitted && group.get(field.field)?.invalid }">
+      <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+    </select>
+  </div>
+</ng-container>
       </div>
       <hr />
     </div>
-  </div>
-
-  <button pButton type="button" (click)="addPolicy()" [disabled]="getPolicyArray().length >= 3">
+  <div class="form-actions">
+  <button pButton type="button" (click)="addPolicy()"
+    [disabled]="getPolicyArray().length >= 3">
     ➕ Add Policy
   </button>
-
   <button pButton type="submit" (click)="onSubmit()"> Submit</button>
+  </div>
 </form>
