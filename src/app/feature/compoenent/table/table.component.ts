@@ -266,34 +266,6 @@ formatDate(value: unknown): string {
       height: '79vh',
       styleClass: 'custom-dialog-header',
     });
-    // this.ref.onClose.subscribe((formValue) => {
-    //   console.log(formValue)
-    //   if (formValue && rowData.id) {
-    //     const childData = {
-    //       id: Math.floor(Math.random() * 1000000), 
-    //       project: formValue.project,
-    //       role: formValue.role,
-    //       status: formValue.status,
-    //       joinDate: formValue.joinDate,
-    //       dateofbirth: formValue.dateofbirth,
-    //     };
-
-    //     this._studentService
-    //       .updateParentWithChild(rowData.id, childData)
-    //       .subscribe({
-    //         next: (updatedParent) => {
-    //           this.getstudentData();
-    //         },
-    //         error: (err) => {
-    //           console.error('Error updating parent:', err);
-    //         },
-    //       });
-    //   }
-    //   this.loading = true;
-    //   setTimeout(() => {
-    //     this.getstudentData();
-    //   }, 3000);
-    // });
     this.ref.onClose.subscribe((formValue) => {
     if (formValue?.policy?.length > 0 && rowData.id) {
       const newChildren = formValue.policy.map((policy: any) => ({
@@ -304,11 +276,8 @@ formatDate(value: unknown): string {
       this.loading = true;
       this._studentService.updateParentWithChildren(rowData.id, newChildren).subscribe({
           next: () => {
-            // setTimeout(() => {
               this.getstudentData(); 
-              // this.loading = false;
               this.expandedRows[rowData.id] = true; 
-            // }, 3000);
           },
           error: (err) => {
             console.error('Error updating parent:', err);
@@ -319,7 +288,7 @@ formatDate(value: unknown): string {
       this.loading = true;
       setTimeout(() => {
         this.getstudentData();
-      }, 3000);
+      }, 2000);
   });
   }
 
