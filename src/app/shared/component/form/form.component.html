@@ -323,10 +323,8 @@
                     </div>
                     <ng-template #noBookData>
                         <div class="no-data-message"
-                            style="color: #888; margin-bottom: 10px;">No book
-                            data</div>
+                            style="color: #888; margin-bottom: 10px;">No book sdata</div>
                     </ng-template>
-
                     <div *ngIf="showBookInput" class="footer"
                         style="margin-bottom: 1rem;">
                         <input type="text" pInputText
@@ -335,12 +333,11 @@
                             style="margin-right: 8px; width: 25vw; " />
                         <button pButton type="button" label="Save"
                             (click)="saveBookInput()"
-                            style="margin-right: 4px;"></button>
+                            style="margin-right: 4px; background-color: blue;"></button>
                         <button pButton type="button" label="Cancel"
-                            class="p-button-secondary"
+                            class="p-button-secondary" style=" background-color: blue;"
                             (click)="cancelBookInput()"></button>
                     </div>
-
                 </ng-container>
             </div>
         </ng-template>

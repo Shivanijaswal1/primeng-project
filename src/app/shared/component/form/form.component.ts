@@ -164,7 +164,7 @@ export class FormComponent {
             data: { message: 'Form submitted successfully!' },
           });
         },
-        error: (error: any) => {
+        error:(error: any) => {
           this._mesaage.add({
             severity: 'error',
             summary: 'Error',
