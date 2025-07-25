@@ -233,7 +233,7 @@ formatDate(value: unknown): string {
         let valueB = b[sortField];
         if (valueA == null && valueB == null) return 0;
         if (valueA == null) return sortOrder;
-        if (valueB == null) return -sortOrder;
+        if (valueB == null) return - sortOrder;
 
         if (typeof valueA === 'string' && typeof valueB === 'string') {
           const result = valueA.localeCompare(valueB);
@@ -406,7 +406,6 @@ getTotalSelectedCount(): number {
 }
 
 getTotalUniqueParentCount(): number {
-  
   const uniqueParentSet = new Set<number>();
   this.selectedStudentIds.forEach(id => uniqueParentSet.add(id));
   this.filteredstudent.forEach(parent => {

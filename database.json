@@ -177,66 +177,6 @@
           "joinDate": "2025-07-08T18:30:00.000Z"
         }
       ]
-    },
-    {
-      "id": "5e6e",
-      "name": "jhb",
-      "email": "shivani@gmail.com",
-      "age": "21",
-      "selectedValue": "ART",
-      "selectedfees": "complete",
-      "father": "eeeeer",
-      "address": "dfghjk",
-      "city": "yuu",
-      "state": "HP",
-      "postalCode": "3225",
-      "children": [
-        {
-          "id": 295758,
-          "dateofbirth": "2025-07-01T18:30:00.000Z",
-          "project": "vbjn",
-          "role": "hjk",
-          "status": "True",
-          "joinDate": "2025-07-16T18:30:00.000Z"
-        },
-        {
-          "id": 55033,
-          "project": "tgyh",
-          "dateofbirth": "2025-07-01T18:30:00.000Z",
-          "role": "drty",
-          "status": "True",
-          "joinDate": "2025-07-08T18:30:00.000Z"
-        },
-        {
-          "id": 78680,
-          "project": "ghjkjj",
-          "dateofbirth": "2025-07-02T18:30:00.000Z",
-          "role": "vghj",
-          "status": "False",
-          "joinDate": "2025-06-30T18:30:00.000Z"
-        },
-        {
-          "id": 995993,
-          "project": "zealie",
-          "dateofbirth": "2013-12-01T18:30:00.000Z",
-          "joinDate": "2025-07-07T18:30:00.000Z",
-          "status": "True",
-          "role": "admin"
-        }
-      ]
-    },
-    {
-      "id": "aa17",
-      "name": "nameww",
-      "email": "asdfg@gmail.com",
-      "age": "22",
-      "selectedValue": "Medical",
-      "selectedfees": "Pending",
-      "father": "vg",
-      "address": "abc",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "2322"
     }
   ],
   "data": [

@@ -10,8 +10,8 @@ export class AdvanceSortingComponent {
   columns: any[] = [];
   sortFields: { field: string; order: string }[] = [];
   selectedItem: string = '';
-  sortOption = 'asc'; 
-   globalFilter: string = '';
+  sortOption = 'asc';
+  globalFilter: string = '';
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig

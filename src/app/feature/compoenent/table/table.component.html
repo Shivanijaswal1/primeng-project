@@ -21,7 +21,7 @@
           label="Delete"
           (handleclick)="del(selectedStudentIds)">
         </app-z-button>
-        
+
         <p-selectButton
           [options]="statusOptions"
           [(ngModel)]="selectedStatus"
@@ -33,17 +33,18 @@
         
   <div class="action-bar">
   <ng-container *ngIf="selectedStudentIds.length > 0">
- ({{ getTotalUniqueParentCount()  }} Parent selected)
- ({{ getSelectedChildrenCount() }} children Selected)
- ({{ getTotalSelectedCount() }} Total )
+    ({{ getTotalUniqueParentCount()  }} Parent selected)
+    ({{ getSelectedChildrenCount() }} children Selected)
+    ({{ getTotalSelectedCount() }} Total )
   </ng-container>
   
   <ng-container *ngIf="selectedStudentIds.length === 0 && selectedChildIds.length > 0">
     ({{ getTotalUniqueParentCount() }} Parent selected)
-({{ getSelectedChildrenCount() }} children selected)
-  ({{ getTotalSelectedCount() }} Total )
+    ({{ getSelectedChildrenCount() }} children selected)
+    ({{ getTotalSelectedCount() }} Total )
   </ng-container>
 </div>
+
       </div>
       <div class="toolbar-right">
         <span *ngIf="showInvalidError" class="toolbar-error">

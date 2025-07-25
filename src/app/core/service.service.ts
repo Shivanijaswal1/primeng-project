@@ -62,8 +62,6 @@ export class ServiceService {
   );
 }
 
-
-
   updateParentWithChildren(parentId: string, childrenData: any[]): Observable<any> {
   return this.http.get<any>(`http://localhost:3000/form/${parentId}`).pipe(
     switchMap((parent: { children: any[] }) => {
