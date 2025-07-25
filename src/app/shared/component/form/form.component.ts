@@ -74,12 +74,24 @@ export class FormComponent {
     private dialogservice: DialogService
   ) {}
 
+ formTabs = [
+  { label: 'Personal ', sectionId: 'section-one' },
+  { label: 'Contact ', sectionId: 'section-two' },
+  { label: 'Additional ', sectionId: 'section-three' }
+];
+
   ngOnInit(): void {
     this._service.getDummyData().subscribe((data) => {
       this.parentOptions = data;
       this.childOptions = data.children;
     });
   }
+  
+  scrollToSection(sectionId: string): void {
+  const section = document.querySelector(`.${sectionId}`);
+  section?.scrollIntoView({ behavior: 'smooth' });
+}
+
 
   onParentChange(event: any): void {
     const selected = this.parentOptions.find((p) => p.key === event.value);
@@ -101,7 +113,7 @@ export class FormComponent {
 
   feesprocess = [
     { name: 'Pending', code: 'pending' },
-    { name: 'complete', code: 'complete' },
+    { name: 'complete', code: 'complete'},
   ];
 
   handleValueChange(value: any) {
@@ -152,12 +164,11 @@ export class FormComponent {
         name: this.name,
         submissionTime: this.submissionTime,
       });
-
       this.updateMostRecentHighlight();
       this._service.addData(this.payload).subscribe({
         next: (response: any) => {
           this.formData = {};
-          this.ref = this.dialogservice.open(SubmitMessageComponent, {
+          this.ref = this.dialogservice.open(SubmitMessageComponent,{
             header: 'Form Submitted Message',
             width: '30%',
             styleClass: 'custom-dialog-header',
