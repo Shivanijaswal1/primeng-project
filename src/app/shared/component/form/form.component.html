@@ -127,7 +127,6 @@
                             letters.
                         </div>
                     </div>
-
                     <div class="address-group">
                         <div class="form-css">
                             <label for="address">
@@ -217,7 +216,8 @@
                     </div>
                     <div class="form-css">
                         <label for="chooseoption">
-                            Fees Procssing <span
+                            Fees Procssing
+                             <span
                                 *ngIf="feesprocessCtrl.errors "
                                 style="color: red;">*</span>
                         </label>
@@ -252,7 +252,7 @@
                     </div>
                     </div>
                     <div class="form-button">
-                        <p-button class="btn1" label="Cancel"
+                        <p-button class="btn1" label="Discard"
                             [class]="'p-button-danger mr-2'"
                             (onClick)="closeDialog()"></p-button>
                         <p-button class="btn2" label="Submit" [style]="{'background-color':'red','color':'white'}"
@@ -280,8 +280,7 @@
                             (click)="openPdf(i)">
                             <div class="card-content">
                                 <span class="pdf-label">
-                                    Student Detail form Assigned by: {{ pdf.name
-                                    }}
+                                    Student Detail form Assigned by: {{ pdf.name  }}
                                 </span>
                             </div>
                             <div class="pdf-icon">
@@ -308,11 +307,13 @@
                         <div class="card">
                             <p-toast />
                             <div class="card">
-                                <p-fileUpload name="demo[]"
+                                <p-fileUpload 
+                                    name="demo[]"
                                     url="https://www.primefaces.org/cdn/api/upload.php"
                                     (onUpload)="onUpload($event)"
                                     [multiple]="true"
-                                    accept="image/*" [maxFileSize]="1000000"
+                                    accept="image/*"
+                                    [maxFileSize]="1000000"
                                     mode="advanced">
                                 </p-fileUpload>
                             </div>
@@ -336,7 +337,7 @@
                     </div>
                     <ng-template #noBookData>
                         <div class="no-data-message"
-                            style="color: #888; margin-bottom: 10px;">No book sdata</div>
+                            style="color: #888; margin-bottom: 10px;">No book data</div>
                     </ng-template>
                     <div *ngIf="showBookInput" class="footer"
                         style="margin-bottom: 1rem;">

@@ -1,12 +1,9 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ServiceService } from '../../service/service.service';
-import {
-  DialogService,
-  DynamicDialogConfig,
-  DynamicDialogRef,
-} from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import { DialogMessageComponent } from '../dialog-message/dialog-message.component';
+
 export interface FormField {
   field: string;
   fieldName: string;
@@ -36,6 +33,8 @@ export class ConfigurationBasedFormComponent {
   sectionName: string = '';
   formSubmitted: boolean = false;
   message: string = 'Please Complete all required fields';
+  studentFormSections: any[] = [];
+  pendingFeeFormSections: any[] = [];
 
   constructor(
     private _Service: ServiceService,
@@ -45,8 +44,11 @@ export class ConfigurationBasedFormComponent {
     private dialogService: DialogService
   ) {}
 
-
 ngOnInit(): void {
+  this._Service.getDummyData().subscribe((data)=>{
+    this.studentFormSections = data.studentDetailForm;
+    this.pendingFeeFormSections = data.pendingStudentFees;
+  })
   this.parentId = this.config.data?.parentId;
   this.buildForm(); 
 }
@@ -64,7 +66,7 @@ addPolicy(): void {
   if (policies.length >= 3) return;
   const policyGroup = this._fb.group({});
   this.fields.forEach(field => {
-    policyGroup.addControl(
+      policyGroup.addControl(
       field.field,
       this._fb.control('', field.required ? Validators.required : null)
     );

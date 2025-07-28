@@ -1,10 +1,11 @@
-<h2 *ngIf="sectionName">{{ sectionName }}</h2>
+<h2 *ngIf="formConfig?.sectionName">{{ formConfig.sectionName }}</h2>
 <form [formGroup]="configForm" class="form-container">
   <div formArrayName="policy">
     <div
       *ngFor="let group of getPolicyArray().controls; let i = index"
       [formGroupName]="i"
       class="policy-section">
+      
       <div class="remove-btn" *ngIf="getPolicyArray().length > 1">
         <button
           pButton
@@ -13,10 +14,9 @@
           type="button"
           (click)="removePolicy(i)"></button>
       </div>
-
         <div class="form-row dob-join-group">
-  <div class="form-field">
-    <label>
+        <div class="form-field">
+       <label>
       Date of Birth
       <span style="color: red">*</span>
     </label>
@@ -49,7 +49,6 @@
       {{ field.fieldName }}
       <span *ngIf="field.required" style="color: red">*</span>
     </label>
-
     <input *ngIf="field.type === 'text'"
            pInputText
            [formControlName]="field.field"
@@ -63,7 +62,7 @@
   </div>
 </ng-container>
       </div>
-      <hr />
+      <hr/>
     </div>
   <div class="form-actions">
   <button pButton type="button" (click)="addPolicy()"

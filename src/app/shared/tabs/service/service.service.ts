@@ -14,7 +14,7 @@ export class ServiceService {
     const studentDetailForm = [
       {
         section: 'studentDetails',
-        sectionName: 'Student form detail',
+        sectionName: 'Student Form Detail',
         field: [
            {
             type: 'calendar',

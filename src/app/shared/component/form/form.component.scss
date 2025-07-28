@@ -94,6 +94,7 @@ label {
 .pdf-preview {
   padding: 20px;
   border-left: 1px solid #ddd;
+ 
 }
 
 .pdf-card {
@@ -102,7 +103,7 @@ label {
   margin-bottom: 15px;
   background-color: #9abbdd;
   border-radius: 6px;
-  transition: background 0.3s;
+  transition: background 0.3s; 
 }
 .pdf-header{
   position: absolute;
@@ -280,7 +281,7 @@ p-fileUpload {
   cursor: pointer;
   color: #333;
   padding-bottom: 6px;
-  position: relative;
+
 }
 
 

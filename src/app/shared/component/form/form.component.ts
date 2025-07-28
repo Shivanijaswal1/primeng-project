@@ -6,7 +6,6 @@ import { MessageService } from 'primeng/api';
 import { jsPDF } from 'jspdf';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SubmitMessageComponent } from '../submit-message/submit-message.component';
-import { FileUploadEvent } from 'primeng/fileupload';
 
 interface FormPayload {
   name: string;
@@ -74,11 +73,11 @@ export class FormComponent {
     private dialogservice: DialogService
   ) {}
 
- formTabs = [
-  { label: 'Personal ', sectionId: 'section-one' },
-  { label: 'Contact ', sectionId: 'section-two' },
-  { label: 'Additional ', sectionId: 'section-three' }
-];
+  formTabs = [
+    { label: 'Personal ', sectionId: 'section-one' },
+    { label: 'Contact ', sectionId: 'section-two' },
+    { label: 'Additional ', sectionId: 'section-three' },
+  ];
 
   ngOnInit(): void {
     this._service.getDummyData().subscribe((data) => {
@@ -86,12 +85,11 @@ export class FormComponent {
       this.childOptions = data.children;
     });
   }
-  
-  scrollToSection(sectionId: string): void {
-  const section = document.querySelector(`.${sectionId}`);
-  section?.scrollIntoView({ behavior: 'smooth' });
-}
 
+  scrollToSection(sectionId: string): void {
+    const section = document.querySelector(`.${sectionId}`);
+    section?.scrollIntoView({ behavior: 'smooth' });
+  }
 
   onParentChange(event: any): void {
     const selected = this.parentOptions.find((p) => p.key === event.value);
@@ -113,7 +111,7 @@ export class FormComponent {
 
   feesprocess = [
     { name: 'Pending', code: 'pending' },
-    { name: 'complete', code: 'complete'},
+    { name: 'complete', code: 'complete' },
   ];
 
   handleValueChange(value: any) {
@@ -122,10 +120,6 @@ export class FormComponent {
 
   handlefeesprocessing(value: any) {
     this.selectedfees = value;
-  }
-
-  closeDialog() {
-    this.ref.close();
   }
 
   onSubmit(form: NgForm) {
@@ -144,7 +138,6 @@ export class FormComponent {
         state: this.state,
         postalCode: this.postalCode,
       } as unknown as FormPayload;
-      console.log(this.payload);
       const doc = new jsPDF();
       doc.text(`Name: ${this.name}`, 10, 10);
       doc.text(`Email: ${this.email}`, 10, 20);
@@ -168,14 +161,14 @@ export class FormComponent {
       this._service.addData(this.payload).subscribe({
         next: (response: any) => {
           this.formData = {};
-          this.ref = this.dialogservice.open(SubmitMessageComponent,{
+          this.ref = this.dialogservice.open(SubmitMessageComponent, {
             header: 'Form Submitted Message',
             width: '30%',
             styleClass: 'custom-dialog-header',
             data: { message: 'Form submitted successfully!' },
           });
         },
-        error:(error: any) => {
+        error: (error: any) => {
           this._mesaage.add({
             severity: 'error',
             summary: 'Error',
@@ -193,6 +186,11 @@ export class FormComponent {
       });
     }
   }
+  
+  closeDialog() {
+    this.formData.reset();
+  }
+
 
   onUpload(event: any) {
     for (let file of event.files) {
