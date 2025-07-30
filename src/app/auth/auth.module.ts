@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { AuthComponent } from './auth.component';
 import { UiModule } from '../ui/ui/ui.module';
+ 
 
 @NgModule({
   declarations: [

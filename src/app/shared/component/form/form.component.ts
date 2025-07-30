@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { jsPDF } from 'jspdf';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SubmitMessageComponent } from '../submit-message/submit-message.component';
-import { DiscardButtonComponent } from '../discard-button/discard-button.component';
+import { DiscardButtonComponent } from '../../discard-button/discard-button.component';
 
 interface FormPayload {
   name: string;

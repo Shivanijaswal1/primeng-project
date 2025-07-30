@@ -1,59 +1,127 @@
-.auth-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 100px auto;
-  padding: 2rem;
-  border-radius: 12px;
-  background-color: #2c78e2;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
 
-.logo {
-  width: 400px;
-  height: auto;
-  margin-bottom: 30px;
-}
-
-.google-button-container {
+.login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(to right, #f8fbff, #e9f1ff);
+  padding: 2rem;
 }
 
-asl-google-signin-button {
+.login-card {
+  display: flex;
   width: 100%;
-  max-width: 300px;
-  height: 50px;
-  display: inline-block;
+  max-width: 950px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
-.google-label {
-  font-size: 1rem;
-  font-weight: 500;
+.login-image {
+  flex: 1;
+  background-color: #f0f6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-image img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+.login-form {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-form h2 {
+  font-size: 2rem;
   margin-bottom: 0.5rem;
-  color: #555;
+  color: #1e3a8a;
 }
-.google-button-container asl-google-signin-button {
+
+.subtext {
+  margin-bottom: 2rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.input-field {
+  margin-bottom: 1rem;
+}
+
+.forgot-link {
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  color: #3b82f6;
   display: inline-block;
-  border: none;
-  background-color: #4285f4;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 16px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.or-divider {
   text-align: center;
+  color: #9ca3af;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
 }
 
-.google-button-container asl-google-signin-button:hover {
-  background-color: #357ae8;
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
 
-#myGoogleButton {
-  width: 250px;
-  height: 50px;
+.signup-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #4b5563;
 }
+
+.signup-text a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+.p-inputtext {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+}
+
+.p-inputtext:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.1rem rgba(37, 99, 235, 0.25);
+  background-color: #ffffff;
+}
+
+.p-input-icon-left {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.p-input-icon-left > i {
+  left: 1rem;
+  color: #9ca3af;
+}
+
+.p-input-icon-left > input {
+  padding-left: 2.5rem;
+}
+

@@ -24,7 +24,7 @@ import { SubmitMessageComponent } from './component/submit-message/submit-messag
 import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
 import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-message.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { DiscardButtonComponent } from './component/discard-button/discard-button.component';
+import { DiscardButtonComponent } from './discard-button/discard-button.component';
 import { HorizontalBarChartComponent } from './component/horizontal-bar-chart/horizontal-bar-chart.component';
 
 

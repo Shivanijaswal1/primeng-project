@@ -134,7 +134,7 @@ svg.selectAll('.layer')
   .append('g')
   .attr('fill', d => colors(d.key))
   .selectAll('rect')
-  .data(d => d.map(v => ({ ...v, key: (d as any).key }))) // add key to use in tooltip
+  .data(d => d.map(v => ({ ...v, key: (d as any).key }))) 
   .enter()
   .append('rect')
   .attr('y', d => y((d.data as any).year)!)

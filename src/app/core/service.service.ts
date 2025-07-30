@@ -19,6 +19,7 @@ interface Child {
   status: string;
 }
 export interface BarChartData {
+  color: string;
   name: any;
   id?: number;
   label: string;
