@@ -36,18 +36,7 @@ a:hover{
   color: black;
   font-weight: bold;
 }
-.sub-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgb(70, 89, 181);
-  padding: 12px 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  color: white;
-  flex-wrap: wrap;
-  gap: 12px;
-}
+
 
 .toolbar-left {
   display: flex;
@@ -478,3 +467,33 @@ mark.highlight-active {
   background-color: #c0e1e8 !important;
   border-bottom: 2px solid #0f5132;
 }
+.main {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f9fc;
+}
+
+.sub-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.toolbar-left,
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.action-bar {
+  font-size: 14px;
+  font-weight: 600;
+  // color: #37474f;
+}
+
+

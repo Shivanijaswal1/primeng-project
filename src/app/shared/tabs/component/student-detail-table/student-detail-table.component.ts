@@ -19,6 +19,7 @@ export interface Product {
   templateUrl: './student-detail-table.component.html',
   styleUrls: ['./student-detail-table.component.scss'],
 })
+
 export class StudentDetailTableComponent {
   products!: Product[];
   cols!: Column[];
@@ -48,7 +49,7 @@ export class StudentDetailTableComponent {
       { field: 'rating', header: 'Rating' },
     ];
 
-    this.selectedColumns = [...this.cols];
+  this.selectedColumns = [...this.cols];
   }
   get selectedColumn(): Column[] {
     return this.selectedColumns;

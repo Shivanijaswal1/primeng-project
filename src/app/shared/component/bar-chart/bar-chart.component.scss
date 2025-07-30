@@ -3,6 +3,7 @@
 }
 .main {
   width: 800px;
+  height: 420px;
   display: flex;
   justify-content: center;  
   text-align: center;     
@@ -10,6 +11,134 @@
   border-radius: 12px;      
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 20px;
-     
   box-sizing: border-box;
+}
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+  background: #f4f7fa;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #0c355c;
+  color: white;
+  padding: 20px;
+}
+.sidebar .logo {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+.sidebar .menu p {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar li {
+  padding: 10px 0;
+  cursor: pointer;
+}
+.sidebar li.active {
+  color: #00bfff;
+}
+
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+
+.stats-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.stat-box {
+  background: white;
+  padding: 14px;
+  border-radius: 10px;
+  flex: 1;
+  text-align: center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chart-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.bottom-cards {
+  display: flex;
+  gap: 20px;
+}
+.bottom-cards .card {
+  flex: 1;
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+app-header {
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  background-color: #ffffff;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+#chart {
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
+}
+
+
+app-horizontal-bar-chart {
+  display: block;
+  margin: 1rem auto;
+  padding: 1rem;
+  width: 95%;
+  max-width: 1000px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  #chart {
+    height: 300px;
+  }
 }

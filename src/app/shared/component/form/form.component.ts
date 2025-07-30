@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { jsPDF } from 'jspdf';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SubmitMessageComponent } from '../submit-message/submit-message.component';
+import { DiscardButtonComponent } from '../discard-button/discard-button.component';
 
 interface FormPayload {
   name: string;
@@ -29,6 +30,7 @@ interface UploadEvent {
 export class FormComponent {
   @ViewChild('dropdownElem') dropdownElem: any;
   @ViewChild('content', { static: false })
+
   panelSize: number[] = [60, 40];
   minSize: number[] = [50, 10];
   content!: ElementRef;
@@ -56,6 +58,7 @@ export class FormComponent {
   pdfUrls: any[] = [];
   uploadedFiles: any = [];
   message: string = 'Please Complete all required fields';
+  messages:string='Are you sure disacrd changes';
   mostRecentType: 'pdf' | 'file' | null = null;
   mostRecentIndex: number = -1;
   activeTab: 'pdf' | 'book' = 'pdf';
@@ -187,8 +190,14 @@ export class FormComponent {
     }
   }
   
-  closeDialog() {
-    this.formData.reset();
+  ResetForm(form:NgForm) {
+    this.ref = this.dialogservice.open(DiscardButtonComponent,{
+      header:'Discard Form',
+      width:'30%',
+      styleClass:'custom-dialog-header',
+      
+    })
+    form.reset();
   }
 
 

@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 @Component({
-  selector: 'app-submit-message',
-  templateUrl: './submit-message.component.html',
-  styleUrls: ['./submit-message.component.scss'],
+  selector: 'app-discard-button',
+  templateUrl: './discard-button.component.html',
+  styleUrls: ['./discard-button.component.scss']
 })
-export class SubmitMessageComponent {
-  message: string = '';
+export class DiscardButtonComponent {
+  messages: string = '';
 
   constructor(
     private DynamicDialogRef: DynamicDialogRef,
@@ -19,7 +19,6 @@ export class SubmitMessageComponent {
   }
 
   ngOnInit() {
-    this.message = this.Config.data.message;
+    this.messages = this.Config.data.messages;
   }
-
-}
+}  

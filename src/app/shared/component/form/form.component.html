@@ -254,13 +254,14 @@
                     <div class="form-button">
                         <p-button class="btn1" label="Discard"
                             [class]="'p-button-danger mr-2'"
-                            (onClick)="closeDialog()"></p-button>
+                            (onClick)="ResetForm(myForm)"></p-button>
                         <p-button class="btn2" label="Submit" [style]="{'background-color':'red','color':'white'}"
                             (onClick)="onSubmit(myForm)"></p-button>
                     </div>
                 </div>
             </form>
         </ng-template>
+        
         <ng-template pTemplate>
             <div class="pdf-preview">
                 <div class="pdf-header">
