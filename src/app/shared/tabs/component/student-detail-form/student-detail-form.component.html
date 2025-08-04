@@ -1,38 +1,37 @@
- <form #myForm="ngForm">
-    <div class="form-css">
-        <app-input label="Enrollment No" [(ngModel)]="user.id" name="id"
-            [required]="true" type="text"
-            #ageCtrl="ngModel"></app-input>
-        <div *ngIf="ageCtrl.invalid && ageCtrl.touched" class="error-text"
-            style="color: red;">
-            Enrollment Number is required
-        </div>
-    </div><br>
-    <div class="form-css">
-        <app-input label="FullName" [(ngModel)]="user.name" name="name"
-            [required]="true" type="text" #nameCtrl="ngModel"></app-input>
-        <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="error-text"
-            style="color: red;">
-            Name is required
-        </div>
-    </div>
-    <br>
-    <div class="form-css">
-        <app-input label="Email ID" [(ngModel)]="user.email" name="email"
-            [required]="true" type="email" #emailCtrl="ngModel"></app-input>
-        <div *ngIf="emailCtrl.invalid && emailCtrl.touched"
-            class="error-text" style="color: red;">
-            Email is required
-        </div>
-    </div>
 
-    <div class="form-css">
-        <app-input label="Age" [(ngModel)]="user.age" name="age"
-            [required]="true" type="number" [min]="18" [max]="100"
-            #ageCtrl="ngModel"></app-input>
-        <div *ngIf="ageCtrl.invalid && ageCtrl.touched" class="error-text"
-            style="color: red;">
-            Age is required
-        </div>
+<form #myForm="ngForm" >
+  <div *ngFor="let field of formFields" class="form-css">
+    <app-input
+      [label]="field.label"
+      [(ngModel)]="user[field.name]"
+      [required]="field.required"
+      [type]="field.type"
+      [name]="field.name"
+      name="{{ field.name }}"
+      #ctrl="ngModel"
+    ></app-input>
+    <div *ngIf="ctrl.invalid && ctrl.touched" class="error-text" style="color: red;">
+      {{ field.errorMsg }}
     </div>
+  </div>
+   <div class="button-group" style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+    <button
+      pButton
+      type="button"
+      label="Discard"
+      icon="pi pi-times"
+      class="p-button-secondary"
+    ></button>
+
+    <button
+      pButton
+      type="button"
+      label="Save"
+      icon="pi pi-check"
+      class="p-button-success"
+      [disabled]="myForm.invalid"
+      (click)="submitform()"
+    ></button>
+  </div>
+
 </form>

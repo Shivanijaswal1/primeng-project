@@ -4,6 +4,26 @@ import { of } from 'rxjs/internal/observable/of';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
+export type User = {
+  id: string | null;
+  name: string;
+  email: string;
+  age: number | null;  
+  // city:string | null
+
+};
+
+export type UserField = {
+  label: string;
+  name: keyof User; // 💡 strongly typed keys from User
+  type: string;
+  required: boolean;
+  min?: number;
+  max?: number;
+  errorMsg: string;
+  
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -105,5 +125,39 @@ export class ServiceService {
 getProductsMini(): Promise<any[]> {
   return firstValueFrom(this.http.get<any[]>("http://localhost:3000/product"));
 }
+getUserFormFields(): UserField[] {
+    return [
+      {
+        label: 'Enrollment No',
+        name: 'id',
+        type: 'text',
+        required: true,
+        errorMsg: 'Enrollment No is required'
+      },
+      {
+        label: 'Full Name',
+        name: 'name',
+        type: 'text',
+        required: true,
+        errorMsg: 'Name is required'
+      },
+      {
+        label: 'Email ID',
+        name: 'email',
+        type: 'email',
+        required: true,
+        errorMsg: 'Email is required'
+      },
+      {
+        label: 'Age',
+        name: 'age',
+        type: 'number',
+        required: true,
+        min: 18,
+        max: 100,
+        errorMsg: 'Age is required'
+      },
+    ];
+  }
 
 }

@@ -4,9 +4,10 @@
             <form #myForm="ngForm">
                 <div class="form-tab-header">
           <div
-            *ngFor="let tab of formTabs"
-             class="form-tab"
-            (click)="scrollToSection(tab.sectionId)">
+            *ngFor="let tab of formTabs; let i=index"
+            class="form-tab"
+            [ngClass]="{ 'active-tab': activeTabIndex === i }"
+            (click)="scrollToSection(tab.sectionId,i)">
             {{ tab.label }}
               </div>
             </div>

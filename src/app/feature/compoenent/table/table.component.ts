@@ -1,4 +1,11 @@
-import {Component,ElementRef,HostListener,QueryList,ViewChild,ViewChildren} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ServiceService } from 'src/app/core/service.service';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
@@ -13,7 +20,7 @@ import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  providers: [DialogService, ConfirmationService, FilterService,DatePipe],
+  providers: [DialogService, ConfirmationService, FilterService, DatePipe],
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
@@ -73,8 +80,7 @@ export class TableComponent {
   ) {}
   selectedParentIdsFromChildren: Set<number> = new Set();
   selectedParentIds: (number | string)[] = [];
-  selectedChildRecords: { parentId: number, childId: number }[] = [];
-
+  selectedChildRecords: { parentId: number; childId: number }[] = [];
 
   ngOnInit() {
     this.getstudentData();
@@ -103,16 +109,16 @@ export class TableComponent {
     ];
   }
 
-  isDate(value: unknown): value is string  {
-   return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
-}
-
-formatDate(value: unknown): string {
-  if (this.isDate(value)) {
-    return this.datePipe.transform(value, 'dd/MM/yyyy') ?? '';
+  isDate(value: unknown): value is string {
+    return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
   }
-  return String(value);
-}
+
+  formatDate(value: unknown): string {
+    if (this.isDate(value)) {
+      return this.datePipe.transform(value, 'dd/MM/yyyy') ?? '';
+    }
+    return String(value);
+  }
 
   getstudentData() {
     this._studentService.getStudent().subscribe((data) => {
@@ -233,7 +239,7 @@ formatDate(value: unknown): string {
         let valueB = b[sortField];
         if (valueA == null && valueB == null) return 0;
         if (valueA == null) return sortOrder;
-        if (valueB == null) return - sortOrder;
+        if (valueB == null) return -sortOrder;
 
         if (typeof valueA === 'string' && typeof valueB === 'string') {
           const result = valueA.localeCompare(valueB);
@@ -255,170 +261,303 @@ formatDate(value: unknown): string {
     this.filteredstudent = [...this.student];
   }
 
+  // handleNameClick(rowData: any) {
+  //   this.ref = this.dialogservice.open(TabsComponent, {
+  //     data: {
+  //       parentId: rowData.id,
+  //       ...rowData,
+  //     },
+  //     header: `Student Name: ${rowData.name}`,
+  //     width: '40%',
+  //     height: '79vh',
+  //     styleClass: 'custom-dialog-header',
+  //   });
+  //   this.ref.onClose.subscribe((formValue) => {
+  //   if (formValue?.policy?.length > 0 && rowData.id) {
+  //     const newChildren = formValue.policy.map((policy: any) => ({
+  //       id: Math.floor(Math.random() * 1000000),
+  //       ...policy,
+  //     }));
+
+  //     this.loading = true;
+  //     this._studentService.updateParentWithChildren(rowData.id, newChildren).subscribe({
+  //         next: () => {
+  //             this.getstudentData();
+  //             this.expandedRows[rowData.id] = true;
+  //         },
+  //         error: (err) => {
+  //           console.error('Error updating parent:', err);
+  //           this.loading = false;
+  //         },
+  //       });
+  //   }
+  //     this.loading = true;
+  //     setTimeout(() => {
+  //       this.getstudentData();
+  //     }, 2000);
+  // });
+  // }
+
+  // handleNameClick(rowData: any) {
+  //   this.ref = this.dialogservice.open(TabsComponent, {
+  //     data: {
+  //       parentId: rowData.id,
+  //       ...rowData,
+  //     },
+  //     header: `Student Name: ${rowData.name}`,
+  //     width: '40%',
+  //     height: '79vh',
+  //     styleClass: 'custom-dialog-header',
+  //   });
+
+  //   this.ref.onClose.subscribe((formValue) => {
+  //     if (formValue?.policy?.length > 0 && rowData.id) {
+  //       const updatedPolicy = formValue.policy[0];
+
+  //       const index = this.student.findIndex(student => student.id === rowData.id);
+  //       if (index !== -1) {
+  //         const student = this.student[index];
+
+  //         //  Update parent-level fields
+  //         for (const key in updatedPolicy) {
+  //           if (
+  //             updatedPolicy.hasOwnProperty(key) &&
+  //             student[key] !== undefined &&
+  //             student[key] !== updatedPolicy[key]
+  //           ) {
+  //             student[key] = updatedPolicy[key];
+  //           }
+  //         }
+
+  //         // //  Update first child (or push new if children not present)
+  //         // if (!student.children || !student.children.length) {
+  //         //   student.children = [];
+  //         // }
+
+  //         // const updatedChild = {
+  //         //   id: Math.floor(Math.random() * 1000000),
+  //         //   ...updatedPolicy,
+  //         // };
+
+  //         // // Replace or add first child
+  //         // student.children[0] = updatedChild;
+
+  //         // ✅ Expand the updated row
+  //         // this.expandedRows = { ...this.expandedRows, [student.id]: true };
+  //       }
+
+  //       //  Optional API update
+  //       this.loading = true;
+  //       this._studentService.updateParentWithChildren(rowData.id, [updatedPolicy]).subscribe({
+  //         next: () => {
+  //           this.loading = false;
+  //         },
+  //         error: (err) => {
+  //           console.error('Error updating:', err);
+  //           this.loading = false;
+  //         },
+  //       });
+  //     }
+  //         this.loading = true;
+  //       setTimeout(() => {
+  //         this.getstudentData();
+  //       }, 2000);
+  //   });
+  // }
+
   handleNameClick(rowData: any) {
+    debugger;
     this.ref = this.dialogservice.open(TabsComponent, {
       data: {
         parentId: rowData.id,
         ...rowData,
       },
       header: `Student Name: ${rowData.name}`,
-      width: '40%',
+      width: '40%', 
       height: '79vh',
       styleClass: 'custom-dialog-header',
     });
     this.ref.onClose.subscribe((formValue) => {
-    if (formValue?.policy?.length > 0 && rowData.id) {
-      const newChildren = formValue.policy.map((policy: any) => ({
-        id: Math.floor(Math.random() * 1000000),
-        ...policy,
-      }));
+      if (formValue?.policy?.length > 0 && rowData.id) {
+        const updatedPolicy = formValue.policy[0];
+        const index = this.student.findIndex(
+          (student) => student.id === rowData.id
+        );
+        if (index !== -1) {
+          const student = this.student[index];
 
-      this.loading = true;
-      this._studentService.updateParentWithChildren(rowData.id, newChildren).subscribe({
-          next: () => {
-              this.getstudentData(); 
-              this.expandedRows[rowData.id] = true; 
-          },
-          error: (err) => {
-            console.error('Error updating parent:', err);
-            this.loading = false;
-          },
-        });
-    }
-      this.loading = true;
-      setTimeout(() => {
-        this.getstudentData();
-      }, 2000);
-  });
-  }
-
-onRowExpand(event: any) {
-  const parent = event.data;
-  parent.children = parent.children.map((child: any, index: number) => ({
-    ...child,
-    id: child.id ?? Math.floor(Math.random() * 1000000 + index)
-  }));
-}
-
-childSelections: { [parentId: number]: any[] } = {};
-
-onChildSelect(parentId: number, event: any) {
-  const child = event.data;
-  this.selectedChildRecords.push({ parentId, childId: child.id });
-}
-
-onChildUnselect(parentId: number, event: any) {
-  const child = event.data;
-  this.selectedChildRecords = this.selectedChildRecords.filter(
-    item => !(item.parentId === parentId && item.childId === child.id)
-  );
-}
-
-handleChildCheckboxChange(checked: boolean, childId: number, parentId: number){
-  if (checked) {
-    if (!this.selectedChildIds.includes(childId)) {
-      this.selectedChildIds.push(childId);
-    }
-  } else {
-    this.selectedChildIds = this.selectedChildIds.filter(id => id !== childId);
-  }
-  this.updateSelectedParentsFromChildren();
-}
-
-
-handleCheckboxChange(checked: boolean, parentId: number): void {
-  const parent = this.filteredstudent.find(p => p.id === parentId);
-  if (checked) {
-        this.showDeleteButton = checked;
-    if (!this.selectedStudentIds.includes(parentId)) {
-      this.selectedStudentIds.push(parentId);
-    }
-    if (parent?.children?.length) {
-      parent.children.forEach((child: { id: number; }) => {
-        if (!this.selectedChildIds.includes(child.id)) {
-          this.selectedChildIds.push(child.id);
+          Object.keys(updatedPolicy).forEach((key) => {
+            if (
+              student.hasOwnProperty(key) &&
+              student[key] !== updatedPolicy[key]
+            ) {
+              student[key] = updatedPolicy[key];
+            }
+          });
+          this.student = [...this.student];
         }
-      });
-    }
-  } else { 
-    this.showDeleteButton = checked;
-    this.selectedStudentIds = this.selectedStudentIds.filter(id => id !== parentId);
-    if (parent?.children?.length) {
-      parent.children.forEach((child: { id: number; }) => {
-        this.selectedChildIds = this.selectedChildIds.filter(id => id !== child.id);
-      });
-    }
-  }
-  this.updateSelectedParentsFromChildren(); 
-}
-
-onSelectAllChildChange(checked: boolean, children: any[]) {
-  const ids = children.map(c => c.id);
-  if (checked) {
-    ids.forEach(id => {
-      if (!this.selectedChildIds.includes(id)) {
-        this.selectedChildIds.push(id);
+        this.loading = true;
+        this._studentService
+          .updateParentWithChildren(rowData.id, [updatedPolicy])
+          .subscribe({
+            next: () => {
+              this.loading = false;
+            },
+            error: (err) => {
+              console.error('Error updating parent:', err);
+              this.loading = false;
+            },
+          });
       }
     });
-  } else {
-    this.selectedChildIds = this.selectedChildIds.filter(id => !ids.includes(id));
   }
-    this.showDeleteButton = checked;
-}
 
-areAllChildrenSelected(children: any[]): boolean {
-  return children.every(child => this.selectedChildIds.includes(child.id));
-}
-
-getSelectedChildrenCount(): number {
-  if (this.selectedStudentIds.length > 0) {
-    return this.filteredstudent
-      .filter(parent => this.selectedStudentIds.includes(parent.id))
-      .reduce((count, parent) => {
-        const childCount = Array.isArray(parent.children) ? parent.children.length : 0;
-        return count + childCount;
-      }, 0);
+  onRowExpand(event: any) {
+    const parent = event.data;
+    parent.children = parent.children.map((child: any, index: number) => ({
+      ...child,
+      id: child.id ?? Math.floor(Math.random() * 1000000 + index),
+    }));
   }
-  return this.selectedChildIds.length;
-}
 
-getTotalChildCount(): number {
-  return this.filteredstudent
-    ?.reduce((count, student) => count + (student.children?.length || 0), 0);
-}
+  childSelections: { [parentId: number]: any[] } = {};
 
-getSelectedParentsFromChildren(): Set<number> {
-  const selectedParents = new Set<number>();
-  this.filteredstudent.forEach(parent => {
-    if(parent.children?.some((child: { id: number; }) => this.selectedChildIds.includes(child.id))) {
-      selectedParents.add(parent.id);
+  onChildSelect(parentId: number, event: any) {
+    const child = event.data;
+    this.selectedChildRecords.push({ parentId, childId: child.id });
+  }
+
+  onChildUnselect(parentId: number, event: any) {
+    const child = event.data;
+    this.selectedChildRecords = this.selectedChildRecords.filter(
+      (item) => !(item.parentId === parentId && item.childId === child.id)
+    );
+  }
+
+  handleChildCheckboxChange(
+    checked: boolean,
+    childId: number,
+    parentId: number
+  ) {
+    if (checked) {
+      if (!this.selectedChildIds.includes(childId)) {
+        this.selectedChildIds.push(childId);
+      }
+    } else {
+      this.selectedChildIds = this.selectedChildIds.filter(
+        (id) => id !== childId
+      );
     }
-  });
-  return selectedParents;
-}
+    this.updateSelectedParentsFromChildren();
+  }
 
-getTotalSelectedCount(): number {
-  if (this.selectedStudentIds.length > 0) {
-    return this.getTotalUniqueParentCount() + this.getSelectedChildrenCount();
-  } else {
+  handleCheckboxChange(checked: boolean, parentId: number): void {
+    const parent = this.filteredstudent.find((p) => p.id === parentId);
+    if (checked) {
+      this.showDeleteButton = checked;
+      if (!this.selectedStudentIds.includes(parentId)) {
+        this.selectedStudentIds.push(parentId);
+      }
+      if (parent?.children?.length) {
+        parent.children.forEach((child: { id: number }) => {
+          if (!this.selectedChildIds.includes(child.id)) {
+            this.selectedChildIds.push(child.id);
+          }
+        });
+      }
+    } else {
+      this.showDeleteButton = checked;
+      this.selectedStudentIds = this.selectedStudentIds.filter(
+        (id) => id !== parentId
+      );
+      if (parent?.children?.length) {
+        parent.children.forEach((child: { id: number }) => {
+          this.selectedChildIds = this.selectedChildIds.filter(
+            (id) => id !== child.id
+          );
+        });
+      }
+    }
+    this.updateSelectedParentsFromChildren();
+  }
+
+  onSelectAllChildChange(checked: boolean, children: any[]) {
+    const ids = children.map((c) => c.id);
+    if (checked) {
+      ids.forEach((id) => {
+        if (!this.selectedChildIds.includes(id)) {
+          this.selectedChildIds.push(id);
+        }
+      });
+    } else {
+      this.selectedChildIds = this.selectedChildIds.filter(
+        (id) => !ids.includes(id)
+      );
+    }
+    this.showDeleteButton = checked;
+  }
+
+  areAllChildrenSelected(children: any[]): boolean {
+    return children.every((child) => this.selectedChildIds.includes(child.id));
+  }
+
+  getSelectedChildrenCount(): number {
+    if (this.selectedStudentIds.length > 0) {
+      return this.filteredstudent
+        .filter((parent) => this.selectedStudentIds.includes(parent.id))
+        .reduce((count, parent) => {
+          const childCount = Array.isArray(parent.children)
+            ? parent.children.length
+            : 0;
+          return count + childCount;
+        }, 0);
+    }
     return this.selectedChildIds.length;
   }
-}
 
-getTotalUniqueParentCount(): number {
-  const uniqueParentSet = new Set<number>();
-  this.selectedStudentIds.forEach(id => uniqueParentSet.add(id));
-  this.filteredstudent.forEach(parent => {
-    const childIds = (parent.children || []).map((c: { id: any; }) => c.id);
-    const match = this.selectedChildIds.find(id => childIds.includes(id));
-    if (match) {
-      uniqueParentSet.add(parent.id);
+  getTotalChildCount(): number {
+    return this.filteredstudent?.reduce(
+      (count, student) => count + (student.children?.length || 0),
+      0
+    );
+  }
+
+  getSelectedParentsFromChildren(): Set<number> {
+    const selectedParents = new Set<number>();
+    this.filteredstudent.forEach((parent) => {
+      if (
+        parent.children?.some((child: { id: number }) =>
+          this.selectedChildIds.includes(child.id)
+        )
+      ) {
+        selectedParents.add(parent.id);
+      }
+    });
+    return selectedParents;
+  }
+
+  getTotalSelectedCount(): number {
+    if (this.selectedStudentIds.length > 0) {
+      return this.getTotalUniqueParentCount() + this.getSelectedChildrenCount();
+    } else {
+      return this.selectedChildIds.length;
     }
-  });
-  return uniqueParentSet.size;
-}
+  }
 
-handleCheckboxRefesh(checked: boolean, id: number) {
+  getTotalUniqueParentCount(): number {
+    const uniqueParentSet = new Set<number>();
+    this.selectedStudentIds.forEach((id) => uniqueParentSet.add(id));
+    this.filteredstudent.forEach((parent) => {
+      const childIds = (parent.children || []).map((c: { id: any }) => c.id);
+      const match = this.selectedChildIds.find((id) => childIds.includes(id));
+      if (match) {
+        uniqueParentSet.add(parent.id);
+      }
+    });
+    return uniqueParentSet.size;
+  }
+
+  handleCheckboxRefesh(checked: boolean, id: number) {
     if (checked) {
       if (!this.selectedStudentIds.includes(id)) {
         this.selectedStudentIds.push(id);
@@ -432,16 +571,18 @@ handleCheckboxRefesh(checked: boolean, id: number) {
     this.showDeleteButton = this.selectedStudentIds.length > 0;
   }
 
-updateSelectedParentsFromChildren() {
-  const parentSet = new Set<number>();
-  for (const student of this.filteredstudent) {
-    const selectedChildren = student.children?.filter((c: { id: number; }) => this.selectedChildIds.includes(c.id));
-    if (selectedChildren?.length) {
-      parentSet.add(student.id);
+  updateSelectedParentsFromChildren() {
+    const parentSet = new Set<number>();
+    for (const student of this.filteredstudent) {
+      const selectedChildren = student.children?.filter((c: { id: number }) =>
+        this.selectedChildIds.includes(c.id)
+      );
+      if (selectedChildren?.length) {
+        parentSet.add(student.id);
+      }
     }
+    this.selectedParentIdsFromChildren = parentSet;
   }
-  this.selectedParentIdsFromChildren = parentSet;
-}
 
   @HostListener('window:keydown', ['$event'])
   onKeydown(event: KeyboardEvent) {
@@ -654,5 +795,4 @@ updateSelectedParentsFromChildren() {
       this.tabchange('complete');
     }
   }
-
 }
