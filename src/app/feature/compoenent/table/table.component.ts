@@ -261,119 +261,15 @@ export class TableComponent {
     this.filteredstudent = [...this.student];
   }
 
-  // handleNameClick(rowData: any) {
-  //   this.ref = this.dialogservice.open(TabsComponent, {
-  //     data: {
-  //       parentId: rowData.id,
-  //       ...rowData,
-  //     },
-  //     header: `Student Name: ${rowData.name}`,
-  //     width: '40%',
-  //     height: '79vh',
-  //     styleClass: 'custom-dialog-header',
-  //   });
-  //   this.ref.onClose.subscribe((formValue) => {
-  //   if (formValue?.policy?.length > 0 && rowData.id) {
-  //     const newChildren = formValue.policy.map((policy: any) => ({
-  //       id: Math.floor(Math.random() * 1000000),
-  //       ...policy,
-  //     }));
-
-  //     this.loading = true;
-  //     this._studentService.updateParentWithChildren(rowData.id, newChildren).subscribe({
-  //         next: () => {
-  //             this.getstudentData();
-  //             this.expandedRows[rowData.id] = true;
-  //         },
-  //         error: (err) => {
-  //           console.error('Error updating parent:', err);
-  //           this.loading = false;
-  //         },
-  //       });
-  //   }
-  //     this.loading = true;
-  //     setTimeout(() => {
-  //       this.getstudentData();
-  //     }, 2000);
-  // });
-  // }
-
-  // handleNameClick(rowData: any) {
-  //   this.ref = this.dialogservice.open(TabsComponent, {
-  //     data: {
-  //       parentId: rowData.id,
-  //       ...rowData,
-  //     },
-  //     header: `Student Name: ${rowData.name}`,
-  //     width: '40%',
-  //     height: '79vh',
-  //     styleClass: 'custom-dialog-header',
-  //   });
-
-  //   this.ref.onClose.subscribe((formValue) => {
-  //     if (formValue?.policy?.length > 0 && rowData.id) {
-  //       const updatedPolicy = formValue.policy[0];
-
-  //       const index = this.student.findIndex(student => student.id === rowData.id);
-  //       if (index !== -1) {
-  //         const student = this.student[index];
-
-  //         //  Update parent-level fields
-  //         for (const key in updatedPolicy) {
-  //           if (
-  //             updatedPolicy.hasOwnProperty(key) &&
-  //             student[key] !== undefined &&
-  //             student[key] !== updatedPolicy[key]
-  //           ) {
-  //             student[key] = updatedPolicy[key];
-  //           }
-  //         }
-
-  //         // //  Update first child (or push new if children not present)
-  //         // if (!student.children || !student.children.length) {
-  //         //   student.children = [];
-  //         // }
-
-  //         // const updatedChild = {
-  //         //   id: Math.floor(Math.random() * 1000000),
-  //         //   ...updatedPolicy,
-  //         // };
-
-  //         // // Replace or add first child
-  //         // student.children[0] = updatedChild;
-
-  //         // ✅ Expand the updated row
-  //         // this.expandedRows = { ...this.expandedRows, [student.id]: true };
-  //       }
-
-  //       //  Optional API update
-  //       this.loading = true;
-  //       this._studentService.updateParentWithChildren(rowData.id, [updatedPolicy]).subscribe({
-  //         next: () => {
-  //           this.loading = false;
-  //         },
-  //         error: (err) => {
-  //           console.error('Error updating:', err);
-  //           this.loading = false;
-  //         },
-  //       });
-  //     }
-  //         this.loading = true;
-  //       setTimeout(() => {
-  //         this.getstudentData();
-  //       }, 2000);
-  //   });
-  // }
 
   handleNameClick(rowData: any) {
-    debugger;
     this.ref = this.dialogservice.open(TabsComponent, {
       data: {
         parentId: rowData.id,
         ...rowData,
       },
       header: `Student Name: ${rowData.name}`,
-      width: '40%', 
+      width: '40%',
       height: '79vh',
       styleClass: 'custom-dialog-header',
     });
@@ -385,10 +281,10 @@ export class TableComponent {
         );
         if (index !== -1) {
           const student = this.student[index];
-
           Object.keys(updatedPolicy).forEach((key) => {
             if (
               student.hasOwnProperty(key) &&
+              key !== 'children' && 
               student[key] !== updatedPolicy[key]
             ) {
               student[key] = updatedPolicy[key];

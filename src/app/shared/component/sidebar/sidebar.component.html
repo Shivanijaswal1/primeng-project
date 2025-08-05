@@ -1,0 +1,43 @@
+<div class="sidebar-container">
+
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <i class="pi pi-graduation-cap"></i>
+      <span class="logo-text">EDUCATION</span>
+    </div>
+    <button class="close-btn" (click)="onCloseSidebar()">
+      <i class="pi pi-times"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li *ngFor="let item of menuItems" class="nav-item">
+    
+        <div class="nav-link" 
+             [class.active]="item.active"
+             [class.has-submenu]="item.subItems"
+             (click)="item.subItems ? toggleSubmenu(item.title) : navigateToRoute(item.route)">
+          <div class="nav-icon">
+            <i [class]="item.icon"></i>
+          </div>
+          <span class="nav-text">{{ item.title }}</span>
+          <div class="nav-arrow" *ngIf="item.subItems">
+            <i class="pi" [ngClass]="isExpanded(item.title) ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+          </div>
+        </div>
+
+        <ul class="submenu" *ngIf="item.subItems" [class.expanded]="isExpanded(item.title)">
+          <li *ngFor="let subItem of item.subItems" class="submenu-item">
+            <a class="submenu-link" (click)="navigateToRoute(subItem.route)">
+              <div class="submenu-icon">
+                <i [class]="subItem.icon"></i>
+              </div>
+              <span class="submenu-text">{{ subItem.title }}</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div> 

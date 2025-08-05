@@ -26,6 +26,7 @@ import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-m
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { DiscardButtonComponent } from './component/discard-button/discard-button.component';
 import { HorizontalBarChartComponent } from './component/horizontal-bar-chart/horizontal-bar-chart.component';
+import { SidebarComponent } from './component/sidebar/sidebar.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { HorizontalBarChartComponent } from './component/horizontal-bar-chart/ho
     DialogMessageComponent,
     DiscardButtonComponent,
     HorizontalBarChartComponent,
+    SidebarComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -71,6 +73,7 @@ import { HorizontalBarChartComponent } from './component/horizontal-bar-chart/ho
     FileUpload,
     ConfigurationBasedFormComponent,
     AdvanceSortingComponent,
+    SidebarComponent,
   ],
   providers: [HighlightPipe],
 })

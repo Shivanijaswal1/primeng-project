@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ServiceService } from 'src/app/core/service.service';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
@@ -33,23 +33,10 @@ export class FormComponent {
   panelSize: number[] = [60, 40];
   minSize: number[] = [50, 10];
   content!: ElementRef;
-  name: string = '';
-  email: string = '';
-  age: number | null = null;
-  Father: string = '';
-  parent: string = '';
-  child: string = '';
-  address: string = '';
-  city: string = '';
-  state: string = '';
-  postalCode: string = '';
-  formData: any = {};
-  payload: {} | undefined;
-  selectedValue: any;
+  form: FormGroup;
   parentOptions: any[] = [];
   childOptions: any[] = [];
   selectedParent: string = '';
-  selectedChild: any;
   isEditable: boolean = false;
   childExistsError: boolean = false;
   rawPdfUrl: string | null = null;
@@ -65,27 +52,49 @@ export class FormComponent {
   bookInputValue: string = '';
   bookValues: string[] = [];
   bookTimes: string[] = [];
-  selectedfees: any;
   activeTabIndex: number = 0;
+  formTabs = [
+    { label: 'Personal ', sectionId: 'section-one' },
+    { label: 'Contact ', sectionId: 'section-two' },
+    { label: 'Additional ', sectionId: 'section-three' },
+  ];
+  dropdownOptions = [
+    { name: 'ART', code: 'O1' },
+    { name: 'Medical', code: 'O2' },
+    { name: 'Commerce', code: 'O3' },
+  ];
+  feesprocess = [
+    { name: 'Pending', code: 'pending' },
+    { name: 'complete', code: 'complete' },
+  ];
 
   constructor(
     public ref: DynamicDialogRef,
     private _service: ServiceService,
     private _mesaage: MessageService,
     private sanitizer: DomSanitizer,
-    private dialogservice: DialogService
-  ) {}
-
-  formTabs = [
-    { label: 'Personal ', sectionId: 'section-one' },
-    { label: 'Contact ', sectionId: 'section-two' },
-    { label: 'Additional ', sectionId: 'section-three' },
-  ];
+    private dialogservice: DialogService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({
+      name: ['', [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)]],
+      parent: ['', Validators.required],
+      child: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      father: ['', [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)]],
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
+      postalCode: ['', Validators.required],
+      selectedValue: ['', Validators.required],
+      selectedfees: ['', Validators.required],
+      age: [null, [Validators.required, Validators.min(18), Validators.max(100)]],
+    });
+  }
 
   ngOnInit(): void {
     this._service.getDummyData().subscribe((data) => {
       this.parentOptions = data;
-      this.childOptions = data.children;
     });
   }
 
@@ -98,73 +107,49 @@ export class FormComponent {
   onParentChange(event: any): void {
     const selected = this.parentOptions.find((p) => p.key === event.value);
     if (selected) {
-      this.selectedParent = selected.key;
       this.childOptions = selected.children || [];
     } else {
-      this.selectedParent = '';
       this.childOptions = [];
     }
-    this.selectedChild = null;
+    this.form.get('child')?.setValue('');
   }
 
-  dropdownOptions = [
-    { name: 'ART', code: 'O1' },
-    { name: 'Medical', code: 'O2' },
-    { name: 'Commerce', code: 'O3' },
-  ];
-
-  feesprocess = [
-    { name: 'Pending', code: 'pending' },
-    { name: 'complete', code: 'complete' },
-  ];
-
   handleValueChange(value: any) {
-    this.selectedValue = value;
+    this.form.get('selectedValue')?.setValue(value);
   }
 
   handlefeesprocessing(value: any) {
-    this.selectedfees = value;
+    this.form.get('selectedfees')?.setValue(value);
   }
 
-  onSubmit(form: NgForm) {
+  onSubmit() {
     const currentTime = new Date();
     this.submissionTime = currentTime.toLocaleString();
-    if (form.valid) {
-      this.payload = {
-        name: this.name,
-        email: this.email,
-        age: this.age,
-        selectedValue: this.selectedValue ? this.selectedValue.name : null,
-        selectedfees: this.selectedfees ? this.selectedfees.name : null,
-        father: this.Father,
-        address: this.address,
-        city: this.city,
-        state: this.state,
-        postalCode: this.postalCode,
-      } as unknown as FormPayload;
+    if (this.form.valid) {
+      const payload = this.form.value;
       const doc = new jsPDF();
-      doc.text(`Name: ${this.name}`, 10, 10);
-      doc.text(`Email: ${this.email}`, 10, 20);
-      doc.text(`Age: ${this.age}`, 10, 30);
-      doc.text(`selectedValue: ${this.selectedValue.name}`, 10, 40);
-      doc.text(`Father's Name: ${this.Father}`, 10, 50);
-      doc.text(`Address: ${this.address}`, 10, 60);
-      doc.text(`City: ${this.city}`, 10, 70);
-      doc.text(`State: ${this.state}`, 10, 80);
-      doc.text(`Postal Code: ${this.postalCode}`, 10, 90);
+      doc.text(`Name: ${payload.name}`, 10, 10);
+      doc.text(`Email: ${payload.email}`, 10, 20);
+      doc.text(`Age: ${payload.age}`, 10, 30);
+      doc.text(`selectedValue: ${payload.selectedValue.name}`, 10, 40);
+      doc.text(`Father's Name: ${payload.father}`, 10, 50);
+      doc.text(`Address: ${payload.address}`, 10, 60);
+      doc.text(`City: ${payload.city}`, 10, 70);
+      doc.text(`State: ${payload.state}`, 10, 80);
+      doc.text(`Postal Code: ${payload.postalCode}`, 10, 90);
       const pdfBlob = doc.output('blob');
       const url = URL.createObjectURL(pdfBlob);
       this.rawPdfUrl = url;
       const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
       this.pdfUrls.push({
         url: this.rawPdfUrl,
-        name: this.name,
+        name: payload.name,
         submissionTime: this.submissionTime,
       });
       this.updateMostRecentHighlight();
-      this._service.addData(this.payload).subscribe({
+      this._service.addData(payload).subscribe({
         next: (response: any) => {
-          this.formData = {};
+          this.form.reset();
           this.ref = this.dialogservice.open(SubmitMessageComponent, {
             header: 'Form Submitted Message',
             width: '30%',
@@ -181,7 +166,7 @@ export class FormComponent {
         },
       });
     } else {
-      form.control.markAllAsTouched();
+      this.form.markAllAsTouched();
       this.ref = this.dialogservice.open(SubmitMessageComponent, {
         header: 'Error',
         width: '30%',
@@ -191,13 +176,13 @@ export class FormComponent {
     }
   }
 
-  ResetForm(form: NgForm) {
+  ResetForm() {
     this.ref = this.dialogservice.open(DiscardButtonComponent, {
       header: 'Discard Form',
       width: '30%',
       styleClass: 'custom-dialog-header',
     });
-    form.reset();
+    this.form.reset();
   }
 
   onUpload(event: any) {
@@ -233,7 +218,7 @@ export class FormComponent {
 
   DropdownEditable() {
     this.isEditable = true;
-    this.selectedChild = '';
+    this.form.get('child')?.setValue('');
     const input = this.getInput();
     if (input) {
       input.value = '';
@@ -252,7 +237,7 @@ export class FormComponent {
     const selectedKey = event.value;
     const option = this.childOptions.find((opt) => opt.key === selectedKey);
     if (option) {
-      this.selectedChild = selectedKey;
+      this.form.get('child')?.setValue(selectedKey);
       this.isEditable = false;
       const input = this.getInput();
       if (input) {
@@ -272,13 +257,13 @@ export class FormComponent {
       (opt) => opt.value.toLowerCase() === typedValue.toLowerCase()
     );
     if (existingOption) {
-      this.selectedChild = existingOption.key;
+      this.form.get('child')?.setValue(existingOption.key);
       input!.value = existingOption.value;
     } else {
       const newKey = Date.now().toString();
       const newOption = { key: newKey, value: typedValue };
       this.childOptions.push(newOption);
-      this.selectedChild = newKey;
+      this.form.get('child')?.setValue(newKey);
       input!.value = newOption.value;
     }
     this.isEditable = true;

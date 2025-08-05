@@ -26,11 +26,9 @@ type UserField = {
   styleUrls: ['./student-detail-form.component.scss'],
 }) 
 export class StudentDetailFormComponent {
- @Output() formSubmit = new EventEmitter<any>();
+//  @Output() formSubmit = new EventEmitter<any>();
  user: { [key: string]: any } = {};
  formFields: UserField[] = [];
-
-  // formFields: { name: keyof User; label: string; type: string; required: boolean; min?: number; max?: number; errorMsg: string }[] = [];
 
   constructor(
     public config: DynamicDialogConfig,
@@ -47,7 +45,6 @@ export class StudentDetailFormComponent {
   }
 
   submitform(){
-    debugger
     if(Object.keys(this.user).length) {
     this.dialogRef.close({ policy: [this.user] });
   }

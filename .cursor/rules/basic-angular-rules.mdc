@@ -1,0 +1,14 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+Always use Angular CLI to generate components, services, modules, etc.
+
+It helps maintain consistent structure and reduces boilerplate cod
+Prefer ReactiveFormsModule for dynamic/complex forms.
+
+Use FormGroup, FormControl, FormArray
+Keep your components lean.
+
+Move business logic to services

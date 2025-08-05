@@ -1,7 +1,7 @@
 <div class="p-fluid">
     <p-splitter [panelSizes]="panelSize" [minSizes]="minSize" styleClass="mb-5">
         <ng-template pTemplate>
-            <form #myForm="ngForm">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="form-tab-header">
           <div
             *ngFor="let tab of formTabs; let i=index"
@@ -16,15 +16,14 @@
                     <h3>Personal Information</h3>
                     <div class="form-css">
                         <label for="name">
-                            Name <span *ngIf="nameCtrl.errors "
+                            Name <span *ngIf="form.get('name')?.errors && form.get('name')?.touched"
                                 style="color: red;">*</span>
                         </label>
-                        <app-input [(ngModel)]="name" name="name"
+                        <app-input formControlName="name" name="name" [message]="message"
                             [required]="true" type="text"
-                            pattern="^[A-Za-z]+\s?[A-Za-z]+$"
-                            #nameCtrl="ngModel"
-                            [ngClass]="{'invalid-field': nameCtrl.invalid && nameCtrl.touched}"></app-input>
-                        <div *ngIf="nameCtrl.invalid && nameCtrl.touched"
+                            pattern="^[A-Za-z]+\s?[A-Za-z]+$" 
+                            [ngClass]="{'invalid-field': form.get('name')?.invalid && form.get('name')?.touched}"></app-input>
+                        <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
                             class="error-text" style="color: red;">
                             Name is required and should contain only letters.
                         </div>
@@ -33,16 +32,16 @@
                         <div class="form-css-half">
                             <label for="parentDropdown">Choose Parent</label>
                             <p-dropdown
+                                formControlName="parent"
                                 name="parent"
                                 inputId="parentDropdown"
                                 [options]="parentOptions"
-                                [(ngModel)]="selectedParent"
                                 optionLabel="value"
                                 optionValue="key"
                                 placeholder="Select Parent"
                                 [required]="true"
                                 (onChange)="onParentChange($event)"
-                                [ngClass]="{'invalid-field': myForm.submitted && !selectedParent}">
+                                [ngClass]="{'invalid-field': form.get('parent')?.invalid && form.get('parent')?.touched}">
                                 <ng-template let-option pTemplate="item">
                                     <div [pTooltip]="option.value"
                                         tooltipPosition="right">
@@ -56,21 +55,20 @@
                                 <label for="childDropdown">Choose Child</label>
                                 <p-dropdown
                                     #dropdownElem
+                                    formControlName="child"
                                     name="children"
                                     inputId="childDropdown"
                                     [options]="childOptions"
-                                    [(ngModel)]="selectedChild"
                                     optionLabel="value"
                                     optionValue="key"
                                     [editable]="isEditable"
                                     placeholder="Select Child"
                                     (onChange)="onDropdownChange($event)"
                                     (onBlur)="onDropdownBlur()"
-                                    #childCtrl="ngModel"
-                                    [ngClass]="{'invalid-field': childCtrl.invalid && childCtrl.touched}">
+                                    [ngClass]="{'invalid-field': form.get('child')?.invalid && form.get('child')?.touched}">
                                     <ng-template pTemplate="footer">
                                         <div class="p-3"
-                                            *ngIf="selectedParent">
+                                            *ngIf="form.get('parent')?.value">
                                             <app-z-button
                                                 label="Add New"
                                                 icon="pi pi-plus"
@@ -82,7 +80,7 @@
                                     </ng-template>
                                 </p-dropdown>
                                 <div
-                                    *ngIf="childCtrl.invalid && childCtrl.touched"
+                                    *ngIf="form.get('child')?.invalid && form.get('child')?.touched"
                                     class="error-text" style="color: red;">
                                     Child selection is required
                                 </div>
@@ -99,14 +97,14 @@
                     <div class="box1">
                         <div class="form-css5">
                             <label for="email">
-                                Email <span *ngIf="emailCtrl.errors "
+                                Email <span *ngIf="form.get('email')?.errors && form.get('email')?.touched"
                                     style="color: red;">*</span>
                             </label>
-                            <app-input [(ngModel)]="email" name="email"
+                            <app-input formControlName="email" name="email"
                                 [required]="true"
-                                type="email" #emailCtrl="ngModel"
-                                [ngClass]="{'invalid-field': emailCtrl.invalid && emailCtrl.touched}"></app-input>
-                            <div *ngIf="emailCtrl.invalid && emailCtrl.touched"
+                                type="email"
+                                [ngClass]="{'invalid-field': form.get('email')?.invalid && form.get('email')?.touched}"></app-input>
+                            <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
                                 class="error-text" style="color: red;">
                                 Please enter a valid email address.
                             </div>
@@ -114,15 +112,14 @@
                     </div>
                     <div class="form-css4">
                         <label for="fathername">
-                            Fathername/Guardian <span *ngIf="fatherCtrl.errors "
+                            Fathername/Guardian <span *ngIf="form.get('father')?.errors && form.get('father')?.touched"
                                 style="color: red;">*</span>
                         </label>
-                        <app-input [(ngModel)]="Father"
+                        <app-input formControlName="father"
                             name="father" pattern="^[A-Za-z]+\s?[A-Za-z]+$"
                             [required]="true" type="text"
-                            #fatherCtrl="ngModel"
-                            [ngClass]="{'invalid-field': fatherCtrl.invalid && fatherCtrl.touched}"></app-input>
-                        <div *ngIf="fatherCtrl.invalid && fatherCtrl.touched"
+                            [ngClass]="{'invalid-field': form.get('father')?.invalid && form.get('father')?.touched}"></app-input>
+                        <div *ngIf="form.get('father')?.invalid && form.get('father')?.touched"
                             class="error-text" style="color: red;">
                             Father Name is required and should contain only
                             letters.
@@ -131,15 +128,14 @@
                     <div class="address-group">
                         <div class="form-css">
                             <label for="address">
-                                Address <span *ngIf="addressCtrl.errors"
+                                Address <span *ngIf="form.get('address')?.errors && form.get('address')?.touched"
                                     style="color: red;">*</span>
                             </label>
-                            <app-input [(ngModel)]="address" name="address"
+                            <app-input formControlName="address" name="address"
                                 type="text" [required]="true"
-                                #addressCtrl="ngModel"
-                                [ngClass]="{'invalid-field': addressCtrl.invalid && addressCtrl.touched}"></app-input>
+                                [ngClass]="{'invalid-field': form.get('address')?.invalid && form.get('address')?.touched}"></app-input>
                             <div
-                                *ngIf="addressCtrl.invalid && addressCtrl.touched"
+                                *ngIf="form.get('address')?.invalid && form.get('address')?.touched"
                                 class="error-text" style="color: red;">
                                 Address is required.
                             </div>
@@ -147,30 +143,28 @@
                         <div class="form-css-inline">
                             <div class="form-css-half">
                                 <label for="city">
-                                    City <span *ngIf="cityCtrl.errors"
+                                    City <span *ngIf="form.get('city')?.errors && form.get('city')?.touched"
                                         style="color: red;">*</span>
                                 </label>
-                                <app-input [(ngModel)]="city" name="city"
+                                <app-input formControlName="city" name="city"
                                     type="text" [required]="true"
-                                    #cityCtrl="ngModel"
-                                    [ngClass]="{'invalid-field': cityCtrl.invalid && cityCtrl.touched}"></app-input>
+                                    [ngClass]="{'invalid-field': form.get('city')?.invalid && form.get('city')?.touched}"></app-input>
                                 <div
-                                    *ngIf="cityCtrl.invalid && cityCtrl.touched"
+                                    *ngIf="form.get('city')?.invalid && form.get('city')?.touched"
                                     class="error-text" style="color: red;">
                                     City is required.
                                 </div>
                             </div>
                             <div class="form-css-half">
                                 <label for="state">
-                                    State <span *ngIf="stateCtrl.errors"
+                                    State <span *ngIf="form.get('state')?.errors && form.get('state')?.touched"
                                         style="color: red;">*</span>
                                 </label>
-                                <app-input [(ngModel)]="state" name="state"
+                                <app-input formControlName="state" name="state"
                                     type="text" [required]="true"
-                                    #stateCtrl="ngModel"
-                                    [ngClass]="{'invalid-field': stateCtrl.invalid && stateCtrl.touched}"></app-input>
+                                    [ngClass]="{'invalid-field': form.get('state')?.invalid && form.get('state')?.touched}"></app-input>
                                 <div
-                                    *ngIf="stateCtrl.invalid && stateCtrl.touched"
+                                    *ngIf="form.get('state')?.invalid && form.get('state')?.touched"
                                     class="error-text" style="color: red;">
                                     State is required.
                                 </div>
@@ -178,15 +172,14 @@
                         </div>
                         <div class="form-css">
                             <label for="postalCode">
-                                Postal Code <span *ngIf="postalCtrl.errors"
+                                Postal Code <span *ngIf="form.get('postalCode')?.errors && form.get('postalCode')?.touched"
                                     style="color: red;">*</span>
                             </label>
-                            <app-input [(ngModel)]="postalCode"
+                            <app-input formControlName="postalCode"
                                 name="postalCode" type="text" [required]="true"
-                                #postalCtrl="ngModel"
-                                [ngClass]="{'invalid-field': postalCtrl.invalid && postalCtrl.touched}"></app-input>
+                                [ngClass]="{'invalid-field': form.get('postalCode')?.invalid && form.get('postalCode')?.touched}"></app-input>
                             <div
-                                *ngIf="postalCtrl.invalid && postalCtrl.touched"
+                                *ngIf="form.get('postalCode')?.invalid && form.get('postalCode')?.touched"
                                 class="error-text" style="color: red;">
                                 Valid postal code is required.
                             </div>
@@ -198,19 +191,18 @@
                     <div class="form-css">
                         <label for="chooseoption">
                             Choose Option <span
-                                *ngIf="genericDropdownCtrl.errors "
+                                *ngIf="form.get('selectedValue')?.errors && form.get('selectedValue')?.touched"
                                 style="color: red;">*</span>
                         </label>
                         <app-dropdown
+                            formControlName="selectedValue"
                             name="genericDropdown"
-                            [(ngModel)]="selectedValue"
                             [options]="dropdownOptions"
                             [required]="true"
                             (valueChange)="handleValueChange($event)"
-                            #genericDropdownCtrl="ngModel"
-                            [ngClass]="{'invalid-field': genericDropdownCtrl.invalid && genericDropdownCtrl.touched}"></app-dropdown>
+                            [ngClass]="{'invalid-field': form.get('selectedValue')?.invalid && form.get('selectedValue')?.touched}"></app-dropdown>
                         <div
-                            *ngIf="genericDropdownCtrl.invalid && genericDropdownCtrl.touched"
+                            *ngIf="form.get('selectedValue')?.invalid && form.get('selectedValue')?.touched"
                             class="error-text" style="color: red;">
                             Selection is required
                         </div>
@@ -219,34 +211,32 @@
                         <label for="chooseoption">
                             Fees Procssing
                              <span
-                                *ngIf="feesprocessCtrl.errors "
+                                *ngIf="form.get('selectedfees')?.errors && form.get('selectedfees')?.touched"
                                 style="color: red;">*</span>
                         </label>
                         <app-dropdown
+                            formControlName="selectedfees"
                             name="feesprocess"
-                            [(ngModel)]="selectedfees"
                             [options]="feesprocess"
                             [required]="true"
                             (valueChange)="handlefeesprocessing($event)"
-                            #feesprocessCtrl="ngModel"
-                            [ngClass]="{'invalid-field': feesprocessCtrl.invalid && feesprocessCtrl.touched}"></app-dropdown>
+                            [ngClass]="{'invalid-field': form.get('selectedfees')?.invalid && form.get('selectedfees')?.touched}"></app-dropdown>
                         <div
-                            *ngIf="feesprocessCtrl.invalid && feesprocessCtrl.touched"
+                            *ngIf="form.get('selectedfees')?.invalid && form.get('selectedfees')?.touched"
                             class="error-text" style="color: red;">
                             Selection is required
                         </div>
                     </div>
                     <div class="form-css">
                         <label for="age">
-                            Age <span *ngIf="ageCtrl.errors "
+                            Age <span *ngIf="form.get('age')?.errors && form.get('age')?.touched"
                                 style="color: red;">*</span>
                         </label>
-                        <app-input [(ngModel)]="age" name="age"
+                        <app-input formControlName="age" name="age"
                             [required]="true" type="number" [min]="18"
                             [max]="100"
-                            #ageCtrl="ngModel"
-                            [ngClass]="{'invalid-field': ageCtrl.invalid && ageCtrl.touched}"></app-input>
-                        <div *ngIf="ageCtrl.invalid && ageCtrl.touched"
+                            [ngClass]="{'invalid-field': form.get('age')?.invalid && form.get('age')?.touched}"></app-input>
+                        <div *ngIf="form.get('age')?.invalid && form.get('age')?.touched"
                             class="error-text" style="color: red;">
                             Age must be between 18 and 100.
                         </div>
@@ -255,9 +245,9 @@
                     <div class="form-button">
                         <p-button class="btn1" label="Discard"
                             [class]="'p-button-danger mr-2'"
-                            (onClick)="ResetForm(myForm)"></p-button>
-                        <p-button class="btn2" label="Submit" [style]="{'background-color':'red','color':'white'}"
-                            (onClick)="onSubmit(myForm)"></p-button>
+                            (onClick)="ResetForm()"></p-button>
+                        <button pButton class="btn2" label="Submit" [style]="{'background-color':'red','color':'white'}"
+                            type="submit"></button>
                     </div>
                 </div>
             </form>
