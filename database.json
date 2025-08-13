@@ -1,488 +1,109 @@
 {
   "form": [
     {
-      "id": "0e5e",
-      "name": "name",
+      "id": "cc8c",
+      "name": "jh",
+      "parent": 3,
+      "child": 302,
       "email": "hhh@Gmail.com",
+      "father": "eeeeer",
+      "address": "abc",
+      "city": "yuu",
+      "state": "jkkj",
+      "postalCode": "3224",
+      "selectedValue": {
+        "name": "Medical",
+        "code": "O2"
+      },
+      "selectedfees": {
+        "name": "complete",
+        "code": "complete"
+      },
       "age": "21",
-      "selectedValue": "Medical",
-      "selectedfees": "complete",
-      "father": "vg",
-      "address": "dfghjk",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "3225",
       "children": [
         {
-          "project": "31",
-          "dateofbirth": "2025-08-25T18:30:00.000Z",
-          "joinDate": "2025-08-25T18:30:00.000Z",
-          "status": "True",
-          "role": "21"
-        },
-        {
-          "parentId": "0e5e",
-          "id": "0e5e",
-          "name": "name",
-          "email": "hhh@Gmail.com",
-          "age": "27",
-          "selectedValue": "Medical",
-          "selectedfees": "complete",
-          "father": "vg",
-          "address": "dfghjk",
-          "city": "una",
-          "state": "HP",
-          "postalCode": "3225"
-        },
-        {
-          "project": "ddfg",
+          "name": "hjk",
           "dateofbirth": "2025-08-18T18:30:00.000Z",
           "joinDate": "2025-08-25T18:30:00.000Z",
           "status": "True",
-          "role": "dfghuji"
-        },
+          "role": "vbnm"
+        }
+      ]
+    },
+    {
+      "id": "821f",
+      "name": "jh",
+      "parent": 1,
+      "child": 102,
+      "email": "shivaniwinss@gmail.com",
+      "father": "eeeeer",
+      "address": "dfghjkState ",
+      "city": "yuu",
+      "state": "up",
+      "postalCode": "2322",
+      "selectedValue": {
+        "name": "Medical",
+        "code": "O2"
+      },
+      "selectedfees": {
+        "name": "complete",
+        "code": "complete"
+      },
+      "age": "21",
+      "children": [
         {
-          "parentId": "0e5e",
-          "id": "0e5e",
-          "name": "name",
-          "email": "hhh@Gmail.com",
+          "parentId": "821f",
+          "id": "821f",
+          "name": "jh",
+          "parent": 1,
+          "child": 102,
+          "email": "shivaniwinss@gmail.com",
+          "father": "eeeeer",
+          "address": "dfghjkState ",
+          "city": "yuu",
+          "state": "up",
+          "postalCode": "2322",
+          "selectedValue": {
+            "name": "Medical",
+            "code": "O2"
+          },
+          "selectedfees": {
+            "name": "complete",
+            "code": "complete"
+          },
           "age": "29",
-          "selectedValue": "Medical",
-          "selectedfees": "complete",
-          "father": "vg",
-          "address": "dfghjk",
-          "city": "una",
-          "state": "HP",
-          "postalCode": "3225",
-          "children": [
-            {
-              "project": "31",
-              "dateofbirth": "2025-08-25T18:30:00.000Z",
-              "joinDate": "2025-08-25T18:30:00.000Z",
-              "status": "True",
-              "role": "21",
-              "id": 391845
-            },
-            {
-              "parentId": "0e5e",
-              "id": "0e5e",
-              "name": "name",
-              "email": "hhh@Gmail.com",
-              "age": "27",
-              "selectedValue": "Medical",
-              "selectedfees": "complete",
-              "father": "vg",
-              "address": "dfghjk",
-              "city": "una",
-              "state": "HP",
-              "postalCode": "3225"
-            },
-            {
-              "project": "ddfg",
-              "dateofbirth": "2025-08-18T18:30:00.000Z",
-              "joinDate": "2025-08-25T18:30:00.000Z",
-              "status": "True",
-              "role": "dfghuji",
-              "id": 848999
-            }
-          ],
-          "_clicked": true
-        },
-        {
-          "parentId": "0e5e",
-          "id": "0e5e",
-          "name": "name",
-          "email": "hhh@Gmail.com",
-          "age": "29",
-          "selectedValue": "Medical",
-          "selectedfees": "complete",
-          "father": "vg",
-          "address": "dfghjk",
-          "city": "una",
-          "state": "HP",
-          "postalCode": "3225",
-          "children": [
-            {
-              "project": "31",
-              "dateofbirth": "2025-08-25T18:30:00.000Z",
-              "joinDate": "2025-08-25T18:30:00.000Z",
-              "status": "True",
-              "role": "21"
-            },
-            {
-              "parentId": "0e5e",
-              "id": "0e5e",
-              "name": "name",
-              "email": "hhh@Gmail.com",
-              "age": "27",
-              "selectedValue": "Medical",
-              "selectedfees": "complete",
-              "father": "vg",
-              "address": "dfghjk",
-              "city": "una",
-              "state": "HP",
-              "postalCode": "3225"
-            },
-            {
-              "project": "ddfg",
-              "dateofbirth": "2025-08-18T18:30:00.000Z",
-              "joinDate": "2025-08-25T18:30:00.000Z",
-              "status": "True",
-              "role": "dfghuji"
-            },
-            {
-              "parentId": "0e5e",
-              "id": "0e5e",
-              "name": "name",
-              "email": "hhh@Gmail.com",
-              "age": "29",
-              "selectedValue": "Medical",
-              "selectedfees": "complete",
-              "father": "vg",
-              "address": "dfghjk",
-              "city": "una",
-              "state": "HP",
-              "postalCode": "3225",
-              "children": [
-                {
-                  "project": "31",
-                  "dateofbirth": "2025-08-25T18:30:00.000Z",
-                  "joinDate": "2025-08-25T18:30:00.000Z",
-                  "status": "True",
-                  "role": "21",
-                  "id": 391845
-                },
-                {
-                  "parentId": "0e5e",
-                  "id": "0e5e",
-                  "name": "name",
-                  "email": "hhh@Gmail.com",
-                  "age": "27",
-                  "selectedValue": "Medical",
-                  "selectedfees": "complete",
-                  "father": "vg",
-                  "address": "dfghjk",
-                  "city": "una",
-                  "state": "HP",
-                  "postalCode": "3225"
-                },
-                {
-                  "project": "ddfg",
-                  "dateofbirth": "2025-08-18T18:30:00.000Z",
-                  "joinDate": "2025-08-25T18:30:00.000Z",
-                  "status": "True",
-                  "role": "dfghuji",
-                  "id": 848999
-                }
-              ],
-              "_clicked": true
-            }
-          ],
           "_clickedField": null,
           "_clicked": true
-        },
-        {
-          "parentId": "0e5e",
-          "id": "0e5e",
-          "name": "name",
-          "email": "hhh@Gmail.com",
-          "age": "29",
-          "selectedValue": "Medical",
-          "selectedfees": "complete",
-          "father": "vg",
-          "address": "dfghjk",
-          "city": "una",
-          "state": "HP",
-          "postalCode": "3225",
-          "children": [
-            {
-              "project": "31",
-              "dateofbirth": "2025-08-25T18:30:00.000Z",
-              "joinDate": "2025-08-25T18:30:00.000Z",
-              "status": "True",
-              "role": "21"
-            },
-            {
-              "parentId": "0e5e",
-              "id": "0e5e",
-              "name": "name",
-              "email": "hhh@Gmail.com",
-              "age": "27",
-              "selectedValue": "Medical",
-              "selectedfees": "complete",
-              "father": "vg",
-              "address": "dfghjk",
-              "city": "una",
-              "state": "HP",
-              "postalCode": "3225"
-            },
-            {
-              "project": "ddfg",
-              "dateofbirth": "2025-08-18T18:30:00.000Z",
-              "joinDate": "2025-08-25T18:30:00.000Z",
-              "status": "True",
-              "role": "dfghuji"
-            },
-            {
-              "parentId": "0e5e",
-              "id": "0e5e",
-              "name": "name",
-              "email": "hhh@Gmail.com",
-              "age": "29",
-              "selectedValue": "Medical",
-              "selectedfees": "complete",
-              "father": "vg",
-              "address": "dfghjk",
-              "city": "una",
-              "state": "HP",
-              "postalCode": "3225",
-              "children": [
-                {
-                  "project": "31",
-                  "dateofbirth": "2025-08-25T18:30:00.000Z",
-                  "joinDate": "2025-08-25T18:30:00.000Z",
-                  "status": "True",
-                  "role": "21",
-                  "id": 391845
-                },
-                {
-                  "parentId": "0e5e",
-                  "id": "0e5e",
-                  "name": "name",
-                  "email": "hhh@Gmail.com",
-                  "age": "27",
-                  "selectedValue": "Medical",
-                  "selectedfees": "complete",
-                  "father": "vg",
-                  "address": "dfghjk",
-                  "city": "una",
-                  "state": "HP",
-                  "postalCode": "3225"
-                },
-                {
-                  "project": "ddfg",
-                  "dateofbirth": "2025-08-18T18:30:00.000Z",
-                  "joinDate": "2025-08-25T18:30:00.000Z",
-                  "status": "True",
-                  "role": "dfghuji",
-                  "id": 848999
-                }
-              ],
-              "_clicked": true
-            },
-            {
-              "parentId": "0e5e",
-              "id": "0e5e",
-              "name": "name",
-              "email": "hhh@Gmail.com",
-              "age": "29",
-              "selectedValue": "Medical",
-              "selectedfees": "complete",
-              "father": "vg",
-              "address": "dfghjk",
-              "city": "una",
-              "state": "HP",
-              "postalCode": "3225",
-              "children": [
-                {
-                  "project": "31",
-                  "dateofbirth": "2025-08-25T18:30:00.000Z",
-                  "joinDate": "2025-08-25T18:30:00.000Z",
-                  "status": "True",
-                  "role": "21"
-                },
-                {
-                  "parentId": "0e5e",
-                  "id": "0e5e",
-                  "name": "name",
-                  "email": "hhh@Gmail.com",
-                  "age": "27",
-                  "selectedValue": "Medical",
-                  "selectedfees": "complete",
-                  "father": "vg",
-                  "address": "dfghjk",
-                  "city": "una",
-                  "state": "HP",
-                  "postalCode": "3225"
-                },
-                {
-                  "project": "ddfg",
-                  "dateofbirth": "2025-08-18T18:30:00.000Z",
-                  "joinDate": "2025-08-25T18:30:00.000Z",
-                  "status": "True",
-                  "role": "dfghuji"
-                },
-                {
-                  "parentId": "0e5e",
-                  "id": "0e5e",
-                  "name": "name",
-                  "email": "hhh@Gmail.com",
-                  "age": "29",
-                  "selectedValue": "Medical",
-                  "selectedfees": "complete",
-                  "father": "vg",
-                  "address": "dfghjk",
-                  "city": "una",
-                  "state": "HP",
-                  "postalCode": "3225",
-                  "children": [
-                    {
-                      "project": "31",
-                      "dateofbirth": "2025-08-25T18:30:00.000Z",
-                      "joinDate": "2025-08-25T18:30:00.000Z",
-                      "status": "True",
-                      "role": "21",
-                      "id": 391845
-                    },
-                    {
-                      "parentId": "0e5e",
-                      "id": "0e5e",
-                      "name": "name",
-                      "email": "hhh@Gmail.com",
-                      "age": "27",
-                      "selectedValue": "Medical",
-                      "selectedfees": "complete",
-                      "father": "vg",
-                      "address": "dfghjk",
-                      "city": "una",
-                      "state": "HP",
-                      "postalCode": "3225"
-                    },
-                    {
-                      "project": "ddfg",
-                      "dateofbirth": "2025-08-18T18:30:00.000Z",
-                      "joinDate": "2025-08-25T18:30:00.000Z",
-                      "status": "True",
-                      "role": "dfghuji",
-                      "id": 848999
-                    }
-                  ],
-                  "_clicked": true
-                }
-              ],
-              "_clickedField": null,
-              "_clicked": true
-            }
-          ]
         }
       ]
     },
     {
-      "id": "6050",
-      "name": "name",
-      "email": "shivani@gmail.com",
-      "age": "23",
-      "selectedValue": "Medical",
-      "selectedfees": "Pending",
-      "father": "eeeeer",
-      "address": "dfghjk",
-      "city": "City *",
-      "state": "cjj",
-      "postalCode": "3225",
-      "children": [
-        {
-          "parentId": "6050",
-          "id": "6050",
-          "name": "name",
-          "email": "shivani@gmail.com",
-          "age": "98",
-          "selectedValue": "Medical",
-          "selectedfees": "Pending",
-          "father": "eeeeer",
-          "address": "dfghjk",
-          "city": "City *",
-          "state": "cjj",
-          "postalCode": "3225"
-        },
-        {
-          "project": "dfghjk",
-          "dateofbirth": "2025-08-24T18:30:00.000Z",
-          "joinDate": "2025-08-18T18:30:00.000Z",
-          "status": "False",
-          "role": "esrtyui"
-        }
-      ]
-    },
-    {
-      "id": "d88e",
-      "name": "nameww",
-      "email": "hhh@Gmail.com",
-      "age": "22",
-      "selectedValue": "Commerce",
-      "selectedfees": "Pending",
-      "father": "eeeee",
+      "id": "7421",
+      "name": "test",
+      "parent": 3,
+      "child": 302,
+      "email": "abc@Gmail.com",
+      "father": "abc",
       "address": "abc",
-      "city": "dcsg",
-      "state": "HP",
-      "postalCode": "2322",
+      "city": "abc",
+      "state": "abc",
+      "postalCode": "3222",
+      "selectedValue": {
+        "name": "Medical",
+        "code": "O2"
+      },
+      "selectedfees": {
+        "name": "Pending",
+        "code": "pending"
+      },
+      "age": "21",
       "children": [
         {
-          "parentId": "d88e",
-          "id": "d88e",
-          "name": "nameww",
-          "email": "hhh@Gmail.com",
-          "age": "30",
-          "selectedValue": "Commerce",
-          "selectedfees": "Pending",
-          "father": "eeeee",
-          "address": "abc",
-          "city": "dcsg",
-          "state": "HP",
-          "postalCode": "2322"
-        },
-        {
-          "project": "ds",
-          "dateofbirth": "2025-08-20T18:30:00.000Z",
-          "joinDate": "2025-08-25T18:30:00.000Z",
+          "name": "test",
+          "dateofbirth": "2025-08-25T18:30:00.000Z",
+          "joinDate": "2025-08-24T18:30:00.000Z",
           "status": "False",
-          "role": "3"
-        }
-      ]
-    },
-    {
-      "id": "9c2e",
-      "name": "ghjk",
-      "email": "shivani@gmail.com",
-      "age": "22",
-      "selectedValue": "Medical",
-      "selectedfees": "complete",
-      "father": "eeeeer",
-      "address": "abc",
-      "city": "dcsg",
-      "state": "bn",
-      "postalCode": "3224",
-      "children": [
-        {
-          "project": "qwer",
-          "dateofbirth": "2025-08-26T18:30:00.000Z",
-          "joinDate": "2025-08-25T18:30:00.000Z",
-          "status": "True",
-          "role": "wer"
-        },
-        {
-          "parentId": "9c2e",
-          "id": "9c2e",
-          "name": "ghjk",
-          "email": "shivani@gmail.com",
-          "age": "29",
-          "selectedValue": "Medical",
-          "selectedfees": "complete",
-          "father": "eeeeer",
-          "address": "abc",
-          "city": "dcsg",
-          "state": "bn",
-          "postalCode": "3224",
-          "children": [
-            {
-              "project": "qwer",
-              "dateofbirth": "2025-08-26T18:30:00.000Z",
-              "joinDate": "2025-08-25T18:30:00.000Z",
-              "status": "True",
-              "role": "wer",
-              "id": 88929
-            }
-          ],
-          "_clicked": true
+          "role": "admin"
         }
       ]
     }

@@ -25,7 +25,6 @@ export class PieChartComponent {
   ngOnInit(): void {
     this._pieData.getDataPieChart().subscribe((data) => {
       this.data = data;
-      console.log(data);
       this.createChart();
       this.updateChart();
     });
@@ -169,7 +168,7 @@ polylines.enter()
   .style('stroke', '#666')
   .style('stroke-width', '1.5px')
   .style('opacity', 0.8);
-polylines.exit().remove();
+   polylines.exit().remove();
 }
 
 }

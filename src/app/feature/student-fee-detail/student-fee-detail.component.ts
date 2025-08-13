@@ -16,7 +16,7 @@ export class StudentFeeDetailComponent implements OnInit {
   constructor(private studentService: ServiceService) {}
 
   ngOnInit() {
-    this.studentService.getStudent().subscribe((students: any[]) => {
+      this.studentService.getStudent().subscribe((students: any[]) => {
       const pending = students.filter((s) => s.selectedfees === 'Pending');
       const complete = students.filter((s) => s.selectedfees === 'complete');
       this.pendingCount = pending.length;

@@ -1,21 +1,14 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ServiceService } from 'src/app/core/service.service';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { FilterService } from 'primeng/api';
-import { TableRowCollapseEvent } from 'primeng/table';
-import { OverlayPanel } from 'primeng/overlaypanel';
-import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
 import { AdvanceSortingComponent } from 'src/app/shared/component/advance-sorting/advance-sorting.component';
-import { Sidebar } from 'primeng/sidebar';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { FilterService } from 'primeng/api';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { ServiceService } from 'src/app/core/service.service';
+import { Sidebar } from 'primeng/sidebar';
+import { TableRowCollapseEvent } from 'primeng/table';
+import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
+import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren} from '@angular/core';
 
 @Component({
   selector: 'app-table',
@@ -24,6 +17,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
+  [x: string]: any;
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
@@ -59,21 +53,22 @@ export class TableComponent {
   activeTabIndex: number = 1;
   selectedStatus: string = 'complete';
   errorTimeout: any;
+  highlightedColumn: string | null = null;
   tabMenuItems = [
-    { label: 'pending ', id: 'pending' },
-    { label: 'complete ', id: 'complete' },
-    { label: 'All Student ', id: 'all student' },
+    { label: 'Pending', id: 'pending' },
+    { label: 'Complete', id: 'complete' },
+    { label: 'All Students', id: 'all' }
   ];
   activeTab = this.tabMenuItems[1];
-  activeStatus!: 'complete' | 'pending' | 'all student';
+  activeStatus!: 'complete' | 'pending' | 'all';
   statusOptions = [
     { label: 'Pending', value: 'pending' },
-    { label: 'Complete', value: 'complete' },
+    { label: 'Complete', value: 'complete'},
   ];
   selectedChildIds: number[] = [];
   constructor(
     private _studentService: ServiceService,
-    public dialogservice: DialogService,
+    public  dialogservice: DialogService,
     private _deleteservice: ConfirmationService,
     private _messageservice: MessageService,
     private datePipe: DatePipe
@@ -113,60 +108,76 @@ export class TableComponent {
     return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
   }
 
-  formatDate(value: unknown): string {
-    if (this.isDate(value)) {
-      return this.datePipe.transform(value, 'dd/MM/yyyy') ?? '';
-    }
-    return String(value);
-  }
-
   getstudentData() {
     this._studentService.getStudent().subscribe((data) => {
       this.student = data;
+      this.filteredstudent = [...data];
       this.loading = false;
       this.activeTab = this.tabMenuItems[1];
       this.tabchange('complete');
     });
   }
 
-  onTabChange(event: any) {
+ tabchange(status: string) {
+  const normalized = status.toLowerCase().trim();
+  if (normalized === 'all') {
+    this.filteredstudent = [...this.student];
+  } else {
+    this.filteredstudent = this.student.filter(stu => {
+      const feeCode = (stu.selectedfees?.code ?? '')
+        .toString()
+        .toLowerCase()
+        .trim();
+      return feeCode === normalized;
+    });
+  }
+}
+
+ onTabChange(event: any) {
     const index = event?.index;
     if (index !== undefined && this.tabMenuItems[index]) {
-      const selectedTab = this.tabMenuItems[index];
-      this.activeTab = selectedTab;
-      this.tabchange(selectedTab.id as 'complete' | 'pending' | 'all student');
+      this.tabchange(this.tabMenuItems[index].id);
     }
   }
 
-  tabchange(status: 'complete' | 'pending' | 'all student') {
-    this.pendingStudent = [];
-    this.completeStudent = [];
-    this.filteredstudent = [];
-    this.activeStatus = status;
-    if (status === 'all student') {
-      this.filteredstudent = [...this.student];
-    } else {
-      this.filteredstudent = this.student.filter(
-        (stu) => (stu.selectedfees || '').toLowerCase() === status.toLowerCase()
-      );
-    }
-    this.pendingStudent = this.student.filter(
-      (stu) => (stu.selectedfees || '').toLowerCase() === 'pending'
-    );
-    this.completeStudent = this.student.filter(
-      (stu) => (stu.selectedfees || '').toLowerCase() === 'complete'
-    );
+formatValue(value: any): string {
+  if (value === null || value === undefined) return '';
+
+  if (value instanceof Date) {
+    return this.formatDate(value);
   }
+  if (typeof value === 'string' && !isNaN(Date.parse(value))) {
+    return this.formatDate(new Date(value));
+  }
+
+  if (typeof value === 'object') {
+    if (value.name) return value.name;
+    if (value.label) return value.label;
+
+    if (Array.isArray(value)) {
+      return value.map(v => this.formatValue(v)).join(', ');
+    }
+
+    return JSON.stringify(value);
+  }
+
+  return value.toString();
+}
+
+formatDate(date: Date): string {
+  return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
 
   openFilterMenu(event: MouseEvent, field: string) {
-    this.selectedField = field;
-    this.uniqueValues = [
-      ...new Set(this.student.map((student) => student[field])),
-    ];
-    this.tempSelectedValue = [...this.selectedValue];
-    this.filterOverlay.show(event);
-  }
-
+  this.selectedField = field;
+  this.uniqueValues = [
+    ...new Set(
+      this.student.map((student) => this.formatValue(student[field]))
+    ),
+  ];
+  this.tempSelectedValue = [...this.selectedValue];
+  this.filterOverlay.show(event);
+}
   onCheckboxChange(value: string) {
     if (this.tempSelectedValue.includes(value)) {
       this.tempSelectedValue = this.tempSelectedValue.filter(
@@ -225,22 +236,20 @@ export class TableComponent {
       }
     });
   }
-
   isSorted(field: string): boolean {
-    return this.currentSortFields.includes(field);
+    return this.currentSortFields?.includes(field);
   }
 
   applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
     this.sortingActive = true;
     this.currentSortFields = sortData.map((s) => s.sortField);
     this.filteredstudent.sort((a, b) => {
-      for (const { sortField, sortOrder } of sortData) {
+      for (const { sortField, sortOrder } of sortData){
         let valueA = a[sortField];
         let valueB = b[sortField];
         if (valueA == null && valueB == null) return 0;
         if (valueA == null) return sortOrder;
-        if (valueB == null) return -sortOrder;
-
+        if (valueB == null) return - sortOrder;
         if (typeof valueA === 'string' && typeof valueB === 'string') {
           const result = valueA.localeCompare(valueB);
           if (result !== 0) return sortOrder * result;
@@ -260,7 +269,6 @@ export class TableComponent {
     this.sortingActive = false;
     this.filteredstudent = [...this.student];
   }
-
 
   handleNameClick(rowData: any) {
     this.ref = this.dialogservice.open(TabsComponent, {
@@ -284,7 +292,7 @@ export class TableComponent {
           Object.keys(updatedPolicy).forEach((key) => {
             if (
               student.hasOwnProperty(key) &&
-              key !== 'children' && 
+              key !== 'children' &&
               student[key] !== updatedPolicy[key]
             ) {
               student[key] = updatedPolicy[key];
@@ -310,10 +318,12 @@ export class TableComponent {
 
   onRowExpand(event: any) {
     const parent = event.data;
-    parent.children = parent.children.map((child: any, index: number) => ({
-      ...child,
-      id: child.id ?? Math.floor(Math.random() * 1000000 + index),
-    }));
+    if (Array.isArray(parent.children)) {
+      parent.children = parent.children.map((child: any, index: number) => ({
+        ...child,
+        id: child['id'] ?? Math.floor(Math.random() * 1000000 + index),
+      }));
+    }
   }
 
   childSelections: { [parentId: number]: any[] } = {};
@@ -376,7 +386,6 @@ export class TableComponent {
     }
     this.updateSelectedParentsFromChildren();
   }
-
   onSelectAllChildChange(checked: boolean, children: any[]) {
     const ids = children.map((c) => c.id);
     if (checked) {
@@ -419,6 +428,7 @@ export class TableComponent {
   }
 
   getSelectedParentsFromChildren(): Set<number> {
+
     const selectedParents = new Set<number>();
     this.filteredstudent.forEach((parent) => {
       if (
@@ -691,4 +701,5 @@ export class TableComponent {
       this.tabchange('complete');
     }
   }
+
 }

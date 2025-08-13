@@ -24,21 +24,19 @@ type UserField = {
   selector: 'app-student-detail-form',
   templateUrl: './student-detail-form.component.html',
   styleUrls: ['./student-detail-form.component.scss'],
-}) 
+})
 export class StudentDetailFormComponent {
-//  @Output() formSubmit = new EventEmitter<any>();
  user: { [key: string]: any } = {};
  formFields: UserField[] = [];
 
-  constructor(
-    public config: DynamicDialogConfig,
+constructor(
+    public  config: DynamicDialogConfig,
     private _formConfigService: ServiceService,
      public dialogRef: DynamicDialogRef,
   ) {}
 
  ngOnInit(): void {
     this.formFields = this._formConfigService.getUserFormFields();
-    debugger
     if (this.config?.data) {
       this.user = { ...this.config.data };
     }

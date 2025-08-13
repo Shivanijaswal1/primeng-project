@@ -8,27 +8,23 @@ export type User = {
   id: string | null;
   name: string;
   email: string;
-  age: number | null;  
-  // city:string | null
-
+  age: number | null;
 };
 
 export type UserField = {
   label: string;
-  name: keyof User; // 💡 strongly typed keys from User
+  name: keyof User;
   type: string;
   required: boolean;
   min?: number;
   max?: number;
   errorMsg: string;
-  
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceService {
-  
  constructor(private http:HttpClient) { }
   getDummyData(): Observable<any> {
     const studentDetailForm = [
@@ -45,8 +41,8 @@ export class ServiceService {
             required: true,
           },
           {
-            field: 'project',
-            fieldName: 'Project',
+            field: 'name',
+            fieldName: 'Name',
             editable: true,
             displayOrder: 1,
             type: 'text',
@@ -79,7 +75,6 @@ export class ServiceService {
           },
         ],
       },
-   
     ];
 
     const pendingStudentFees = [
@@ -104,7 +99,7 @@ export class ServiceService {
           {
             field: 'enrollmentno',
             fieldName: 'Enrollment No',
-            editable: true,                     
+            editable: true,
             displayOrder: 3,
             type: 'number',
           },
@@ -121,7 +116,6 @@ export class ServiceService {
     ];
     return of({ studentDetailForm, pendingStudentFees });
   }
-  
 getProductsMini(): Promise<any[]> {
   return firstValueFrom(this.http.get<any[]>("http://localhost:3000/product"));
 }

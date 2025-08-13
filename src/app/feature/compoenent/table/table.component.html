@@ -8,79 +8,77 @@
           type="text"
           pInputText
           [(ngModel)]="globalFilter"
-          (input)="onGlobalFilter()"
+          (ngModelChange)="onGlobalFilter()"
           placeholder="Search all columns" />
       </div>
     </div>
     <div class="sub-toolbar">
-      <div class="toolbar-left">
-        <app-z-button
-          class="white-button-small"
-          *ngIf="showDeleteButton"
-          label="Delete"
-          (handleclick)="del(selectedStudentIds)">
-        </app-z-button>
-
-        <p-selectButton
-          [options]="statusOptions"
-          [(ngModel)]="selectedStatus"
-          optionLabel="label"
-          optionValue="value"
-          aria-labelledby="status"
-          (onChange)="setStatusAndTab($event.value)">
-        </p-selectButton>
-        
-  <div class="action-bar">
-  <ng-container *ngIf="selectedStudentIds.length > 0">
-    ({{ getTotalUniqueParentCount()  }} Parent selected)
-    ({{ getSelectedChildrenCount() }} children Selected)
-    ({{ getTotalSelectedCount() }} Total )
-  </ng-container>
-  
-  <ng-container *ngIf="selectedStudentIds.length === 0 && selectedChildIds.length > 0">
-    ({{ getTotalUniqueParentCount() }} Parent selected)
-    ({{ getSelectedChildrenCount() }} children selected)
-    ({{ getTotalSelectedCount() }} Total )
-  </ng-container>
-</div>
-
-      </div>
-      <div class="toolbar-right">
-        <span *ngIf="showInvalidError" class="toolbar-error">
-          <i class="pi pi-info-circle"></i>
-         Editing not allowed
-        </span>
-        <button
-          *ngIf="sortingActive"
-          pButton
-          class="clear-sorting-btn"
-          label="Clear Sorting"
-          (click)="clearSorting()">
-        </button>
-
-        <div class="search-container">
-          <input
-            #searchInput
-            type="text"
-            [(ngModel)]="searchTerm"
-            (input)="onSearchInputChange()"
-            placeholder="Search headers..." />
-          <span class="match-info">{{ currentMatchIndex + 1 }} / {{
-            matches.length }}</span>
-          <button class="icon-button" (click)="prevMatch()"
-            title="Previous match">
-            <i class="pi pi-chevron-left"></i>
+      <div class="sub-toolbar-inner">
+        <div class="toolbar-left">
+          <app-z-button
+            class="white-button-small delete"
+            *ngIf="showDeleteButton"
+            label="Delete"
+            icon="pi pi-trash"
+            (handleclick)="del(selectedStudentIds)">
+          </app-z-button>
+          <p-selectButton
+            [options]="statusOptions"
+            [(ngModel)]="selectedStatus"
+            optionLabel="label"
+            optionValue="value"
+            aria-labelledby="status"
+            >
+          </p-selectButton>
+          <div class="action-bar">
+            <ng-container *ngIf="selectedStudentIds.length > 0">
+              <span class="count-badge parent"><i class="pi pi-users"></i> {{ getTotalUniqueParentCount() }} Parent</span>
+              <span class="count-badge child"><i class="pi pi-user-plus"></i> {{ getSelectedChildrenCount() }} Children</span>
+              <span class="count-badge total"><i class="pi pi-list"></i> {{ getTotalSelectedCount() }} Total</span>
+            </ng-container>
+            <ng-container *ngIf="selectedStudentIds.length === 0 && selectedChildIds.length > 0">
+              <span class="count-badge parent"><i class="pi pi-users"></i> {{ getTotalUniqueParentCount() }} Parent</span>
+              <span class="count-badge child"><i class="pi pi-user-plus"></i>{{ getSelectedChildrenCount() }} Children</span>
+              <span class="count-badge total"><i class="pi pi-list"></i> {{ getTotalSelectedCount() }} Total</span>
+            </ng-container>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <span *ngIf="showInvalidError" class="toolbar-error">
+            <i class="pi pi-info-circle"></i>
+            Editing not allowed
+          </span>
+          <button
+            *ngIf="sortingActive"
+            pButton
+            class="clear-sorting-btn"
+            label="Clear Sorting"
+            icon="pi pi-filter-slash"
+            (click)="clearSorting()">
           </button>
-          <button class="icon-button" (click)="nextMatch()" title="Next match">
-            <i class="pi pi-chevron-right"></i>
-          </button>
-          <button class="icon-button close-btn" (click)="closeSearch()"
-            title="Close">
-            <i class="pi pi-times"></i>
+          <div class="search-container">
+            <span class="search-icon"><i class="pi pi-search"></i></span>
+            <input
+              #searchInput
+              type="text"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="onSearchInputChange()"
+              placeholder="Search headers..." />
+            <span class="match-info">{{ currentMatchIndex + 1 }} / {{ matches.length }}</span>
+            <button class="icon-button" (click)="prevMatch()" title="Previous match">
+              <i class="pi pi-chevron-left"></i>
+            </button>
+            <button class="icon-button" (click)="nextMatch()" title="Next match">
+              <i class="pi pi-chevron-right"></i>
+            </button>
+            <button class="icon-button close-btn" (click)="closeSearch()" title="Close">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+          <button class="icon-button sort-btn" (click)="advanceSorting()" title="Advanced Sorting">
+            <i class="pi pi-sort-alpha-down"></i>
           </button>
         </div>
-        <i class="pi pi-sort-alpha-down sort-icon"
-          (click)="advanceSorting()"></i>
       </div>
     </div>
     <p-toast></p-toast>
@@ -89,13 +87,15 @@
       <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
     </div>
     <p-table #dt [paginator]="true" [rows]="5"
-      [value]="student"
+      [resizableColumns]="true"
       [value]="filteredstudent"
-      [resizableColumns]="true" [globalFilterFields]="globalFields"
+      [resizableColumns]="true"
+      [globalFilterFields]="globalFields"
       [sortField]="sortField"
       [sortOrder]="sortOrder"
       dataKey="id"
-      [expandedRowKeys]="expandedRows" (onRowToggle)="onRowToggle($event)"
+      [expandedRowKeys]="expandedRows"
+      (onRowToggle)="onRowToggle($event)"
       (onRowExpand)="onRowExpand($event)"
       (onRowCollapse)="onRowCollapse($event)"
       scrollDirection="horizontal"
@@ -106,28 +106,24 @@
           <th>
             <app-checkbox (checkedChange)="onSelectAllChange($event)"
               [checked]="isChecked"></app-checkbox></th>
-          <th *ngFor="let Parent of columns ;let i = index"
-            [ngClass]="{'sorted-column': isSorted(Parent.field)}"
-            [pSortableColumn]="Parent.field" #headerCell
-            [attr.id]="'header-' + Parent.field">
-            <span
-              [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
+            <th *ngFor="let Parent of columns; let i = index"
+              [ngClass]="{'sorted-column': isSorted(Parent.field)}"
+              [pSortableColumn]="Parent.field" #headerCell
+              [attr.id]="'header-' + Parent.field">
+            <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
             <p-sortIcon [field]="Parent.field"></p-sortIcon>
-            <i class="pi pi-filter" [style]="{'margin-left':'10px'}"
-              style="cursor: pointer"
-              (click)="openFilterMenu($event, Parent.field)"></i>
+            <i class="pi pi-filter" [style]="{'margin-left':'10px'}" style="cursor: pointer" (click)="openFilterMenu($event, Parent.field)"></i>
             <div class="icon-hover-wrapper">
-              <i class="pi pi-times delete-icon"
-                (click)="confirmDeleteColumn(Parent.field)"></i>
+              <i class="pi pi-times delete-icon" (click)="confirmDeleteColumn(Parent.field)"></i>
             </div>
           </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-rowData let-expanded="expanded">
+      <ng-template pTemplate="body"  let-rowData let-expanded="expanded">
         <tr [pEditableRow]="rowData" (click)="rowData._clicked = true">
           <td>
             <ng-container
-              *ngIf="rowData.children && rowData.children.length > 0 ">
+              *ngIf="rowData.children && rowData.children.length > 0">
               <app-z-button
                 [icon]="expanded ? 'pi pi-chevron-down':'pi pi-chevron-right'"
                 [rounded]="true"
@@ -145,37 +141,39 @@
           </td>
           <td *ngFor="let parent of columns"
             (click)="onCellClick(rowData, parent.field)">
-            <ng-container *ngIf="parent.field !== 'name'; else nonEditableName">
+            <ng-container *ngIf="parent.field !== 'name' else nonEditableName">
               <td pEditableColumn [pEditableColumnField]="parent.field">
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <ng-container
-                      *ngIf="parent.editable !== false && !rowData.disabled; else disabledCell">
+                    <ng-container *ngIf="parent.editable !== false && !rowData.disabled; else disabledCell">
                       <input pInputText type="text"
                         [(ngModel)]="rowData[parent.field]" required
                         [ngClass]="{'invalid-input': !rowData[parent.field]}" />
                     </ng-container>
                     <ng-template #disabledCell>
-                      <span class="disabled-cell">{{rowData[parent.field]
-                        }}</span>
+                      <span class="disabled-cell">{{ formatValue(rowData[parent.field]) }}</span>
                     </ng-template>
                   </ng-template>
                   <ng-template pTemplate="output">
                     <span (click)="$event.stopPropagation()"
                       [ngClass]="{'invalid-span': !rowData[parent.field] && rowData._clickedField === parent.field}">
-                    
                     </span>
-                    {{ rowData[parent.field] }}
+                    {{ formatValue(rowData[parent.field]) }}
                   </ng-template>
                 </p-cellEditor>
               </td>
-
             </ng-container>
             <ng-template #nonEditableName>
               <td>
-                <a href="javascript:void(0)" (click)="handleNameClick(rowData)">
-                  {{ rowData[parent.field] }}
-                </a>
+                <ng-container *ngIf="!rowData.children|| rowData.children.length === 0">
+                  <a href="javascript:void(0)" (click)="handleNameClick(rowData)">
+                    {{ formatValue(rowData[parent.field]) }}
+                  </a>
+                </ng-container>
+                <ng-container
+                  *ngIf="rowData.children && rowData.children.length > 0">
+                  {{ formatValue(rowData[parent.field]) }}
+                </ng-container>
               </td>
             </ng-template>
           </td>
@@ -183,18 +181,20 @@
       </ng-template>
       <ng-template pTemplate="rowexpansion" let-rowData>
         <tr>
-          <td colspan="7">
+          <td [attr.colspan]="columns.length + 2">
             <div class="p-4" style="margin-left: 5vw;">
-              <p-table class="child-table" [value]="rowData.children"
-                dataKey="id">
+              <p-table class="child-table" [value]="rowData.children" dataKey="id">
                 <ng-template pTemplate="body" let-child>
                   <tr>
-                    <app-checkbox
-                      (checkedChange)="handleChildCheckboxChange($event, child.id, rowData.id)"
-                        [checked]="selectedChildIds.includes(child.id)">
-                      </app-checkbox> 
+                    <app-checkbox (checkedChange)="handleChildCheckboxChange($event, child.id, rowData.id)" [checked]="selectedChildIds.includes(child.id)">
+                    </app-checkbox>
                     <td *ngFor="let key of child | keyvalue">
-                       {{ formatDate(key.value) }}
+                      <ng-container *ngIf="key.key === 'name'; else notName">
+                        <a href="javascript:void(0)">{{ key.value }}</a>
+                      </ng-container>
+                      <ng-template #notName>
+                        {{ formatValue (key.value) }}
+                      </ng-template>
                     </td>
                   </tr>
                 </ng-template>
@@ -211,11 +211,11 @@
     </p-table>
     <div class="fixed-footer-tab-panel">
       <div class="footer-tab-panel-inner">
-        <p-tabView [(activeIndex)]="activeTabIndex" class="tabview-button-style"
-          [scrollable]="true" (onChange)="onTabChange($event)">
-          <p-tabPanel *ngFor="let tab of tabMenuItems" [header]="tab.label">
-          </p-tabPanel>
-        </p-tabView>
+   <p-tabView [(activeIndex)]="activeTabIndex" class="tabview-button-style"
+  [scrollable]="true" (onChange)="onTabChange($event)">
+  <p-tabPanel *ngFor="let tab of tabMenuItems" [header]="tab.label">
+  </p-tabPanel>
+</p-tabView>
       </div>
     </div>
     <ng-template #noData>

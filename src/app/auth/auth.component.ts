@@ -6,7 +6,7 @@ import { ServiceService } from '../core/service.service';
    SocialUser,
 } from '@abacritt/angularx-social-login';
 import { jwtDecode } from 'jwt-decode';
-declare const google: any; 
+declare const google: any;
 
 @Component({
   selector: 'app-auth',
@@ -14,8 +14,8 @@ declare const google: any;
   styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent  {
-    name: string = '';
-    password:string='';
+  name: string = '';
+  password:string='';
   user: SocialUser | null = null;
   loggedIn: boolean = false;
   constructor(private authService: SocialAuthService, private router: Router, private zone: NgZone, private ServiceService: ServiceService) {}
@@ -37,7 +37,6 @@ initializeGoogleLogin(): void {
   google.accounts.id.renderButton(
     document.getElementById('myGoogleButton'),
     {
-      // theme: 'outline',
       size: 'large',
       text: 'Login _with',
       shape: 'pill',

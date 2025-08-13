@@ -13,7 +13,6 @@ export class DiscardButtonComponent {
     private DynamicDialogRef: DynamicDialogRef,
     public Config: DynamicDialogConfig
   ) {}
-  
   close() {
     this.DynamicDialogRef.close();
   }
@@ -21,4 +20,4 @@ export class DiscardButtonComponent {
   ngOnInit() {
     this.messages = this.Config.data.messages;
   }
-}  
+}
