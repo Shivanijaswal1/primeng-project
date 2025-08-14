@@ -106,10 +106,8 @@
           <th>
             <app-checkbox (checkedChange)="onSelectAllChange($event)"
               [checked]="isChecked"></app-checkbox></th>
-            <th *ngFor="let Parent of columns; let i = index"
-              [ngClass]="{'sorted-column': isSorted(Parent.field)}"
-              [pSortableColumn]="Parent.field" #headerCell
-              [attr.id]="'header-' + Parent.field">
+              <th *ngFor="let Parent of columns; let i = index"
+                [ngClass]="{'sorted-column': isSorted(Parent.field)}" [pSortableColumn]="Parent.field" #headerCell [attr.id]="'header-' + Parent.field">
             <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
             <p-sortIcon [field]="Parent.field"></p-sortIcon>
             <i class="pi pi-filter" [style]="{'margin-left':'10px'}" style="cursor: pointer" (click)="openFilterMenu($event, Parent.field)"></i>
@@ -190,7 +188,7 @@
                     </app-checkbox>
                     <td *ngFor="let key of child | keyvalue">
                       <ng-container *ngIf="key.key === 'name'; else notName">
-                        <a href="javascript:void(0)">{{ key.value }}</a>
+                        <a href="javascript:void(0)" (click)="handleChildNameClick(child, rowData)">{{ key.value }}</a>
                       </ng-container>
                       <ng-template #notName>
                         {{ formatValue (key.value) }}

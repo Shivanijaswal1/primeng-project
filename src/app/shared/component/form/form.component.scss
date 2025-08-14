@@ -10,7 +10,7 @@
 }
 
 ::ng-deep .custom-dialog-header .p-dialog-header-icon {
-  color: black; 
+  color: black;
 }
 
 #content {
@@ -94,7 +94,7 @@ label {
 .pdf-preview {
   padding: 20px;
   border-left: 1px solid #ddd;
- 
+
 }
 
 .pdf-card {
@@ -103,7 +103,7 @@ label {
   margin-bottom: 15px;
   background-color: #9abbdd;
   border-radius: 6px;
-  transition: background 0.3s; 
+  transition: background 0.3s;
 }
 .pdf-header{
   position: absolute;
@@ -250,7 +250,7 @@ p-fileUpload {
 }
 
 .section-one {
-  background-color: #f0f4f8; 
+  background-color: #f0f4f8;
 }
 
 .section-two {
@@ -258,7 +258,7 @@ p-fileUpload {
 }
 
 .section-three {
-  background-color: #f5f5f5; 
+  background-color: #f5f5f5;
 }
 
 .section h3 {
@@ -307,4 +307,33 @@ p-fileUpload {
   background-color: #007bff;
   color: white;
   border-bottom: 2px solid #0056b3;
+}
+.form-tab-header {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.3rem;
+}
+
+.form-tab {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    border-radius: 6px 6px 0 0;
+    background-color: transparent;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.form-tab:hover {
+    background-color: #f0f4ff;
+}
+
+.active-tab {
+    background-color: #ffffff;
+    color: #1e40af;
+    border: 1px solid #e0e0e0;
+    border-bottom: none;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.05);
 }

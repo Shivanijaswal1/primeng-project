@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { jsPDF } from 'jspdf';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SubmitMessageComponent } from '../submit-message/submit-message.component';
+import autoTable from 'jspdf-autotable';
 import { DiscardButtonComponent } from '../discard-button/discard-button.component';
 
 interface FormPayload {
@@ -77,18 +78,27 @@ export class FormComponent {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)]],
+      name: [
+        '',
+        [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)],
+      ],
       parent: ['', Validators.required],
       child: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      father: ['', [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)]],
+      father: [
+        '',
+        [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)],
+      ],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
       selectedValue: ['', Validators.required],
       selectedfees: ['', Validators.required],
-      age: [null, [Validators.required, Validators.min(18), Validators.max(100)]],
+      age: [
+        null,
+        [Validators.required, Validators.min(18), Validators.max(100)],
+      ],
     });
   }
 
@@ -122,60 +132,106 @@ export class FormComponent {
     this.form.get('selectedfees')?.setValue(value);
   }
 
-  onSubmit() {
-    const currentTime = new Date();
-    this.submissionTime = currentTime.toLocaleString();
-    if (this.form.valid) {
-      const payload = this.form.value;
-      const doc = new jsPDF();
-      doc.text(`Name: ${payload.name}`, 10, 10);
-      doc.text(`Email: ${payload.email}`, 10, 20);
-      doc.text(`Age: ${payload.age}`, 10, 30);
-      doc.text(`selectedValue: ${payload.selectedValue.name}`, 10, 40);
-      doc.text(`Father's Name: ${payload.father}`, 10, 50);
-      doc.text(`Address: ${payload.address}`, 10, 60);
-      doc.text(`City: ${payload.city}`, 10, 70);
-      doc.text(`State: ${payload.state}`, 10, 80);
-      doc.text(`Postal Code: ${payload.postalCode}`, 10, 90);
-      const pdfBlob = doc.output('blob');
-      const url = URL.createObjectURL(pdfBlob);
-      this.rawPdfUrl = url;
-      const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-      this.pdfUrls.push({
-        url: this.rawPdfUrl,
-        name: payload.name,
-        submissionTime: this.submissionTime,
-      });
-      this.updateMostRecentHighlight();
-      this._service.addData(payload).subscribe({
-        next: (response: any) => {
-          this.form.reset();
-          this.ref = this.dialogservice.open(SubmitMessageComponent, {
-            header: 'Form Submitted Message',
-            width: '30%',
-            styleClass: 'custom-dialog-header',
-            data: { message: 'Form submitted successfully!' },
-          });
-        },
-        error: (error: any) => {
-          this._mesaage.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error submitting data',
-          });
-        },
-      });
-    } else {
-      this.form.markAllAsTouched();
-      this.ref = this.dialogservice.open(SubmitMessageComponent, {
-        header: 'Error',
-        width: '30%',
-        styleClass: 'custom-dialog-header',
-        data: { message: this.message },
-      });
-    }
-  }
 
+onSubmit() {
+  const currentTime = new Date();
+  this.submissionTime = this.formatDate(currentTime);
+
+  if (this.form.valid) {
+    const payload = this.form.value;
+
+    const selectedValueName = payload.selectedValue?.name || '';
+    const selectedFeesName = payload.selectedfees?.name || '';
+
+    const doc = new jsPDF();
+
+    doc.setFillColor(40, 78, 120);
+    doc.rect(0, 0, 210, 25, 'F');
+    doc.setFontSize(18);
+    doc.setTextColor(255, 255, 255);
+    doc.text('Form Submission Receipt', 105, 16, { align: 'center' });
+
+    const tableData = [
+      ['Name', payload.name],
+      ['Email', payload.email],
+      ['Age', payload.age.toString()],
+      ['Selected Value', selectedValueName],
+      ['Father\'s Name', payload.father],
+      ['Address', payload.address],
+      ['City', payload.city],
+      ['State', payload.state],
+      ['Postal Code', payload.postalCode],
+      ['Fees Status', selectedFeesName],
+      ['Submitted On', this.submissionTime],
+    ];
+
+    autoTable(doc, {
+      head: [['Field', 'Value']],
+      body: tableData,
+      startY: 35,
+      theme: 'grid',
+      styles: { fontSize: 11, cellPadding: 3 },
+      headStyles: {
+        fillColor: [40, 78, 120],
+        textColor: 255,
+        fontStyle: 'bold',
+        halign: 'center'
+      },
+      bodyStyles: { textColor: [50, 50, 50] },
+      alternateRowStyles: { fillColor: [240, 240, 240] },
+    });
+
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text('Generated by MyApp © 2025', 105, 290, { align: 'center' });
+
+    const pdfBlob = doc.output('blob');
+    const url = URL.createObjectURL(pdfBlob);
+    this.rawPdfUrl = url;
+
+    const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.pdfUrls.push({
+      url: this.rawPdfUrl,
+      name: payload.name,
+      submissionTime: this.submissionTime,
+    });
+
+    this.updateMostRecentHighlight();
+    this._service.addData(payload).subscribe({
+      next: () => {
+        this.form.reset();
+        this.ref = this.dialogservice.open(SubmitMessageComponent, {
+          header: 'Form Submitted Message',
+          width: '30%',
+          styleClass: 'custom-dialog-header',
+          data: { message: 'Form submitted successfully!' },
+        });
+      },
+      error: () => {
+        this._mesaage.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error submitting data',
+        });
+      },
+    });
+  } else {
+    this.form.markAllAsTouched();
+    this.ref = this.dialogservice.open(SubmitMessageComponent, {
+      header: 'Error',
+      width: '30%',
+      styleClass: 'custom-dialog-header',
+      data: { message: this.message },
+    });
+  }
+}
+  formatDate(date: Date): string {
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  }
   ResetForm() {
     this.ref = this.dialogservice.open(DiscardButtonComponent, {
       header: 'Discard Form',

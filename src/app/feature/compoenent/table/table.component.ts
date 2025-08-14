@@ -17,6 +17,11 @@ import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
+  /**
+   * @param child
+   * @param parent
+   */
+
   [x: string]: any;
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
@@ -117,6 +122,54 @@ export class TableComponent {
       this.tabchange('complete');
     });
   }
+    handleChildNameClick(child: any, parent: any) {
+    this.ref = this.dialogservice.open(TabsComponent, {
+      data: {
+        parentId: parent.id,
+        childId: child.id,
+        ...child,
+        parentData: parent
+      },
+      header: `Child Name: ${child.name}`,
+      width: '40%',
+      height: '79vh',
+      styleClass: 'custom-dialog-header',
+    });
+    this.ref.onClose.subscribe((formValue: any) => {
+      // You can add logic here to update child data if needed, similar to handleNameClick
+      // For now, just reload or update as required
+      if (formValue?.policy?.length > 0 && child.id) {
+        const updatedPolicy = formValue.policy[0];
+        // Find parent in student array
+        const parentIndex = this.student.findIndex((student) => student.id === parent.id);
+        if (parentIndex !== -1) {
+          const parentObj = this.student[parentIndex];
+          // Find child in parent's children
+          const childIndex = parentObj.children?.findIndex((c: any) => c.id === child.id);
+          if (childIndex !== -1) {
+            Object.keys(updatedPolicy).forEach((key) => {
+              if (key !== 'children' && parentObj.children[childIndex][key] !== updatedPolicy[key]) {
+                parentObj.children[childIndex][key] = updatedPolicy[key];
+              }
+            });
+            this.student = [...this.student];
+          }
+        }
+        this.loading = true;
+        this._studentService
+          .updateParentWithChildren(parent.id, parent.children)
+          .subscribe({
+            next: () => {
+              this.loading = false;
+            },
+            error: (err: any) => {
+              console.error('Error updating child:', err);
+              this.loading = false;
+            },
+          });
+      }
+    });
+  }
 
  tabchange(status: string) {
   const normalized = status.toLowerCase().trim();
@@ -142,25 +195,20 @@ export class TableComponent {
 
 formatValue(value: any): string {
   if (value === null || value === undefined) return '';
-
   if (value instanceof Date) {
     return this.formatDate(value);
   }
   if (typeof value === 'string' && !isNaN(Date.parse(value))) {
     return this.formatDate(new Date(value));
   }
-
-  if (typeof value === 'object') {
+  if (typeof value === 'object'){
     if (value.name) return value.name;
     if (value.label) return value.label;
-
     if (Array.isArray(value)) {
       return value.map(v => this.formatValue(v)).join(', ');
     }
-
     return JSON.stringify(value);
   }
-
   return value.toString();
 }
 
@@ -188,7 +236,6 @@ formatDate(date: Date): string {
       this.tempSelectedValue.push(value);
     }
   }
-
   showInvalidError = false;
 
   checkInvalidCells() {
@@ -236,31 +283,44 @@ formatDate(date: Date): string {
       }
     });
   }
-  isSorted(field: string): boolean {
-    return this.currentSortFields?.includes(field);
-  }
 
-  applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
-    this.sortingActive = true;
-    this.currentSortFields = sortData.map((s) => s.sortField);
-    this.filteredstudent.sort((a, b) => {
-      for (const { sortField, sortOrder } of sortData){
-        let valueA = a[sortField];
-        let valueB = b[sortField];
-        if (valueA == null && valueB == null) return 0;
-        if (valueA == null) return sortOrder;
-        if (valueB == null) return - sortOrder;
-        if (typeof valueA === 'string' && typeof valueB === 'string') {
-          const result = valueA.localeCompare(valueB);
-          if (result !== 0) return sortOrder * result;
-        } else {
-          const result = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
-          if (result !== 0) return sortOrder * result;
-        }
+parentcolumns: { field: string; header?: string }[] = [];
+
+isSorted(field: string): boolean {
+  if (!this.currentSortFields?.length) return false;
+  return this.currentSortFields.some(
+    f => f.toLowerCase().trim() === field.toLowerCase().trim()
+  );
+}
+
+applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
+  this.sortingActive = true;
+  this.currentSortFields = sortData.map(s => s.sortField.trim().toLowerCase());
+  this.filteredstudent.sort((a, b) => {
+    for (const { sortField, sortOrder } of sortData) {
+      let valueA = this.resolveField(a, sortField);
+      let valueB = this.resolveField(b, sortField);
+
+      if (valueA == null && valueB == null) return 0;
+      if (valueA == null) return sortOrder;
+      if (valueB == null) return - sortOrder;
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        const result = valueA.localeCompare(valueB);
+        if (result !== 0) return sortOrder * result;
+      } else {
+        const result = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+        if (result !== 0) return sortOrder * result;
       }
-      return 0;
-    });
-  }
+    }
+    return 0;
+  });
+}
+
+private resolveField(obj: any, field: string) {
+  return field.split('.').reduce((o, key) => (o ? o[key] : null), obj);
+}
+
 
   clearSorting() {
     this.currentSortFields = [];
