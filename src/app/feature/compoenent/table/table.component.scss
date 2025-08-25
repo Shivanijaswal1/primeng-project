@@ -798,8 +798,11 @@ mark.highlight-active {
   align-items: center;
 }
 
-.sorted-highlight {
-  background-color: #fff3cd !important;
+
+::ng-deep th.sorted-highlight {
+  background-color: #fff700 !important;
+  color: #333 !important;
+  border: 2px solid red !important;
   transition: background-color 0.3s ease;
 }
 

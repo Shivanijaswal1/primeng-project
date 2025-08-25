@@ -21,7 +21,7 @@
                         </label>
                         <app-input formControlName="name" name="name" [message]="message"
                             [required]="true" type="text"
-                            pattern="^[A-Za-z]+\s?[A-Za-z]+$" 
+                            pattern="^[A-Za-z]+\s?[A-Za-z]+$"
                             [ngClass]="{'invalid-field': form.get('name')?.invalid && form.get('name')?.touched}"></app-input>
                         <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
                             class="error-text" style="color: red;">
@@ -252,7 +252,7 @@
                 </div>
             </form>
         </ng-template>
-        
+
         <ng-template pTemplate>
             <div class="pdf-preview">
                 <div class="pdf-header">
@@ -299,7 +299,7 @@
                         <div class="card">
                             <p-toast />
                             <div class="card">
-                                <p-fileUpload 
+                                <p-fileUpload
                                     name="demo[]"
                                     url="https://www.primefaces.org/cdn/api/upload.php"
                                     (onUpload)="onUpload($event)"

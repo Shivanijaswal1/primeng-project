@@ -29,6 +29,8 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { PasswordModule } from 'primeng/password';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
+import { TieredMenuModule } from 'primeng/tieredmenu';
+
 
 
 const primengModule = [
@@ -59,7 +61,8 @@ const primengModule = [
   DialogModule,
   PasswordModule,
   ReactiveFormsModule,
-  RippleModule
+  RippleModule,
+  TieredMenuModule
 ];
 @NgModule({
   declarations: [],
@@ -72,6 +75,7 @@ const primengModule = [
     TableModule,
     SelectButtonModule,
     SidebarModule,
+    TieredMenuModule
   ],
   exports: [
     primengModule,

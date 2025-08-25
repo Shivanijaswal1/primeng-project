@@ -28,6 +28,15 @@
     box-shadow: 0 2px 8px rgba(70,89,181,0.12);
     transition: box-shadow 0.2s, background 0.2s;
   }
+
+  .toolbar-btn {
+  background: #dde7f1 !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(70,89,181,0.12);
+  transition: box-shadow 0.2s, background 0.2s;
+}
   ::ng-deep .p-sidebar {
     background: linear-gradient(135deg, #4660b5 0%, #6a82fb 100%) !important;
     color: #fff !important;

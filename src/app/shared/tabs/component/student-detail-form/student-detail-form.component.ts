@@ -32,19 +32,22 @@ export class StudentDetailFormComponent {
 constructor(
     public  config: DynamicDialogConfig,
     private _formConfigService: ServiceService,
-     public dialogRef: DynamicDialogRef,
+    public dialogRef: DynamicDialogRef,
   ) {}
 
  ngOnInit(): void {
-    this.formFields = this._formConfigService.getUserFormFields();
-    if (this.config?.data) {
-      this.user = { ...this.config.data };
+    this.formFields =this._formConfigService.getUserFormFields();
+    if(this.config?.data){
+      this.user={...this.config.data}
     }
   }
 
-  submitform(){
-    if(Object.keys(this.user).length) {
-    this.dialogRef.close({ policy: [this.user] });
-  }
-  }
+
+submitform(){
+ if (Object.keys(this.user).length){
+  this.dialogRef.close({policy:[this.user]})
+ }
+}
+
+
 }

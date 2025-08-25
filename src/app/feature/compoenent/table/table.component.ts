@@ -1,3 +1,4 @@
+
 import { AdvanceSortingComponent } from 'src/app/shared/component/advance-sorting/advance-sorting.component';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
@@ -17,15 +18,10 @@ import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
-  /**
-   * @param child
-   * @param parent
-   */
-
-  [x: string]: any;
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
+  @ViewChild('nameMenu') nameMenu: any;
   student: any[] = [];
   expandedRows: any = {};
   columns: { field: string; header: string; editable?: boolean }[] = [];
@@ -40,6 +36,7 @@ export class TableComponent {
   filterMenuItems: MenuItem[] = [];
   selectedField: string = '';
   uniqueValues: string[] = [];
+  nameMenuItems: MenuItem[] = [];
   searchTerm = '';
   searchBarVisible = false;
   selectedValue: string[] = [];
@@ -73,14 +70,15 @@ export class TableComponent {
   selectedChildIds: number[] = [];
   constructor(
     private _studentService: ServiceService,
-    public  dialogservice: DialogService,
+    public   dialogservice: DialogService,
     private _deleteservice: ConfirmationService,
     private _messageservice: MessageService,
-    private datePipe: DatePipe
+    private  datePipe: DatePipe
   ) {}
   selectedParentIdsFromChildren: Set<number> = new Set();
   selectedParentIds: (number | string)[] = [];
   selectedChildRecords: { parentId: number; childId: number }[] = [];
+  data:any;
 
   ngOnInit() {
     this.getstudentData();
@@ -105,7 +103,7 @@ export class TableComponent {
       { header: 'Role', field: 'Role', sortable: true },
       { header: 'Status', field: 'Status', sortable: true },
       { header: 'Join Date', field: 'Join Date', sortable: true },
-      { header: 'Date of Birth', filed: 'Date of Birth', sortable: true },
+      { header: 'Date of Birth', field: 'Date of Birth', sortable: true },
     ];
   }
 
@@ -122,51 +120,56 @@ export class TableComponent {
       this.tabchange('complete');
     });
   }
-    handleChildNameClick(child: any, parent: any) {
+
+  openNameMenu(event: Event, rowData: any) {
+  this.nameMenuItems = [
+    {
+      label: 'VOB',
+      icon: 'pi pi-file',
+      command: () => this.getFormData()
+    },
+    {
+      label: 'Student Detail',
+      icon: 'pi pi-user',
+      command: () => this.handleChildNameClick(event,rowData)
+    }
+  ];
+  this.nameMenu.toggle(event);
+}
+
+
+getFormData(): void {
+ this._studentService.show();
+}
+
+    handleChildNameClick(event: any, rowData: any) {
     this.ref = this.dialogservice.open(TabsComponent, {
       data: {
-        parentId: parent.id,
-        childId: child.id,
-        ...child,
-        parentData: parent
+        parentId: rowData.id,
+         ...rowData,
+        parentData: rowData
       },
-      header: `Child Name: ${child.name}`,
+      header: `Child Name: ${rowData.name}` ,
       width: '40%',
       height: '79vh',
       styleClass: 'custom-dialog-header',
     });
     this.ref.onClose.subscribe((formValue: any) => {
-      // You can add logic here to update child data if needed, similar to handleNameClick
-      // For now, just reload or update as required
-      if (formValue?.policy?.length > 0 && child.id) {
+      if (formValue?.policy?.length > 0 && rowData.id) {
         const updatedPolicy = formValue.policy[0];
-        // Find parent in student array
-        const parentIndex = this.student.findIndex((student) => student.id === parent.id);
+        const parentIndex = this.student.findIndex((student) => student.id === rowData.id);
         if (parentIndex !== -1) {
           const parentObj = this.student[parentIndex];
-          // Find child in parent's children
-          const childIndex = parentObj.children?.findIndex((c: any) => c.id === child.id);
-          if (childIndex !== -1) {
-            Object.keys(updatedPolicy).forEach((key) => {
-              if (key !== 'children' && parentObj.children[childIndex][key] !== updatedPolicy[key]) {
-                parentObj.children[childIndex][key] = updatedPolicy[key];
-              }
+          this.loading = true;
+          this._studentService.updateParentWithChildren(rowData.id, parentObj.children).subscribe({
+              next: () => {
+                this.loading = false;
+              },
+              error: (err: any) => {
+                this.loading = false;
+              },
             });
-            this.student = [...this.student];
-          }
         }
-        this.loading = true;
-        this._studentService
-          .updateParentWithChildren(parent.id, parent.children)
-          .subscribe({
-            next: () => {
-              this.loading = false;
-            },
-            error: (err: any) => {
-              console.error('Error updating child:', err);
-              this.loading = false;
-            },
-          });
       }
     });
   }
@@ -193,15 +196,9 @@ export class TableComponent {
     }
   }
 
-formatValue(value: any): string {
+formatValue(value: any, fieldName?: unknown): string {
   if (value === null || value === undefined) return '';
-  if (value instanceof Date) {
-    return this.formatDate(value);
-  }
-  if (typeof value === 'string' && !isNaN(Date.parse(value))) {
-    return this.formatDate(new Date(value));
-  }
-  if (typeof value === 'object'){
+  if (typeof value === 'object') {
     if (value.name) return value.name;
     if (value.label) return value.label;
     if (Array.isArray(value)) {
@@ -211,6 +208,7 @@ formatValue(value: any): string {
   }
   return value.toString();
 }
+
 
 formatDate(date: Date): string {
   return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -225,7 +223,7 @@ formatDate(date: Date): string {
   ];
   this.tempSelectedValue = [...this.selectedValue];
   this.filterOverlay.show(event);
-}
+  }
   onCheckboxChange(value: string) {
     if (this.tempSelectedValue.includes(value)) {
       this.tempSelectedValue = this.tempSelectedValue.filter(
@@ -241,7 +239,7 @@ formatDate(date: Date): string {
   checkInvalidCells() {
     const hasInvalid = this.filteredstudent.some((row) =>
       this.columns.some(
-        (col) => !row[col.field] && row._clickedField === col.field
+        (col) => (row[col.field] === null || row[col.field] === undefined || row[col.field] === '') && row._clickedField === col.field
       )
     );
     this.showInvalidError = hasInvalid;
@@ -261,7 +259,7 @@ formatDate(date: Date): string {
     this.filteredstudent.forEach((r) => {
       r._clickedField = null;
     });
-    if (!row[field]) {
+    if (row[field] === null || row[field] === undefined || row[field] === '') {
       row._clickedField = field;
     }
     this.checkInvalidCells();
@@ -288,9 +286,13 @@ parentcolumns: { field: string; header?: string }[] = [];
 
 isSorted(field: string): boolean {
   if (!this.currentSortFields?.length) return false;
-  return this.currentSortFields.some(
+  const result = this.currentSortFields.some(
     f => f.toLowerCase().trim() === field.toLowerCase().trim()
   );
+  if (result) {
+    console.log('Highlighting column:', field);
+  }
+  return result;
 }
 
 applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
@@ -300,11 +302,9 @@ applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
     for (const { sortField, sortOrder } of sortData) {
       let valueA = this.resolveField(a, sortField);
       let valueB = this.resolveField(b, sortField);
-
       if (valueA == null && valueB == null) return 0;
       if (valueA == null) return sortOrder;
       if (valueB == null) return - sortOrder;
-
       if (typeof valueA === 'string' && typeof valueB === 'string') {
         const result = valueA.localeCompare(valueB);
         if (result !== 0) return sortOrder * result;
@@ -320,7 +320,6 @@ applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
 private resolveField(obj: any, field: string) {
   return field.split('.').reduce((o, key) => (o ? o[key] : null), obj);
 }
-
 
   clearSorting() {
     this.currentSortFields = [];
@@ -368,7 +367,6 @@ private resolveField(obj: any, field: string) {
               this.loading = false;
             },
             error: (err) => {
-              console.error('Error updating parent:', err);
               this.loading = false;
             },
           });
@@ -488,7 +486,6 @@ private resolveField(obj: any, field: string) {
   }
 
   getSelectedParentsFromChildren(): Set<number> {
-
     const selectedParents = new Set<number>();
     this.filteredstudent.forEach((parent) => {
       if (
@@ -632,8 +629,8 @@ private resolveField(obj: any, field: string) {
       }
     });
     if (this.selectedField && this.selectedValue.length > 0) {
-      this.filteredstudent = this.student.filter((emp) =>
-        this.selectedValue.includes(emp[this.selectedField])
+      this.filteredstudent = this.student.filter((student) =>
+        this.selectedValue.includes(student[this.selectedField])
       );
     }
     this.filterOverlay.hide();
@@ -648,25 +645,33 @@ private resolveField(obj: any, field: string) {
     this.filterOverlay.hide();
   }
 
-  onGlobalFilter(): void {
-    if (this.globalFilter.trim() === '') {
-      this.student = [...this.student];
-      this.getstudentData();
-    } else {
-      this.student = this.student.filter((employee) => {
-        return Object.values(employee).some((value) =>
-          value
-            ?.toString()
-            .toLowerCase()
-            .includes(this.globalFilter.toLowerCase())
-        );
-      });
-    }
+onGlobalFilter(): void {
+  if (this.globalFilter.trim() === '') {
+    this.filteredstudent = [...this.student];
+  } else {
+    const filterValue = this.globalFilter.toLowerCase();
+    this.filteredstudent = this.student.filter((employee) =>
+      this.flattenObject(employee).includes(filterValue)
+    );
   }
+}
+private flattenObject(obj: any, seen: Set<any> = new Set()): string {
+  if (obj === null || obj === undefined) return '';
+  if (typeof obj !== 'object') return obj.toString().toLowerCase();
+  if (seen.has(obj)) return '';
+  seen.add(obj);
+  if (Array.isArray(obj)) {
+    return obj.map(item => this.flattenObject(item, seen)).join(' ');
+  }
+  return Object.values(obj)
+    .map(value => this.flattenObject(value, seen))
+    .join(' ');
+}
+
 
   del(arr: any | null) {
     if (arr === null) return;
-    const confirmed = this._deleteservice.confirm({
+    this._deleteservice.confirm({
       message: 'Are you sure you want to delete this item?',
       header: 'Delete Confirmation',
       icon: 'pi pi-trash',
@@ -675,6 +680,10 @@ private resolveField(obj: any, field: string) {
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
+        this._studentService.deleteMultiple(this.selectedStudentIds);
+        this.getstudentData();
+        this.selectedStudentIds = [];
+        this.getstudentData();
         this._messageservice.add({
           severity: 'success',
           summary: 'Successful',
@@ -691,18 +700,12 @@ private resolveField(obj: any, field: string) {
         });
       },
     });
-    if (confirmed) {
-      this._studentService.deleteMultiple(this.selectedStudentIds);
-      this.getstudentData();
-      this.selectedStudentIds = [];
-      this.getstudentData();
-    }
   }
 
   onSelectAllChange(checked: boolean): void {
     this.isChecked = checked;
     if (checked) {
-      this.selectedStudentIds = this.student.map((emp) => emp.id);
+      this.selectedStudentIds = this.student.map((student) => student.id);
     } else {
       this.selectedStudentIds = [];
     }
@@ -762,4 +765,36 @@ private resolveField(obj: any, field: string) {
     }
   }
 
+  shouldShowActionBar(): boolean {
+    const parentCount = this.getTotalUniqueParentCount();
+    const childCount = this.getSelectedChildrenCount();
+    const totalCount = this.getTotalSelectedCount();
+    return parentCount > 0 || childCount > 0 || totalCount > 0;
+  }
+
+  onStatusChange(event: any) {
+    const selectedStatus = event.value;
+    this.selectedStatus = selectedStatus;
+    // Filter the data based on the selected status
+    if (selectedStatus === 'pending') {
+      this.filteredstudent = this.student.filter(stu => {
+        const feeCode = (stu.selectedfees?.code ?? '').toString().toLowerCase().trim();
+        return feeCode === 'pending';
+      });
+      this.activeTabIndex = 0;
+    } else if (selectedStatus === 'complete') {
+      this.filteredstudent = this.student.filter(stu => {
+        const feeCode = (stu.selectedfees?.code ?? '').toString().toLowerCase().trim();
+        return feeCode === 'complete';
+      });
+      this.activeTabIndex = 1;
+    }
+
+    // Clear selections when status changes
+    this.selectedStudentIds = [];
+    this.selectedChildIds = [];
+    this.showDeleteButton = false;
+    this.isChecked = false;
+  }
 }
+

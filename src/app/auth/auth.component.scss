@@ -1,74 +1,3 @@
-
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(to right, #f8fbff, #e9f1ff);
-  padding: 2rem;
-}
-
-.login-card {
-  display: flex;
-  width: 100%;
-  max-width: 950px;
-  border-radius: 16px;
-  overflow: hidden;
-  background-color: #fff;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-}
-
-.login-image {
-  flex: 1;
-  background-color: #f0f6ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.login-image img {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-}
-
-.login-form {
-  flex: 1;
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.login-form h2 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: #1e3a8a;
-}
-
-.subtext {
-  margin-bottom: 2rem;
-  color: #6b7280;
-  font-size: 0.95rem;
-}
-
-.input-field {
-  margin-bottom: 1rem;
-}
-
-.forgot-link {
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-  color: #3b82f6;
-  display: inline-block;
-}
-
-.full-width {
-  width: 100%;
-  margin-bottom: 1.5rem;
-}
-
 .or-divider {
   text-align: center;
   color: #9ca3af;
@@ -84,44 +13,47 @@
   margin-bottom: 1.5rem;
 }
 
-.signup-text {
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:100vh;
+  background: #f8f9fa;
+}
+
+.login-card {
   text-align: center;
-  font-size: 0.9rem;
-  color: #4b5563;
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  width: 600px;
+  height: 600px;
 }
 
-.signup-text a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 600;
-}
-.p-inputtext {
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  border-radius: 0.75rem;
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  width: 100%;
+.logo-img {
+  width: 300px;
+  margin-bottom: 20px;
 }
 
-.p-inputtext:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 0.1rem rgba(37, 99, 235, 0.25);
-  background-color: #ffffff;
+.app-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
 }
 
-.p-input-icon-left {
-  width: 100%;
-  margin-bottom: 1.5rem;
+.subtitle {
+  color: #555;
+  margin-bottom: 30px;
 }
 
-.p-input-icon-left > i {
-  left: 1rem;
-  color: #9ca3af;
+.google-btn {
+  width: 50%;
+  margin-bottom: 20px;
 }
 
-.p-input-icon-left > input {
-  padding-left: 2.5rem;
+.version-text {
+  font-size: 12px;
+  color: #888;
+  margin-top: 30px;
 }
-

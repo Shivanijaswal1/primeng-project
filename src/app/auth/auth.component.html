@@ -1,63 +1,22 @@
 
 <div class="login-container">
   <div class="login-card">
-    <div class="login-image">
+    <div class="login-logo">
       <img
         src="https://cdni.iconscout.com/illustration/premium/thumb/online-course-illustration-download-in-svg-png-gif-file-formats--platform-education-student-portal-and-e-learning-pack-illustrations-4609606.png"
-        alt="Student Illustration"
+        alt="Your Logo"
+        class="logo-img"
       />
     </div>
 
-  
-    <div class="login-form">
-      <h2>Welcome Back 👋</h2>
-      <p class="subtext">Login to continue your learning journey</p>
-
-      <div class="p-input-icon-left input-field">
-        <i class="pi pi-user"></i>
-        <input
-          type="text"
-          pInputText
-          placeholder="Enter your email"
-          [(ngModel)]="name"
-          name="email"
-        />
-      </div>
-
-      <div class="p-input-icon-left input-field">
-        <i class="pi pi-lock"></i>
-        <input
-          type="password"
-          pInputText
-          placeholder="Enter your password"
-          [(ngModel)]="password"
-          name="password"
-        />
-      </div>
-
-      <button
-        pButton
-        label="Login"
-        class="p-button-rounded p-button-primary full-width"
-      ></button>
-
-      <div class="or-divider">or</div>
+    <h1 class="app-name">Student App</h1>
+    <p class="subtitle">Learning Management System</p>
 
       <div class="social-buttons">
         <div id="myGoogleButton"></div>
-        <button
-          pButton
-          type="button"
-          icon="pi pi-facebook"
-          class="p-button-outlined p-button-secondary"
-          label="Facebook"
-        ></button>
+
       </div>
-<!-- 
-      <p class="signup-text">
-        Don't have an account?
-        <a href="#">Sign up</a>
-      </p> -->
-    </div>
+
+    <div class="version-text">Version 1.0</div>
   </div>
 </div>

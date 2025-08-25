@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { SocialUser } from '@abacritt/angularx-social-login';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { FormComponent } from '../shared/component/form/form.component';
 
 interface Parent {
   feeStatus: string;
@@ -29,9 +31,13 @@ export interface BarChartData {
   providedIn: 'root',
 })
 export class ServiceService {
+  ref: DynamicDialogRef | undefined;
+
   private _SubmitUrl!: 'http://localhost:3000/form';
   private chartUrl!: 'http://localhost:3000/data';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+     public dialogservice: DialogService
+  ) {}
 
   addData(data: any): Observable<any> {
     return this.http.post('http://localhost:3000/form', data);
@@ -150,4 +156,20 @@ export class ServiceService {
   get user(): SocialUser | null {
     return this._user$.value;
   }
+
+   show(): void {
+    this.ref = this.dialogservice.open(FormComponent, {
+    header: 'Student Registration form',
+    width: '65%',
+    height: 'auto',
+    contentStyle: { overflow: 'auto' },
+    baseZIndex: 10000,
+    maximizable: true,
+    styleClass: 'custom-dialog-header',
+  });
+
+  this.ref.onClose.subscribe(() => {
+    this.getStudent();
+  });
+}
 }

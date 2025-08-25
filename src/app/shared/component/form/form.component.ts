@@ -78,27 +78,18 @@ export class FormComponent {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      name: [
-        '',
-        [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)],
-      ],
+      name: [ '', [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)],],
       parent: ['', Validators.required],
       child: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      father: [
-        '',
-        [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)],
-      ],
+      father: [ '', [Validators.required, Validators.pattern(/^[A-Za-z]+\s?[A-Za-z]+$/)],],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
       selectedValue: ['', Validators.required],
       selectedfees: ['', Validators.required],
-      age: [
-        null,
-        [Validators.required, Validators.min(18), Validators.max(100)],
-      ],
+      age: [null, [Validators.required, Validators.min(18), Validators.max(100)],],
     });
   }
 
@@ -136,15 +127,11 @@ export class FormComponent {
 onSubmit() {
   const currentTime = new Date();
   this.submissionTime = this.formatDate(currentTime);
-
   if (this.form.valid) {
     const payload = this.form.value;
-
     const selectedValueName = payload.selectedValue?.name || '';
     const selectedFeesName = payload.selectedfees?.name || '';
-
     const doc = new jsPDF();
-
     doc.setFillColor(40, 78, 120);
     doc.rect(0, 0, 210, 25, 'F');
     doc.setFontSize(18);
@@ -171,12 +158,7 @@ onSubmit() {
       startY: 35,
       theme: 'grid',
       styles: { fontSize: 11, cellPadding: 3 },
-      headStyles: {
-        fillColor: [40, 78, 120],
-        textColor: 255,
-        fontStyle: 'bold',
-        halign: 'center'
-      },
+      headStyles: { fillColor: [40, 78, 120], textColor: 255, fontStyle: 'bold', halign: 'center' },
       bodyStyles: { textColor: [50, 50, 50] },
       alternateRowStyles: { fillColor: [240, 240, 240] },
     });
@@ -199,7 +181,7 @@ onSubmit() {
     this.updateMostRecentHighlight();
     this._service.addData(payload).subscribe({
       next: () => {
-        this.form.reset();
+        // this.form.reset();
         this.ref = this.dialogservice.open(SubmitMessageComponent, {
           header: 'Form Submitted Message',
           width: '30%',

@@ -29,13 +29,13 @@ export class AuthComponent  {
 }
 
 initializeGoogleLogin(): void {
-  google.accounts.id.initialize({
+    google.accounts.id.initialize({
     client_id: '893222406055-lgsugm5sr3h09po7uuc1flg002onr5h1.apps.googleusercontent.com',
     callback: (response: any) => this.handleCredentialResponse(response),
     ux_mode: 'popup',
   });
   google.accounts.id.renderButton(
-    document.getElementById('myGoogleButton'),
+  document.getElementById('myGoogleButton'),
     {
       size: 'large',
       text: 'Login _with',
@@ -48,13 +48,11 @@ initializeGoogleLogin(): void {
 handleCredentialResponse(response: any): void {
   if (response.credential) {
     const user: any = jwtDecode(response.credential);
-    console.log('[Google user decoded]', user);
     localStorage.setItem('user', JSON.stringify(user));
     this.zone.run(() => {
-      this.router.navigate(['/student-detail']);
+     this.router.navigate(['/student-detail']);
     });
   } else {
-    console.warn('[No credential received]');
   }
 }
 }
