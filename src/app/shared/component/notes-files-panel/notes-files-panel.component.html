@@ -1,0 +1,21 @@
+<div *ngIf="showPanel" class="splitter-panel open">
+  <div class="panel-header">
+    <h3>{{ panelTitle }}</h3>
+    <button
+      pButton
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="onClose()">
+    </button>
+  </div>
+
+
+  <div class="panel-content">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="panel-footer">
+    <input type="text" pInputText [(ngModel)]="footerInput" placeholder="Type here..."/>
+    <button pButton label="Save" (click)="onSave()"></button>
+  </div>
+</div>

@@ -1,4 +1,3 @@
-
 import { AdvanceSortingComponent } from 'src/app/shared/component/advance-sorting/advance-sorting.component';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
@@ -9,8 +8,19 @@ import { ServiceService } from 'src/app/core/service.service';
 import { Sidebar } from 'primeng/sidebar';
 import { TableRowCollapseEvent } from 'primeng/table';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
-import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 
+interface Course {
+  status: string;
+  sequence: number;
+}
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -18,6 +28,8 @@ import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
+  notes: string[] = [];
+  files: string[] = [];
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
@@ -59,26 +71,45 @@ export class TableComponent {
   tabMenuItems = [
     { label: 'Pending', id: 'pending' },
     { label: 'Complete', id: 'complete' },
-    { label: 'All Students', id: 'all' }
+    { label: 'All Students', id: 'all' },
   ];
   activeTab = this.tabMenuItems[1];
   activeStatus!: 'complete' | 'pending' | 'all';
   statusOptions = [
     { label: 'Pending', value: 'pending' },
-    { label: 'Complete', value: 'complete'},
+    { label: 'Complete', value: 'complete' },
   ];
   selectedChildIds: number[] = [];
+  showPanel: boolean = false;
+  panelTitle: string = '';
+  selectedRow: any;
+  activeIcon: 'files' | 'notes' | null = null;
+
+  onPanelSave(content: string) {
+    if (this.panelTitle === 'Notes' && content.trim()) {
+      this.notes.push(content.trim());
+    } else if (this.panelTitle === 'Files' && content.trim()) {
+      this.files.push(content.trim());
+    }
+  }
+
+  // Resize properties
+  private isResizing = false;
+  private startX = 0;
+  private startWidth = 300;
+  panelWidth = 300;
+
   constructor(
     private _studentService: ServiceService,
-    public   dialogservice: DialogService,
+    public dialogservice: DialogService,
     private _deleteservice: ConfirmationService,
     private _messageservice: MessageService,
-    private  datePipe: DatePipe
+    private datePipe: DatePipe
   ) {}
   selectedParentIdsFromChildren: Set<number> = new Set();
   selectedParentIds: (number | string)[] = [];
   selectedChildRecords: { parentId: number; childId: number }[] = [];
-  data:any;
+  data: any;
 
   ngOnInit() {
     this.getstudentData();
@@ -113,8 +144,13 @@ export class TableComponent {
 
   getstudentData() {
     this._studentService.getStudent().subscribe((data) => {
-      this.student = data;
-      this.filteredstudent = [...data];
+      const patchedData = (data || []).map((stu: any) => ({
+        ...stu,
+        file: stu.file ?? '',
+        note: stu.note ?? '',
+      }));
+      this.student = patchedData;
+      this.filteredstudent = [...patchedData];
       this.loading = false;
       this.activeTab = this.tabMenuItems[1];
       this.tabchange('complete');
@@ -122,34 +158,33 @@ export class TableComponent {
   }
 
   openNameMenu(event: Event, rowData: any) {
-  this.nameMenuItems = [
-    {
-      label: 'VOB',
-      icon: 'pi pi-file',
-      command: () => this.getFormData()
-    },
-    {
-      label: 'Student Detail',
-      icon: 'pi pi-user',
-      command: () => this.handleChildNameClick(event,rowData)
-    }
-  ];
-  this.nameMenu.toggle(event);
-}
+    this.nameMenuItems = [
+      {
+        label: 'VOB',
+        icon: 'pi pi-file',
+        command: () => this.getFormData(),
+      },
+      {
+        label: 'Student Detail',
+        icon: 'pi pi-user',
+        command: () => this.handleChildNameClick(event, rowData),
+      },
+    ];
+    this.nameMenu.toggle(event);
+  }
 
+  getFormData(): void {
+    this._studentService.show();
+  }
 
-getFormData(): void {
- this._studentService.show();
-}
-
-    handleChildNameClick(event: any, rowData: any) {
+  handleChildNameClick(event: any, rowData: any) {
     this.ref = this.dialogservice.open(TabsComponent, {
       data: {
         parentId: rowData.id,
-         ...rowData,
-        parentData: rowData
+        ...rowData,
+        parentData: rowData,
       },
-      header: `Child Name: ${rowData.name}` ,
+      header: `Child Name: ${rowData.name}`,
       width: '40%',
       height: '79vh',
       styleClass: 'custom-dialog-header',
@@ -157,11 +192,15 @@ getFormData(): void {
     this.ref.onClose.subscribe((formValue: any) => {
       if (formValue?.policy?.length > 0 && rowData.id) {
         const updatedPolicy = formValue.policy[0];
-        const parentIndex = this.student.findIndex((student) => student.id === rowData.id);
+        const parentIndex = this.student.findIndex(
+          (student) => student.id === rowData.id
+        );
         if (parentIndex !== -1) {
           const parentObj = this.student[parentIndex];
           this.loading = true;
-          this._studentService.updateParentWithChildren(rowData.id, parentObj.children).subscribe({
+          this._studentService
+            .updateParentWithChildren(rowData.id, parentObj.children)
+            .subscribe({
               next: () => {
                 this.loading = false;
               },
@@ -174,56 +213,87 @@ getFormData(): void {
     });
   }
 
- tabchange(status: string) {
-  const normalized = status.toLowerCase().trim();
-  if (normalized === 'all') {
-    this.filteredstudent = [...this.student];
-  } else {
-    this.filteredstudent = this.student.filter(stu => {
-      const feeCode = (stu.selectedfees?.code ?? '')
-        .toString()
-        .toLowerCase()
-        .trim();
-      return feeCode === normalized;
-    });
+  tabchange(status: string) {
+    const normalized = status.toLowerCase().trim();
+    if (normalized === 'all') {
+      this.filteredstudent = [...this.student];
+    } else {
+      this.filteredstudent = this.student.filter((stu) => {
+        const feeCode = (stu.selectedfees?.code ?? '')
+          .toString()
+          .toLowerCase()
+          .trim();
+        return feeCode === normalized;
+      });
+    }
   }
-}
 
- onTabChange(event: any) {
+  onTabChange(event: any) {
     const index = event?.index;
     if (index !== undefined && this.tabMenuItems[index]) {
       this.tabchange(this.tabMenuItems[index].id);
     }
   }
 
-formatValue(value: any, fieldName?: unknown): string {
-  if (value === null || value === undefined) return '';
-  if (typeof value === 'object') {
-    if (value.name) return value.name;
-    if (value.label) return value.label;
-    if (Array.isArray(value)) {
-      return value.map(v => this.formatValue(v)).join(', ');
+  formatValue(value: any, fieldName?: unknown): string {
+    if (value === null || value === undefined) return '';
+    if (typeof value === 'object') {
+      if (value.name) return value.name;
+      if (value.label) return value.label;
+      if (Array.isArray(value)) {
+        return value.map((v) => this.formatValue(v)).join(', ');
+      }
+      return JSON.stringify(value);
     }
-    return JSON.stringify(value);
+    return value.toString();
   }
-  return value.toString();
-}
 
-
-formatDate(date: Date): string {
-  return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-}
+  formatDate(date: Date): string {
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  }
 
   openFilterMenu(event: MouseEvent, field: string) {
-  this.selectedField = field;
-  this.uniqueValues = [
-    ...new Set(
-      this.student.map((student) => this.formatValue(student[field]))
-    ),
-  ];
-  this.tempSelectedValue = [...this.selectedValue];
-  this.filterOverlay.show(event);
+    this.selectedField = field;
+    this.uniqueValues = [
+      ...new Set(
+        this.student.map((student) => this.formatValue(student[field]))
+      ),
+    ];
+    this.tempSelectedValue = [...this.selectedValue];
+    this.filterOverlay.show(event);
   }
+
+  applyFilter() {
+    this.tempSelectedValue.forEach((val) => {
+      if (!this.selectedValue.includes(val)) {
+        this.selectedValue.push(val);
+      }
+    });
+
+    if (this.selectedField && this.selectedValue.length > 0) {
+      const field = this.selectedField;
+      this.filteredstudent = this.student.filter((student) => {
+        const formatted = this.formatValue(student[field]);
+
+        return this.selectedValue.includes(formatted);
+      });
+    }
+    this.filterOverlay.hide();
+  }
+  clearFilter() {
+    this.filteredstudent = [...this.student];
+    this.selectedValue = [];
+    this.tempSelectedValue = [];
+    Object.keys(this.checkboxStates).forEach((key) => {
+      this.checkboxStates[key] = false;
+    });
+    this.filterOverlay.hide();
+  }
+
   onCheckboxChange(value: string) {
     if (this.tempSelectedValue.includes(value)) {
       this.tempSelectedValue = this.tempSelectedValue.filter(
@@ -239,7 +309,11 @@ formatDate(date: Date): string {
   checkInvalidCells() {
     const hasInvalid = this.filteredstudent.some((row) =>
       this.columns.some(
-        (col) => (row[col.field] === null || row[col.field] === undefined || row[col.field] === '') && row._clickedField === col.field
+        (col) =>
+          (row[col.field] === null ||
+            row[col.field] === undefined ||
+            row[col.field] === '') &&
+          row._clickedField === col.field
       )
     );
     this.showInvalidError = hasInvalid;
@@ -282,44 +356,46 @@ formatDate(date: Date): string {
     });
   }
 
-parentcolumns: { field: string; header?: string }[] = [];
+  parentcolumns: { field: string; header?: string }[] = [];
 
-isSorted(field: string): boolean {
-  if (!this.currentSortFields?.length) return false;
-  const result = this.currentSortFields.some(
-    f => f.toLowerCase().trim() === field.toLowerCase().trim()
-  );
-  if (result) {
-    console.log('Highlighting column:', field);
-  }
-  return result;
-}
-
-applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
-  this.sortingActive = true;
-  this.currentSortFields = sortData.map(s => s.sortField.trim().toLowerCase());
-  this.filteredstudent.sort((a, b) => {
-    for (const { sortField, sortOrder } of sortData) {
-      let valueA = this.resolveField(a, sortField);
-      let valueB = this.resolveField(b, sortField);
-      if (valueA == null && valueB == null) return 0;
-      if (valueA == null) return sortOrder;
-      if (valueB == null) return - sortOrder;
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        const result = valueA.localeCompare(valueB);
-        if (result !== 0) return sortOrder * result;
-      } else {
-        const result = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
-        if (result !== 0) return sortOrder * result;
-      }
+  isSorted(field: string): boolean {
+    if (!this.currentSortFields?.length) return false;
+    const result = this.currentSortFields.some(
+      (f) => f.toLowerCase().trim() === field.toLowerCase().trim()
+    );
+    if (result) {
+      console.log('Highlighting column:', field);
     }
-    return 0;
-  });
-}
+    return result;
+  }
 
-private resolveField(obj: any, field: string) {
-  return field.split('.').reduce((o, key) => (o ? o[key] : null), obj);
-}
+  applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
+    this.sortingActive = true;
+    this.currentSortFields = sortData.map((s) =>
+      s.sortField.trim().toLowerCase()
+    );
+    this.filteredstudent.sort((a, b) => {
+      for (const { sortField, sortOrder } of sortData) {
+        let valueA = this.resolveField(a, sortField);
+        let valueB = this.resolveField(b, sortField);
+        if (valueA == null && valueB == null) return 0;
+        if (valueA == null) return sortOrder;
+        if (valueB == null) return -sortOrder;
+        if (typeof valueA === 'string' && typeof valueB === 'string') {
+          const result = valueA.localeCompare(valueB);
+          if (result !== 0) return sortOrder * result;
+        } else {
+          const result = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+          if (result !== 0) return sortOrder * result;
+        }
+      }
+      return 0;
+    });
+  }
+
+  private resolveField(obj: any, field: string) {
+    return field.split('.').reduce((o, key) => (o ? o[key] : null), obj);
+  }
 
   clearSorting() {
     this.currentSortFields = [];
@@ -622,52 +698,28 @@ private resolveField(obj: any, field: string) {
     this.scrollToActiveHeader();
   }
 
-  applyFilter() {
-    this.tempSelectedValue.forEach((val) => {
-      if (!this.selectedValue.includes(val)) {
-        this.selectedValue.push(val);
-      }
-    });
-    if (this.selectedField && this.selectedValue.length > 0) {
-      this.filteredstudent = this.student.filter((student) =>
-        this.selectedValue.includes(student[this.selectedField])
+  onGlobalFilter(): void {
+    if (this.globalFilter.trim() === '') {
+      this.filteredstudent = [...this.student];
+    } else {
+      const filterValue = this.globalFilter.toLowerCase();
+      this.filteredstudent = this.student.filter((employee) =>
+        this.flattenObject(employee).includes(filterValue)
       );
     }
-    this.filterOverlay.hide();
   }
-
-  clearFilter() {
-    this.filteredstudent = [...this.student];
-    this.selectedValue = [];
-    Object.keys(this.checkboxStates).forEach((key) => {
-      this.checkboxStates[key] = false;
-    });
-    this.filterOverlay.hide();
+  private flattenObject(obj: any, seen: Set<any> = new Set()): string {
+    if (obj === null || obj === undefined) return '';
+    if (typeof obj !== 'object') return obj.toString().toLowerCase();
+    if (seen.has(obj)) return '';
+    seen.add(obj);
+    if (Array.isArray(obj)) {
+      return obj.map((item) => this.flattenObject(item, seen)).join(' ');
+    }
+    return Object.values(obj)
+      .map((value) => this.flattenObject(value, seen))
+      .join(' ');
   }
-
-onGlobalFilter(): void {
-  if (this.globalFilter.trim() === '') {
-    this.filteredstudent = [...this.student];
-  } else {
-    const filterValue = this.globalFilter.toLowerCase();
-    this.filteredstudent = this.student.filter((employee) =>
-      this.flattenObject(employee).includes(filterValue)
-    );
-  }
-}
-private flattenObject(obj: any, seen: Set<any> = new Set()): string {
-  if (obj === null || obj === undefined) return '';
-  if (typeof obj !== 'object') return obj.toString().toLowerCase();
-  if (seen.has(obj)) return '';
-  seen.add(obj);
-  if (Array.isArray(obj)) {
-    return obj.map(item => this.flattenObject(item, seen)).join(' ');
-  }
-  return Object.values(obj)
-    .map(value => this.flattenObject(value, seen))
-    .join(' ');
-}
-
 
   del(arr: any | null) {
     if (arr === null) return;
@@ -775,26 +827,95 @@ private flattenObject(obj: any, seen: Set<any> = new Set()): string {
   onStatusChange(event: any) {
     const selectedStatus = event.value;
     this.selectedStatus = selectedStatus;
-    // Filter the data based on the selected status
     if (selectedStatus === 'pending') {
-      this.filteredstudent = this.student.filter(stu => {
-        const feeCode = (stu.selectedfees?.code ?? '').toString().toLowerCase().trim();
+      this.filteredstudent = this.student.filter((stu) => {
+        const feeCode = (stu.selectedfees?.code ?? '')
+          .toString()
+          .toLowerCase()
+          .trim();
         return feeCode === 'pending';
       });
       this.activeTabIndex = 0;
     } else if (selectedStatus === 'complete') {
-      this.filteredstudent = this.student.filter(stu => {
-        const feeCode = (stu.selectedfees?.code ?? '').toString().toLowerCase().trim();
+      this.filteredstudent = this.student.filter((stu) => {
+        const feeCode = (stu.selectedfees?.code ?? '')
+          .toString()
+          .toLowerCase()
+          .trim();
         return feeCode === 'complete';
       });
       this.activeTabIndex = 1;
     }
 
-    // Clear selections when status changes
     this.selectedStudentIds = [];
     this.selectedChildIds = [];
     this.showDeleteButton = false;
     this.isChecked = false;
   }
-}
 
+  openPanel(row: any, type: 'files' | 'notes') {
+    this.panelTitle = type === 'files' ? 'Files' : 'Notes';
+    this.selectedRow = row;
+    this.showPanel = true;
+    this.activeIcon = type;
+  }
+
+  closePanel() {
+    this.showPanel = false;
+    this.activeIcon = null;
+    this.selectedRow = null;
+    this.panelTitle = '';
+  }
+
+  isIconActive(iconType: 'files' | 'notes'): boolean {
+    return this.activeIcon === iconType;
+  }
+
+  private onMouseMoveHandler = (event: MouseEvent | TouchEvent) => {
+    if (!this.isResizing) return;
+
+    const currentX = this.getClientX(event);
+    const deltaX = currentX - this.startX;
+    this.panelWidth = Math.max(200, Math.min(800, this.startWidth - deltaX));
+  };
+
+  private stopResizeHandler = () => {
+    if (!this.isResizing) return;
+
+    this.isResizing = false;
+    document.body.style.userSelect = '';
+    document.body.style.cursor = '';
+
+    document.removeEventListener('mousemove', this.onMouseMoveHandler);
+    document.removeEventListener('mouseup', this.stopResizeHandler);
+    document.removeEventListener('touchmove', this.onMouseMoveHandler);
+    document.removeEventListener('touchend', this.stopResizeHandler);
+  };
+
+  startResize(event: MouseEvent | TouchEvent): void {
+    this.isResizing = true;
+    this.startX = this.getClientX(event);
+    this.startWidth = this.panelWidth;
+
+    document.body.style.userSelect = 'none';
+    document.body.style.cursor = 'col-resize';
+
+    document.addEventListener('mousemove', this.onMouseMoveHandler);
+    document.addEventListener('mouseup', this.stopResizeHandler);
+    document.addEventListener('touchmove', this.onMouseMoveHandler);
+    document.addEventListener('touchend', this.stopResizeHandler);
+
+    event.preventDefault();
+  }
+
+  private getClientX(event: MouseEvent | TouchEvent): number {
+    return event instanceof MouseEvent
+      ? event.clientX
+      : event.touches[0]?.clientX ?? 0;
+  }
+
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.panelWidth = Math.max(200, Math.min(800, this.panelWidth));
+  }
+}
