@@ -790,7 +790,7 @@ export class TableComponent {
           severity: 'success',
           summary: 'Deleted',
           detail: `Column "${field}" has been deleted`,
-          life: 3000,
+          life: 3000
         });
       },
       reject: () => {
