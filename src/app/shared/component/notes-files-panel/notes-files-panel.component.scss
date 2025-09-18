@@ -1,10 +1,7 @@
 
 .splitter-panel {
-  // position: fixed;
-  top: 0;
-  right: 0;
   width: 420px;
-  // height: 100vh;
+  height: 68vh;
   background: #f7fafd;
   box-shadow: -2px 0 16px 0 rgba(0,0,0,0.10);
   display: flex;
@@ -14,11 +11,9 @@
   z-index: 1000;
 }
 
-
 .splitter-panel.open {
   right: 0;
 }
-
 
 .panel-header {
   display: flex;
@@ -112,4 +107,36 @@
   border-radius: 6px;
   font-size: 1rem;
   background: #fff;
+}
+.splitter-panel.open {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+  background: #fff;
+  border-left: 1px solid #ddd;
+  transition: width 0.02s linear;
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  left: -6px;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.resizer-handle {
+  width: 2px;
+  height: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 1px;
+}
+
+.resizer:hover .resizer-handle {
+  background: rgba(0, 0, 0, 0.4);
 }

@@ -1,7 +1,12 @@
-<div *ngIf="showPanel" class="splitter-panel open">
+
+  <div *ngIf="showPanel" class="splitter-panel open" [style.width.px]="panelWidth">
+  <div class="resizer" (mousedown)="startResize($event)" (touchstart)="startResize($event)">
+    <div class="resizer-handle"></div>
+  </div>
   <div class="panel-header">
-    <h3>{{ panelTitle }}</h3>
+    <h3>{{ panelTitle|| rowData?.name }}</h3>
     <button
+      [style]="{'color':'white'}"
       pButton
       icon="pi pi-times"
       class="p-button-text"
@@ -9,13 +14,12 @@
     </button>
   </div>
 
-
   <div class="panel-content">
     <ng-content></ng-content>
   </div>
 
   <div class="panel-footer">
-    <input type="text" pInputText [(ngModel)]="footerInput" placeholder="Type here..."/>
+    <input type="text" pInputText [(ngModel)]="footerInput" placeholder="Type here..." />
     <button pButton label="Save" (click)="onSave()"></button>
   </div>
 </div>

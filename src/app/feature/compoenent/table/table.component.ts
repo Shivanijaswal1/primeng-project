@@ -28,8 +28,8 @@ interface Course {
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
-  notes: string[] = [];
-  files: string[] = [];
+   notes: { [rowId: number]: string[] } = {};
+  files: { [rowId: number]: string[] } = {};
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
@@ -82,23 +82,9 @@ export class TableComponent {
   selectedChildIds: number[] = [];
   showPanel: boolean = false;
   panelTitle: string = '';
-  selectedRow: any;
-  activeIcon: 'files' | 'notes' | null = null;
-
-  onPanelSave(content: string) {
-    if (this.panelTitle === 'Notes' && content.trim()) {
-      this.notes.push(content.trim());
-    } else if (this.panelTitle === 'Files' && content.trim()) {
-      this.files.push(content.trim());
-    }
-  }
-
-  // Resize properties
-  private isResizing = false;
-  private startX = 0;
-  private startWidth = 300;
-  panelWidth = 300;
-
+  openRowId: number | null = null;
+   selectedRow: any = null;
+   activeIcon: { [rowId: number]: 'files' | 'notes' | null } = {};
   constructor(
     private _studentService: ServiceService,
     public dialogservice: DialogService,
@@ -137,6 +123,62 @@ export class TableComponent {
       { header: 'Date of Birth', field: 'Date of Birth', sortable: true },
     ];
   }
+onPanelSave(content: string) {
+    if (!this.selectedRow || !content.trim()) return;
+
+    const rowId = this.selectedRow.id;
+
+    if (this.panelTitle === 'Notes') {
+      if (!this.notes[rowId]) this.notes[rowId] = [];
+      this.notes[rowId].push(content.trim());
+    } else if (this.panelTitle === 'Files') {
+      if (!this.files[rowId]) this.files[rowId] = [];
+      this.files[rowId].push(content.trim());
+    }
+  }
+
+
+  openNotesPanel(row: any) {
+      this.resetAllIcons();
+    if (this.openRowId === row.id && this.showPanel) {
+
+      this.closePanel();
+    } else {
+      this.panelTitle = 'Notes';
+      this.selectedRow = row;
+      this.showPanel = true;
+      this.openRowId = row.id;
+    this.activeIcon[row.id] = 'notes';
+    }
+  }
+
+  openFilesPanel(row: any) {
+      this.resetAllIcons();
+    if (this.openRowId === row.id && this.showPanel && this.panelTitle === 'Files') {
+      this.closePanel();
+    } else {
+      this.panelTitle = 'Files';
+      this.selectedRow = row;
+      this.showPanel = true;
+      this.openRowId = row.id;
+     this.activeIcon[row.id] = 'files';
+    }
+  }
+
+  closePanel(rowId?: number) {
+    this.showPanel = false;
+    this.openRowId = null;
+    this.selectedRow = null;
+    this.panelTitle = '';
+  if (rowId) {
+    this.activeIcon[rowId] = null;
+  }
+  }
+  resetAllIcons() {
+  Object.keys(this.activeIcon).forEach(key => {
+    this.activeIcon[+key] = null;
+  });
+}
 
   isDate(value: unknown): value is string {
     return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
@@ -851,71 +893,5 @@ export class TableComponent {
     this.selectedChildIds = [];
     this.showDeleteButton = false;
     this.isChecked = false;
-  }
-
-  openPanel(row: any, type: 'files' | 'notes') {
-    this.panelTitle = type === 'files' ? 'Files' : 'Notes';
-    this.selectedRow = row;
-    this.showPanel = true;
-    this.activeIcon = type;
-  }
-
-  closePanel() {
-    this.showPanel = false;
-    this.activeIcon = null;
-    this.selectedRow = null;
-    this.panelTitle = '';
-  }
-
-  isIconActive(iconType: 'files' | 'notes'): boolean {
-    return this.activeIcon === iconType;
-  }
-
-  private onMouseMoveHandler = (event: MouseEvent | TouchEvent) => {
-    if (!this.isResizing) return;
-
-    const currentX = this.getClientX(event);
-    const deltaX = currentX - this.startX;
-    this.panelWidth = Math.max(200, Math.min(800, this.startWidth - deltaX));
-  };
-
-  private stopResizeHandler = () => {
-    if (!this.isResizing) return;
-
-    this.isResizing = false;
-    document.body.style.userSelect = '';
-    document.body.style.cursor = '';
-
-    document.removeEventListener('mousemove', this.onMouseMoveHandler);
-    document.removeEventListener('mouseup', this.stopResizeHandler);
-    document.removeEventListener('touchmove', this.onMouseMoveHandler);
-    document.removeEventListener('touchend', this.stopResizeHandler);
-  };
-
-  startResize(event: MouseEvent | TouchEvent): void {
-    this.isResizing = true;
-    this.startX = this.getClientX(event);
-    this.startWidth = this.panelWidth;
-
-    document.body.style.userSelect = 'none';
-    document.body.style.cursor = 'col-resize';
-
-    document.addEventListener('mousemove', this.onMouseMoveHandler);
-    document.addEventListener('mouseup', this.stopResizeHandler);
-    document.addEventListener('touchmove', this.onMouseMoveHandler);
-    document.addEventListener('touchend', this.stopResizeHandler);
-
-    event.preventDefault();
-  }
-
-  private getClientX(event: MouseEvent | TouchEvent): number {
-    return event instanceof MouseEvent
-      ? event.clientX
-      : event.touches[0]?.clientX ?? 0;
-  }
-
-  @HostListener('window:resize')
-  onWindowResize(): void {
-    this.panelWidth = Math.max(200, Math.min(800, this.panelWidth));
   }
 }
