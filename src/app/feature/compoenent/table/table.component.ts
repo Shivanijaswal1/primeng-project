@@ -447,51 +447,6 @@ onPanelSave(content: string) {
     this.filteredstudent = [...this.student];
   }
 
-  handleNameClick(rowData: any) {
-    this.ref = this.dialogservice.open(TabsComponent, {
-      data: {
-        parentId: rowData.id,
-        ...rowData,
-      },
-      header: `Student Name: ${rowData.name}`,
-      width: '40%',
-      height: '79vh',
-      styleClass: 'custom-dialog-header',
-    });
-    this.ref.onClose.subscribe((formValue) => {
-      if (formValue?.policy?.length > 0 && rowData.id) {
-        const updatedPolicy = formValue.policy[0];
-        const index = this.student.findIndex(
-          (student) => student.id === rowData.id
-        );
-        if (index !== -1) {
-          const student = this.student[index];
-          Object.keys(updatedPolicy).forEach((key) => {
-            if (
-              student.hasOwnProperty(key) &&
-              key !== 'children' &&
-              student[key] !== updatedPolicy[key]
-            ) {
-              student[key] = updatedPolicy[key];
-            }
-          });
-          this.student = [...this.student];
-        }
-        this.loading = true;
-        this._studentService
-          .updateParentWithChildren(rowData.id, [updatedPolicy])
-          .subscribe({
-            next: () => {
-              this.loading = false;
-            },
-            error: (err) => {
-              this.loading = false;
-            },
-          });
-      }
-    });
-  }
-
   onRowExpand(event: any) {
     const parent = event.data;
     if (Array.isArray(parent.children)) {
@@ -503,18 +458,6 @@ onPanelSave(content: string) {
   }
 
   childSelections: { [parentId: number]: any[] } = {};
-
-  onChildSelect(parentId: number, event: any) {
-    const child = event.data;
-    this.selectedChildRecords.push({ parentId, childId: child.id });
-  }
-
-  onChildUnselect(parentId: number, event: any) {
-    const child = event.data;
-    this.selectedChildRecords = this.selectedChildRecords.filter(
-      (item) => !(item.parentId === parentId && item.childId === child.id)
-    );
-  }
 
   handleChildCheckboxChange(
     checked: boolean,
@@ -562,26 +505,6 @@ onPanelSave(content: string) {
     }
     this.updateSelectedParentsFromChildren();
   }
-  onSelectAllChildChange(checked: boolean, children: any[]) {
-    const ids = children.map((c) => c.id);
-    if (checked) {
-      ids.forEach((id) => {
-        if (!this.selectedChildIds.includes(id)) {
-          this.selectedChildIds.push(id);
-        }
-      });
-    } else {
-      this.selectedChildIds = this.selectedChildIds.filter(
-        (id) => !ids.includes(id)
-      );
-    }
-    this.showDeleteButton = checked;
-  }
-
-  areAllChildrenSelected(children: any[]): boolean {
-    return children.every((child) => this.selectedChildIds.includes(child.id));
-  }
-
   getSelectedChildrenCount(): number {
     if (this.selectedStudentIds.length > 0) {
       return this.filteredstudent
@@ -594,27 +517,6 @@ onPanelSave(content: string) {
         }, 0);
     }
     return this.selectedChildIds.length;
-  }
-
-  getTotalChildCount(): number {
-    return this.filteredstudent?.reduce(
-      (count, student) => count + (student.children?.length || 0),
-      0
-    );
-  }
-
-  getSelectedParentsFromChildren(): Set<number> {
-    const selectedParents = new Set<number>();
-    this.filteredstudent.forEach((parent) => {
-      if (
-        parent.children?.some((child: { id: number }) =>
-          this.selectedChildIds.includes(child.id)
-        )
-      ) {
-        selectedParents.add(parent.id);
-      }
-    });
-    return selectedParents;
   }
 
   getTotalSelectedCount(): number {
@@ -636,20 +538,6 @@ onPanelSave(content: string) {
       }
     });
     return uniqueParentSet.size;
-  }
-
-  handleCheckboxRefesh(checked: boolean, id: number) {
-    if (checked) {
-      if (!this.selectedStudentIds.includes(id)) {
-        this.selectedStudentIds.push(id);
-      }
-    } else {
-      this.selectedStudentIds = this.selectedStudentIds.filter(
-        (empId) => empId !== id
-      );
-    }
-    this.showDeleteButton = checked;
-    this.showDeleteButton = this.selectedStudentIds.length > 0;
   }
 
   updateSelectedParentsFromChildren() {
@@ -845,20 +733,6 @@ onPanelSave(content: string) {
       },
     });
   }
-
-  setStatusAndTab(status: 'pending' | 'complete') {
-    this.selectedStatus = status;
-    if (status === 'pending') {
-      this.activeTab = this.tabMenuItems[0];
-      this.activeTabIndex = 0;
-      this.tabchange('pending');
-    } else if (status === 'complete') {
-      this.activeTab = this.tabMenuItems[1];
-      this.activeTabIndex = 1;
-      this.tabchange('complete');
-    }
-  }
-
   shouldShowActionBar(): boolean {
     const parentCount = this.getTotalUniqueParentCount();
     const childCount = this.getSelectedChildrenCount();
