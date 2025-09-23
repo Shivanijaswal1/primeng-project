@@ -8,6 +8,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { SubmitMessageComponent } from '../submit-message/submit-message.component';
 import autoTable from 'jspdf-autotable';
 import { DiscardButtonComponent } from '../discard-button/discard-button.component';
+import { AutoComplete } from 'primeng/autocomplete';
+import { MultiSelect } from 'primeng/multiselect';
 
 interface FormPayload {
   name: string;
@@ -30,7 +32,9 @@ interface UploadEvent {
 })
 export class FormComponent {
   @ViewChild('dropdownElem') dropdownElem: any;
-  @ViewChild('content', { static: false })
+  // @ViewChild('content', { static: false })
+    @ViewChild('parentAutoComplete') parentAutoComplete!: AutoComplete;
+      @ViewChild('parentMultiSelect') parentMultiSelect!: MultiSelect;
   panelSize: number[] = [60, 40];
   minSize: number[] = [50, 10];
   content!: ElementRef;
@@ -97,7 +101,17 @@ export class FormComponent {
     this._service.getDummyData().subscribe((data) => {
       this.parentOptions = data;
     });
+      this._service.getDummyData().subscribe((data) => {
+    this.parentOptions = data;
+    this.openParentSuggestions();
+  });
   }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.parentMultiSelect.show();
+    }, );
+  }
+
 
   scrollToSection(sectionId: string, index: number): void {
     this.activeTabIndex = index;
@@ -320,11 +334,32 @@ onSubmit() {
       this.bookValues.push(this.bookInputValue.trim());
       this.bookTimes.push(new Date().toLocaleString());
     }
-
     this.bookInputValue = '';
   }
 
   cancelBookInput() {
     this.bookInputValue = '';
   }
+  filteredParents: any[] = [];
+
+  openParentSuggestions() {
+  this.filteredParents = [...this.parentOptions];
+  setTimeout(() => {
+    if (this.parentAutoComplete) {
+      this.parentAutoComplete.show();
+    }
+  });
+}
+onParentSelect(event: any) {
+  this.childOptions = event?.children || [];
+  this.form.get('child')?.reset();
+}
+
+filterParents(event: any) {
+  const query = event.query.toLowerCase();
+  this.filteredParents = this.parentOptions.filter(p =>
+    p.value.toLowerCase().includes(query)
+  );
+}
+
 }

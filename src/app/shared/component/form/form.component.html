@@ -49,6 +49,34 @@
                                     </div>
                                 </ng-template>
                             </p-dropdown>
+                    <!-- <p-autoComplete
+                        #parentAutoComplete
+                        formControlName="parent"
+                        [suggestions]="filteredParents"
+                        [field]="'value'"
+                        [dropdown]="true"
+                        [forceSelection]="true"
+                        placeholder="Select Parent"
+                        (completeMethod)="filterParents($event)"
+                        (onFocus)="openParentSuggestions()"
+                        (onSelect)="onParentSelect($event)"
+                        [ngClass]="{'invalid-field': form.get('parent')?.invalid && form.get('parent')?.touched}">
+                  </p-autoComplete> -->
+         <!-- <p-multiSelect
+              #parentMultiSelect
+              formControlName="parent"
+              [options]="filteredParents"
+              optionLabel="value"
+              defaultLabel="Select Parent"
+              [showToggleAll]="false"
+              [filter]="true"
+              [showHeader]="false"
+              (onFocus)="parentMultiSelect.show()"
+              (onChange)="onParentSelect($event)"
+              [ngClass]="{
+             'invalid-field': form.get('parent')?.invalid && form.get('parent')?.touched
+              }">
+        </p-multiSelect> -->
                         </div>
                         <div class="form-css-half">
                             <ng-container>

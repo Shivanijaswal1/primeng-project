@@ -1,25 +1,20 @@
-
-  <div *ngIf="showPanel" class="splitter-panel open" [style.width.px]="panelWidth">
+<div *ngIf="showPanel" class="splitter-panel open" [style.width.px]="panelWidth">
   <div class="resizer" (mousedown)="startResize($event)" (touchstart)="startResize($event)">
     <div class="resizer-handle"></div>
   </div>
   <div class="panel-header">
-    <h3>{{ panelTitle|| rowData?.name }}</h3>
-    <button
-      [style]="{'color':'white'}"
-      pButton
-      icon="pi pi-times"
-      class="p-button-text"
-      (click)="onClose()">
-    </button>
+    <h3>{{ panelTitle || rowData?.name }}</h3>
+    <button [style]="{'color':'white'}" pButton icon="pi pi-times" class="p-button-text" (click)="onClose()"></button>
   </div>
 
   <div class="panel-content">
     <ng-content></ng-content>
   </div>
-
-  <div class="panel-footer">
+      <div class="panel-footer">
+    <ng-container *ngIf="panelType !== 'file'">
     <input type="text" pInputText [(ngModel)]="footerInput" placeholder="Type here..." />
     <button pButton label="Save" (click)="onSave()"></button>
+    </ng-container>
+ <p-fileUpload *ngIf="panelType === 'file'" name="myfile" url="./upload"></p-fileUpload>
   </div>
 </div>

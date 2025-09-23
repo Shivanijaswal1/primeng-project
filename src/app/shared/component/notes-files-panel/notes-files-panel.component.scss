@@ -140,3 +140,23 @@
 .resizer:hover .resizer-handle {
   background: rgba(0, 0, 0, 0.4);
 }
+::ng-deep p-fileUpload {
+  display: inline-block;
+  margin-top: 5px;
+}
+
+::ng-deep p-fileUpload .p-button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  height: 28px;
+  min-width: 80px;
+}
+
+::ng-deep p-fileUpload .p-button-label {
+  font-size: 0.75rem;
+}
+
+::ng-deep p-fileUpload .p-fileupload-choose,
+::ng-deep p-fileUpload .p-fileupload-upload {
+  margin-right: 5px;
+}

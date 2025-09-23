@@ -994,3 +994,11 @@ mark.highlight-active {
   overflow: hidden;
 }
 
+.message-bubble {
+  background-color: #7bb0e8ff;
+  color: white;
+  padding: 10px 30px;
+  margin-bottom: 5px;
+  max-width: 100%;
+  word-wrap: break-word;
+}

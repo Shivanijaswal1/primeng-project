@@ -8,9 +8,14 @@ import { LayoutModule } from '../layout/layout.module';
 import { HighlightPipe } from './pipe/highlight.pipe';
 import { StudentFeeDetailComponent } from './student-fee-detail/student-fee-detail.component';
 import { ChartModule } from 'primeng/chart';
-
+import { StepsModule } from 'primeng/steps';
+import { ButtonModule } from 'primeng/button';
+import { TeacherDashboardComponent } from './compoenent/teacher-dashboard/teacher-dashboard.component';
+import { AddAssignmentDialogComponent } from './compoenent/teacher-dashboard/add-assignment-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { MultiSelectModule } from 'primeng/multiselect';
 @NgModule({
-  declarations: [TableComponent, HighlightPipe, StudentFeeDetailComponent],
+  declarations: [TableComponent, HighlightPipe, StudentFeeDetailComponent, TeacherDashboardComponent, AddAssignmentDialogComponent],
   imports: [
     CommonModule,
     FeatureRoutingModule,
@@ -18,6 +23,10 @@ import { ChartModule } from 'primeng/chart';
     UiModule,
     LayoutModule,
     ChartModule,
+    StepsModule,
+    ButtonModule,
+    FormsModule,
+    MultiSelectModule
   ],
 
   exports: [SharedModule],

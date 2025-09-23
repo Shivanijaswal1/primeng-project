@@ -15,7 +15,8 @@ export class NotesFilesPanelComponent {
   @Input() rowData: any;
   @Input() showPanel: boolean = false;
   @Input() panelTitle: string = '';
-  @Output() saveInput = new EventEmitter<string>();
+  @Input() panelType: 'notes' | 'file' = 'notes';
+  @Output() saveInput = new EventEmitter<{ rowId: number; content: string }>();
   @Output() closePanel = new EventEmitter<void>();
   notes: { [id: number]: string } = {};
   footerInput: string = '';
@@ -28,19 +29,22 @@ export class NotesFilesPanelComponent {
   private startX = 0;
   private startWidth = 0;
 
-  ngOnChanges() {
-    if (this.rowData) {
-      this.footerInput = this.notes[this.rowData.id] || '';
-    }
+  get isFilePanel(): boolean {
+    return this.rowData?.type === 'file';
   }
-
-  onSave() {
-    if (this.rowData) {
-      this.notes[this.rowData.id] = this.footerInput;
-    }
-    this.saveInput.emit(this.footerInput);
+ngOnChanges() {
+  if (this.rowData) {
+    this.footerInput = this.notes[this.rowData.id] || '';
   }
+  this.panelType = this.rowData?.type === 'file' ? 'file' : 'notes';
+}
 
+onSave() {
+  if (this.rowData) {
+    this.saveInput.emit({ rowId: this.rowData.id, content: this.footerInput });
+    this.footerInput = '';
+  }
+}
   onClose() {
     this.closePanel.emit();
   }
@@ -83,7 +87,6 @@ export class NotesFilesPanelComponent {
     this.isResizing = false;
     document.body.style.userSelect = '';
     document.body.style.cursor = '';
-
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.stopResize);
     document.removeEventListener('touchmove', this.onMouseMove);

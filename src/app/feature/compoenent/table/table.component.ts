@@ -16,7 +16,6 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-
 interface Course {
   status: string;
   sequence: number;
@@ -28,7 +27,7 @@ interface Course {
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
-   notes: { [rowId: number]: string[] } = {};
+  notes: { [rowId: number]: string[] } = {};
   files: { [rowId: number]: string[] } = {};
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
@@ -62,19 +61,15 @@ export class TableComponent {
   sortField: string = '';
   sortOrder: number = 1;
   sortingActive: boolean = false;
-  pendingStudent: any[] = [];
-  completeStudent: any[] = [];
   activeTabIndex: number = 1;
   selectedStatus: string = 'complete';
   errorTimeout: any;
-  highlightedColumn: string | null = null;
   tabMenuItems = [
     { label: 'Pending', id: 'pending' },
     { label: 'Complete', id: 'complete' },
     { label: 'All Students', id: 'all' },
   ];
   activeTab = this.tabMenuItems[1];
-  activeStatus!: 'complete' | 'pending' | 'all';
   statusOptions = [
     { label: 'Pending', value: 'pending' },
     { label: 'Complete', value: 'complete' },
@@ -83,8 +78,8 @@ export class TableComponent {
   showPanel: boolean = false;
   panelTitle: string = '';
   openRowId: number | null = null;
-   selectedRow: any = null;
-   activeIcon: { [rowId: number]: 'files' | 'notes' | null } = {};
+  selectedRow: any = null;
+  activeIcon: { [rowId: number]: 'files' | 'notes' | null } = {};
   constructor(
     private _studentService: ServiceService,
     public dialogservice: DialogService,
@@ -123,45 +118,50 @@ export class TableComponent {
       { header: 'Date of Birth', field: 'Date of Birth', sortable: true },
     ];
   }
-onPanelSave(content: string) {
-    if (!this.selectedRow || !content.trim()) return;
 
-    const rowId = this.selectedRow.id;
+onPanelSave(event: { rowId: number; content: string }) {
+  const { rowId, content } = event;
+  if (!content?.trim()) return;
 
-    if (this.panelTitle === 'Notes') {
-      if (!this.notes[rowId]) this.notes[rowId] = [];
-      this.notes[rowId].push(content.trim());
-    } else if (this.panelTitle === 'Files') {
-      if (!this.files[rowId]) this.files[rowId] = [];
-      this.files[rowId].push(content.trim());
-    }
-  }
-
+  if (!this.notes[rowId]) this.notes[rowId] = [];
+  this.notes[rowId] = [...this.notes[rowId], content];
+  this._messageservice.add({
+    severity: 'success',
+    summary: 'Saved',
+    detail: 'Note saved successfully',
+    life: 2000,
+  });
+}
 
   openNotesPanel(row: any) {
-      this.resetAllIcons();
+    this.resetAllIcons();
     if (this.openRowId === row.id && this.showPanel) {
-
-      this.closePanel();
+      this.closePanel();``
     } else {
       this.panelTitle = 'Notes';
-      this.selectedRow = row;
+      // this.selectedRow = row;
+      this.selectedRow = { ...row, type: 'notes' };
       this.showPanel = true;
       this.openRowId = row.id;
-    this.activeIcon[row.id] = 'notes';
+      this.activeIcon[row.id] = 'notes';
     }
   }
 
   openFilesPanel(row: any) {
-      this.resetAllIcons();
-    if (this.openRowId === row.id && this.showPanel && this.panelTitle === 'Files') {
+    this.resetAllIcons();
+    if (
+      this.openRowId === row.id &&
+      this.showPanel &&
+      this.panelTitle === 'Files'
+    ) {
       this.closePanel();
     } else {
       this.panelTitle = 'Files';
-      this.selectedRow = row;
+      // this.selectedRow = row;
+      this.selectedRow = { ...row, type: 'file' };
       this.showPanel = true;
       this.openRowId = row.id;
-     this.activeIcon[row.id] = 'files';
+      this.activeIcon[row.id] = 'files';
     }
   }
 
@@ -170,15 +170,15 @@ onPanelSave(content: string) {
     this.openRowId = null;
     this.selectedRow = null;
     this.panelTitle = '';
-  if (rowId) {
-    this.activeIcon[rowId] = null;
-  }
+    if (rowId) {
+      this.activeIcon[rowId] = null;
+    }
   }
   resetAllIcons() {
-  Object.keys(this.activeIcon).forEach(key => {
-    this.activeIcon[+key] = null;
-  });
-}
+    Object.keys(this.activeIcon).forEach((key) => {
+      this.activeIcon[+key] = null;
+    });
+  }
 
   isDate(value: unknown): value is string {
     return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
@@ -191,12 +191,14 @@ onPanelSave(content: string) {
         file: stu.file ?? '',
         note: stu.note ?? '',
       }));
-      this.student = patchedData;
-      this.filteredstudent = [...patchedData];
-      this.loading = false;
-      this.activeTab = this.tabMenuItems[1];
-      this.tabchange('complete');
-    });
+    this.student = patchedData;
+    this.filteredstudent = [...patchedData];
+    this.activeIcon = {};
+    this.student.forEach((row) => (this.activeIcon[row.id] = null));
+    this.loading = false;
+    this.activeTab = this.tabMenuItems[1];
+    this.tabchange('complete');
+  });
   }
 
   openNameMenu(event: Event, rowData: any) {
@@ -256,6 +258,7 @@ onPanelSave(content: string) {
   }
 
   tabchange(status: string) {
+  this.closePanel();
     const normalized = status.toLowerCase().trim();
     if (normalized === 'all') {
       this.filteredstudent = [...this.student];
@@ -271,6 +274,7 @@ onPanelSave(content: string) {
   }
 
   onTabChange(event: any) {
+      this.closePanel();
     const index = event?.index;
     if (index !== undefined && this.tabMenuItems[index]) {
       this.tabchange(this.tabMenuItems[index].id);
@@ -315,12 +319,10 @@ onPanelSave(content: string) {
         this.selectedValue.push(val);
       }
     });
-
     if (this.selectedField && this.selectedValue.length > 0) {
       const field = this.selectedField;
       this.filteredstudent = this.student.filter((student) => {
         const formatted = this.formatValue(student[field]);
-
         return this.selectedValue.includes(formatted);
       });
     }
@@ -398,7 +400,6 @@ onPanelSave(content: string) {
     });
   }
 
-  parentcolumns: { field: string; header?: string }[] = [];
 
   isSorted(field: string): boolean {
     if (!this.currentSortFields?.length) return false;
@@ -720,7 +721,7 @@ onPanelSave(content: string) {
           severity: 'success',
           summary: 'Deleted',
           detail: `Column "${field}" has been deleted`,
-          life: 3000
+          life: 3000,
         });
       },
       reject: () => {
@@ -768,4 +769,8 @@ onPanelSave(content: string) {
     this.showDeleteButton = false;
     this.isChecked = false;
   }
+
+  getPanelType(row: any): 'file' | 'notes' {
+  return row?.type === 'file' ? 'file' : 'notes';
+}
 }
