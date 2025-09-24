@@ -30,7 +30,10 @@ import { PasswordModule } from 'primeng/password';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { CardModule } from 'primeng/card';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
+// import { SplitterModule } from 'primeng/splitter';
 
 
 const primengModule = [
@@ -62,7 +65,8 @@ const primengModule = [
   PasswordModule,
   ReactiveFormsModule,
   RippleModule,
-  TieredMenuModule
+  TieredMenuModule,
+  CardModule,AutoCompleteModule
 ];
 @NgModule({
   declarations: [],
@@ -75,7 +79,7 @@ const primengModule = [
     TableModule,
     SelectButtonModule,
     SidebarModule,
-    TieredMenuModule
+    TieredMenuModule,AutoCompleteModule
   ],
   exports: [
     primengModule,
@@ -88,7 +92,7 @@ const primengModule = [
     DialogModule,
     PasswordModule,
     ReactiveFormsModule,
-    RadioButtonModule
+    RadioButtonModule,CardModule,SplitterModule,AutoCompleteModule
   ],
 })
 export class UiModule {}

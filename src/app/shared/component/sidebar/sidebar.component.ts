@@ -16,9 +16,10 @@ export class SidebarComponent{
     {
       title: 'Dashboard',
       icon: 'pi pi-home',
-      route: '/student-detail',
+      route: '/student-profile',
       active: true
     },
+
     {
       title: 'Student Management',
       icon: 'pi pi-users',
@@ -90,4 +91,8 @@ export class SidebarComponent{
    openCalendar() {
     this.showCalendar = true;
   }
-} 
+
+  openProfile(){
+    this.router.navigateByUrl('student-profile')
+  }
+}

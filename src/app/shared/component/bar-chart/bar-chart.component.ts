@@ -37,7 +37,7 @@ export class BarChartComponent {
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`);
 
- 
+
   const x = d3.scaleBand()
     .domain(this.data.map(d => d.label))
     .range([0, width])
@@ -79,7 +79,7 @@ export class BarChartComponent {
     .attr('y', d => y(d.value))
     .attr('width', x.bandwidth())
     .attr('height', d => height - y(d.value))
-    .attr('fill', d => d.color || 'steelblue') // optional color
+    .attr('fill', d => d.color || 'steelblue')
     .on('mouseover', (event, d) => {
       tooltip
         .style('opacity', 1)

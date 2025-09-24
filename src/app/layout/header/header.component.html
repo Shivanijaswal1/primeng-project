@@ -27,6 +27,25 @@
       tooltipPosition="bottom"
       (handleclick)="openChart()"
     ></app-z-button>
+ <!-- <div class="mock-login">
+      <select [(ngModel)]="role">
+        <option value="" disabled selected>Select Role</option>
+        <option value="Teacher">Teacher</option>
+        <option value="Admin">Admin</option>
+        <option value="Accounts">Accounts</option>
+        <option value="Student">Student</option>
+      </select>
+      <button (click)="loginDemo()">Login</button>
+    </div> -->
+  <div class="mock-login">
+  <p-menu #menu [popup]="true" [model]="roleItems"></p-menu>
+  <button pButton type="button"
+          [label]="role ? 'Role: '+  role : 'Select Role'"
+          icon="pi pi-user"
+          (click)="menu.toggle($event)">
+  </button>
+  <button pButton type="button" label="Login" (click)="loginDemo()" class="ml-2"></button>
+ </div>
   </div>
 </p-toolbar>
 <p-dialog header="Calendar" [(visible)]="showCalendar" [modal]="true" [closable]="true" [style]="{width: '30vw','height':'67vh'}">

@@ -122,7 +122,6 @@ export class TableComponent {
 onPanelSave(event: { rowId: number; content: string }) {
   const { rowId, content } = event;
   if (!content?.trim()) return;
-
   if (!this.notes[rowId]) this.notes[rowId] = [];
   this.notes[rowId] = [...this.notes[rowId], content];
   this._messageservice.add({
@@ -136,7 +135,7 @@ onPanelSave(event: { rowId: number; content: string }) {
   openNotesPanel(row: any) {
     this.resetAllIcons();
     if (this.openRowId === row.id && this.showPanel) {
-      this.closePanel();``
+      this.closePanel();
     } else {
       this.panelTitle = 'Notes';
       // this.selectedRow = row;
@@ -234,7 +233,7 @@ onPanelSave(event: { rowId: number; content: string }) {
       styleClass: 'custom-dialog-header',
     });
     this.ref.onClose.subscribe((formValue: any) => {
-      if (formValue?.policy?.length > 0 && rowData.id) {
+      if (formValue?.policy?.length > 0 && rowData.id){
         const updatedPolicy = formValue.policy[0];
         const parentIndex = this.student.findIndex(
           (student) => student.id === rowData.id

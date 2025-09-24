@@ -27,7 +27,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { DiscardButtonComponent } from './component/discard-button/discard-button.component';
 import { HorizontalBarChartComponent } from './component/horizontal-bar-chart/horizontal-bar-chart.component';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
-
+import { NotesFilesPanelComponent } from './component/notes-files-panel/notes-files-panel.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +49,8 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
     DiscardButtonComponent,
     HorizontalBarChartComponent,
     SidebarComponent,
+    NotesFilesPanelComponent,
+FormComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -74,7 +76,9 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
     ConfigurationBasedFormComponent,
     AdvanceSortingComponent,
     SidebarComponent,
+    NotesFilesPanelComponent,
   ],
+
   providers: [HighlightPipe],
 })
 export class SharedModule {}

@@ -1,0 +1,115 @@
+<!-- <p-steps [model]="steps" [(activeIndex)]="activeIndex"></p-steps>
+<div class="p-mt-4">
+  <p-button label="Previous" icon="pi pi-chevron-left" (onClick)="prev()" [disabled]="activeIndex === 0"></p-button>
+  <p-button label="Next" icon="pi pi-chevron-right" iconPos="right" (onClick)="next()" [disabled]="activeIndex === steps.length - 1"></p-button>
+</div> -->
+<div class="dashboard-container" [class.dark-mode]="isDarkMode">
+  <aside class="sidebar" [class.collapsed]="isCollapsed">
+    <h2 class="logo" (click)="toggleSidebar()">📘 Teacher</h2>
+    <ul>
+      <li *ngFor="let item of menu"
+          routerLink="{{item.route}}"
+          routerLinkActive="active">
+        <i class="{{item.icon}}"></i>
+        <span *ngIf="!isCollapsed">{{item.label}}</span>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <input type="text" placeholder="Search..." class="search" (input)="onSearch($event)" />
+
+      <div class="header-actions">
+        <i class="pi" [ngClass]="isDarkMode ? 'pi-sun' : 'pi-moon'" (click)="toggleTheme()"></i>
+        <div class="dropdown" (click)="toggleNotifications()">
+          <i class="pi pi-bell"></i>
+          <div class="dropdown-menu" *ngIf="showNotifications">
+            <p *ngFor="let n of notifications">{{n}}</p>
+          </div>
+        </div>
+
+        <div class="dropdown profile" (click)="toggleProfile()">
+          <img src="https://i.pravatar.cc/40" alt="profile"/>
+          <span class="name">Mr. Thakur</span>
+          <div class="dropdown-menu" *ngIf="showProfileMenu">
+            <p (click)="goToSettings()">⚙️ Settings</p>
+            <p (click)="logout()">🚪 Logout</p>
+          </div>
+        </div>
+      </div>
+    </header>
+    <section class="quick-actions">
+      <p-card header="📋 Take Attendance" (click)="takeAttendance()"></p-card>
+      <p-card header="➕ Add Assignment" (click)="addAssignment()"></p-card>
+      <p-card header="📊 View Reports" (click)="viewReports()"></p-card>
+    </section>
+
+    <!-- <section class="content-body">
+<section class="content-body">
+  <div class="welcome-box">
+    <h2>👋 Welcome back, Mr. Thakur</h2>
+    <p>Here’s a quick summary of today’s activity.</p>
+  </div>
+
+  <div class="stats-cards">
+    <p-card>
+      <h3>Total Students</h3>
+  <h2>{{ students.length }}</h2>
+    </p-card>
+    <p-card>
+      <h3>Today’s Attendance</h3>
+      <h2>95%</h2>
+    </p-card>
+    <p-card>
+      <h3>Pending Assignments</h3>
+      <h2>8</h2>
+    </p-card>
+    <p-card>
+      <h3>Upcoming Classes</h3>
+      <h2>3</h2>
+    </p-card>
+  </div>
+  <div class="charts-section">
+    <p-card header="📊 Attendance Trend">
+      <p-chart type="line" [data]="attendanceData"></p-chart>
+    </p-card>
+
+    <p-card header="📈 Student Performance">
+      <p-chart type="bar" [data]="performanceData"></p-chart>
+    </p-card>
+  </div>
+  <div class="activities">
+    <p-card header="📝 Recent Activities">
+      <ul>
+        <li>✅ Assignment graded for Class 10A</li>
+        <li>📅 Parent meeting scheduled for Friday</li>
+        <li>📋 Attendance submitted for Class 9B</li>
+        <li>📌 New course material uploaded</li>
+      </ul>
+    </p-card>
+  </div>
+  <div class="task-board">
+    <p-card header="📌 Task Board">
+      <p-card header="📌 Task Board">
+        <p-table [value]="taskItems">
+          <ng-template pTemplate="header">
+            <tr>
+              <th *ngFor="let col of taskColumns">{{col.header}}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData>
+            <tr>
+              <td *ngFor="let col of taskColumns">{{rowData[col.field]}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+    </p-card>
+  </div>
+</section>
+
+    </section> -->
+  </main>
+</div>
+

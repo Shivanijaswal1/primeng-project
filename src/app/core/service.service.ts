@@ -6,6 +6,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormComponent } from '../shared/component/form/form.component';
 
 interface Parent {
+  tabId: string;
   feeStatus: string;
   id: number;
   name: string;
@@ -172,4 +173,137 @@ export class ServiceService {
     this.getStudent();
   });
 }
+  getFormConfig() {
+    return {
+      tabs: [
+        {
+          label: 'Personal Information',
+          sectionId: 'personal',
+          fields: [
+            {
+              type: 'input',
+              controlName: 'name',
+              label: 'Name',
+              required: true,
+              pattern: '^[A-Za-z]+\\s?[A-Za-z]+$',
+              errorMsg: 'Name is required and should contain only letters.',
+            },
+            {
+              type: 'dropdown',
+              controlName: 'parent',
+              label: 'Choose Parent',
+              optionsKey: 'parentOptions',
+              optionLabel: 'value',
+              optionValue: 'key',
+              required: true,
+              errorMsg: 'Parent selection is required'
+            },
+            {
+              type: 'dropdown',
+              controlName: 'child',
+              label: 'Choose Child',
+              optionsKey: 'childOptions',
+              optionLabel: 'value',
+              optionValue: 'key',
+              required: true,
+              editable: true,
+              footerButton: {
+                label: 'Add New',
+                icon: 'pi pi-plus',
+                action: 'DropdownEditable'
+              },
+              errorMsg: 'Child selection is required'
+            }
+          ]
+        },
+        {
+          label: 'Contact Details',
+          sectionId: 'contact',
+          fields: [
+            {
+              type: 'input',
+              controlName: 'email',
+              label: 'Email',
+              required: true,
+              inputType: 'email',
+              errorMsg: 'Please enter a valid email address.'
+            },
+            {
+              type: 'input',
+              controlName: 'father',
+              label: 'Father/Guardian',
+              required: true,
+              pattern: '^[A-Za-z]+\\s?[A-Za-z]+$',
+              errorMsg: 'Father Name is required and should contain only letters.'
+            },
+            {
+              type: 'input',
+              controlName: 'address',
+              label: 'Address',
+              required: true,
+              errorMsg: 'Address is required.'
+            },
+            {
+              type: 'input',
+              controlName: 'city',
+              label: 'City',
+              required: true,
+              errorMsg: 'City is required.'
+            },
+            {
+              type: 'input',
+              controlName: 'state',
+              label: 'State',
+              required: true,
+              errorMsg: 'State is required.'
+            },
+            {
+              type: 'input',
+              controlName: 'postalCode',
+              label: 'Postal Code',
+              required: true,
+              errorMsg: 'Valid postal code is required.'
+            }
+          ]
+        },
+        {
+          label: 'Additional Information',
+          sectionId: 'additional',
+          fields: [
+            {
+              type: 'dropdown',
+              controlName: 'selectedValue',
+              label: 'Choose Option',
+              optionsKey: 'dropdownOptions',
+              required: true,
+              errorMsg: 'Selection is required'
+            },
+            {
+              type: 'dropdown',
+              controlName: 'selectedfees',
+              label: 'Fees Processing',
+              optionsKey: 'feesprocess',
+              required: true,
+              errorMsg: 'Selection is required'
+            },
+            {
+              type: 'input',
+              controlName: 'age',
+              label: 'Age',
+              required: true,
+              inputType: 'number',
+              min: 18,
+              max: 100,
+              errorMsg: 'Age must be between 18 and 100.'
+            }
+          ]
+        }
+      ],
+      buttons: [
+        { type: 'discard', label: 'Discard', style: 'danger', action: 'ResetForm' },
+        { type: 'submit', label: 'Submit', style: 'primary' }
+      ]
+    };
+  }
+
 }
