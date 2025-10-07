@@ -13,53 +13,48 @@ import { FormComponent } from 'src/app/shared/component/form/form.component';
 })
 export class HeaderComponent {
   ref: DynamicDialogRef | undefined;
-  @Output() bookmarkClicked = new EventEmitter<void>();
-  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
-  favoritesExpanded: boolean = true;
-  reportsExpanded: boolean = false;
-  employees: any[] = [];
-  meetingDate: any;
-  selectedDate: Date | null = null;
-  email: any;
-  role: any;
-  // email: string = 'demo@example.com'; // just for example
-  roleItems: MenuItem[];
 
-  constructor(
-    private _studnetService: ServiceService,
-    private _route: Router,
+  sidebarVisible = false;
+  toolbarTitle = 'Students Details';
+  sidebarStyle = {
+    'background': 'linear-gradient(135deg, #4660b5 0%, #6a82fb 100%)',
+    'box-shadow': '0 4px 24px rgba(70,89,181,0.15)',
+    'border-radius': '18px 0 0 18px',
+    'width': '320px',
+    'color': '#fff'
+  };
+
+  @Output() addStudent = new EventEmitter<void>();
+  @Output() dashboard = new EventEmitter<void>();
+  email: any;
+  employees: any[]=[];
+
+  constructor(public studentService: ServiceService,
+     private _route: Router,
     public dialogservice: DialogService,
     private zone: NgZone,
-  ) {
+  ) {}
 
-
-    this.roleItems = [
-      { label: 'Teacher', command: () => this.switchRole('Teacher') },
-      { label: 'Admin', command: () => this.switchRole('Admin') },
-      { label: 'Accounts', command: () => this.switchRole('Accounts') },
-      { label: 'Student', command: () => this.switchRole('Student') }
-    ];
-  }
- availableRoles = [
-    { name: 'Teacher', icon: 'pi pi-graduation-cap' },
-    { name: 'Admin', icon: 'pi pi-cog' },
-    { name: 'Accounts', icon: 'pi pi-calculator' },
-    { name: 'Student', icon: 'pi pi-book' }
+    role: string = '';  // currently selected role
+  roleItems: MenuItem[] = [
+    { label: 'Teacher', command: () => this.selectRole('Teacher') },
+    { label: 'Admin', command: () => this.selectRole('Admin') },
+    { label: 'Accounts', command: () => this.selectRole('Accounts') },
+    { label: 'Student', command: () => this.selectRole('Student') }
   ];
 
-  onBookmarkClick() {
-    localStorage.setItem('showFeeChart', 'true');
-    this._route.navigateByUrl('student-fee');
+  selectRole(selectedRole: string) {
+    this.role = selectedRole;
+    console.log('Role selected:', selectedRole);
   }
-
-  getEmployeeData() {
-    this._studnetService.getStudent().subscribe((data) => {
+     getEmployeeData() {
+    this.studentService.getStudent().subscribe((data) => {
       this.employees = data;
     });
   }
-
-  show() {
-    this.ref = this.dialogservice.open(FormComponent, {
+  onAddStudent() {
+    this.addStudent.emit();
+     this.ref = this.dialogservice.open(FormComponent, {
       header: 'Student Registration form',
       width: '65%',
       height: 'auto',
@@ -71,59 +66,26 @@ export class HeaderComponent {
     this.ref.onClose.subscribe(() => {
       this.getEmployeeData();
     });
-  }
-  openChart() {
-    this._route.navigateByUrl('student-details');
+
   }
 
-  openCharts() {
-    this._route.navigateByUrl('dashboard');
+  onDashboard() {
+    this.dashboard.emit();
   }
 
-  sidebarVisible: boolean = false;
+    loginDemo() {
+    if (!this.role) {
+      alert('Please select a role first!');
+      return;
+    }
 
-  closeCallback(e: Event): void {
-    this.sidebarRef.close(e);
+    const user = { email: this.email, role: this.role, name: this.role };
+    localStorage.setItem('user', JSON.stringify(user));
+    console.log('User stored in localStorage:', user);
+
+    this.navigateByRole(this.role);
   }
-
-  showCalendar: boolean = false;
-
-  openCalendar() {
-    this.showCalendar = true;
-  }
-
-  onDateSelect(event: Date) {
-    this.selectedDate = event;
-  }
-//    private navigateByRole(role: string) {
-//     switch (role) {
-//       case 'Teacher':
-//         this.zone.run(() => this._route.navigate(['/teacher-dashboard']));
-//         break;
-//       case 'Admin':
-//         this.zone.run(() => this._route.navigate(['/admin-dashboard']));
-//         break;
-//       case 'Accounts':
-//         this.zone.run(() => this._route.navigate(['/accounts-dashboard']));
-//         break;
-//       default:
-//         this.zone.run(() => this._route.navigate(['/student-detail']));
-//     }
-//   }
-//     loginDemo() {
-//   const user = { email: this.email, role: this.role, name: this.role };
-//   localStorage.setItem('user', JSON.stringify(user));
-//   this.navigateByRole(this.role);
-// }
-
-
-
-  switchRole(role: string) {
-    this.role = role;
-    console.log('Role switched to:', this.role);
-  }
-
-  private navigateByRole(role: string) {
+    private navigateByRole(role: string) {
     switch (role) {
       case 'Teacher':
         this.zone.run(() => this._route.navigate(['/teacher-dashboard']));
@@ -137,18 +99,5 @@ export class HeaderComponent {
       default:
         this.zone.run(() => this._route.navigate(['/student-detail']));
     }
-  }
-
-  loginDemo() {
-    if (!this.role) {
-      alert('Please select a role first!');
-      return;
-    }
-
-    const user = { email: this.email, role: this.role, name: this.role };
-    localStorage.setItem('user', JSON.stringify(user));
-    console.log('User stored in localStorage:', user);
-
-    this.navigateByRole(this.role);
   }
 }

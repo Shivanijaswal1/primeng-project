@@ -15,7 +15,12 @@ interface Parent {
   joinedDate: number;
   children: Child[];
 }
-
+export enum Role {
+  Teacher = 'Teacher',
+  Student = 'Student',
+  Admin = 'Admin',
+  Accounts = 'Accounts'
+}
 interface Child {
   project: string;
   role: string;
@@ -32,13 +37,14 @@ export interface BarChartData {
   providedIn: 'root',
 })
 export class ServiceService {
-  ref: DynamicDialogRef | undefined;
+  currentRole: Role = Role.Student;
 
-  private _SubmitUrl!: 'http://localhost:3000/form';
+  ref: DynamicDialogRef | undefined;
+  assignments: any[] = [];
+  private _SubmitUrl!: 'http://localhost:3000';
   private chartUrl!: 'http://localhost:3000/data';
-  constructor(private http: HttpClient,
-     public dialogservice: DialogService
-  ) {}
+
+  constructor(private http: HttpClient, public dialogservice: DialogService) {}
 
   addData(data: any): Observable<any> {
     return this.http.post('http://localhost:3000/form', data);
@@ -60,29 +66,31 @@ export class ServiceService {
     });
   }
   deleteChildFromParent(parentId: number, childId: number): Observable<any> {
-  return this.http.get<any>(`http://localhost:3000/form/${parentId}`).pipe(
-    switchMap((parent) => {
-      parent.children = (parent.children || []).filter(
-        (child: any) => child.id !== childId
-      );
-      return this.http.put(`http://localhost:3000/form/${parentId}`, parent);
-    })
-  );
-}
+    return this.http.get<any>(`http://localhost:3000/form/${parentId}`).pipe(
+      switchMap((parent) => {
+        parent.children = (parent.children || []).filter(
+          (child: any) => child.id !== childId
+        );
+        return this.http.put(`http://localhost:3000/form/${parentId}`, parent);
+      })
+    );
+  }
 
-  updateParentWithChildren(parentId: string, childrenData: any[]): Observable<any> {
-  return this.http.get<any>(`http://localhost:3000/form/${parentId}`).pipe(
-    switchMap((parent: { children: any[] }) => {
-      if (!parent.children) parent.children = [];
-      parent.children.push(...childrenData);
-      return this.http.put<any>(
-        `http://localhost:3000/form/${parentId}`,
-        parent
-      );
-    })
-  );
-}
-
+  updateParentWithChildren(
+    parentId: string,
+    childrenData: any[]
+  ): Observable<any> {
+    return this.http.get<any>(`http://localhost:3000/form/${parentId}`).pipe(
+      switchMap((parent: { children: any[] }) => {
+        if (!parent.children) parent.children = [];
+        parent.children.push(...childrenData);
+        return this.http.put<any>(
+          `http://localhost:3000/form/${parentId}`,
+          parent
+        );
+      })
+    );
+  }
 
   getDummyData(): Observable<any> {
     const dummyResponse = [
@@ -147,7 +155,37 @@ export class ServiceService {
     return this.http.get<any>('http://localhost:3000/pieChart');
   }
 
-   private _user$ = new BehaviorSubject<SocialUser | null>(null);
+  getNotifications(): Observable<string[]> {
+    return this.http.get<string[]>(`${this._SubmitUrl}/notifications`);
+  }
+
+  getReports(): Observable<any[]> {
+    return this.http.get<any[]>(`${this._SubmitUrl}/reports`);
+  }
+
+  markAttendance(attendance: any): Observable<any> {
+    return this.http.post(`${this._SubmitUrl}/attendance`, attendance);
+  }
+  saveAttendance(data: any[]) {
+    return this.http.post(`${this._SubmitUrl}/attendance`, data);
+  }
+  addAssignment(assignment: any) {
+    this.assignments.push(assignment);
+    return of(assignment);
+  }
+
+  getPerformanceData() {
+    const subjects = ['Math', 'Science', 'English', 'History'];
+    const data = subjects.map((subject) => {
+      const count = this.assignments.filter((a) =>
+        a.className.includes(subject)
+      ).length;
+      return { subject, average: Math.min(100, 80 + count * 5) };
+    });
+    return of(data);
+  }
+
+  private _user$ = new BehaviorSubject<SocialUser | null>(null);
   user$ = this._user$.asObservable();
 
   set user(user: SocialUser | null) {
@@ -158,21 +196,21 @@ export class ServiceService {
     return this._user$.value;
   }
 
-   show(): void {
+  show(): void {
     this.ref = this.dialogservice.open(FormComponent, {
-    header: 'Student Registration form',
-    width: '65%',
-    height: 'auto',
-    contentStyle: { overflow: 'auto' },
-    baseZIndex: 10000,
-    maximizable: true,
-    styleClass: 'custom-dialog-header',
-  });
+      header: 'Student Registration form',
+      width: '65%',
+      height: 'auto',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      styleClass: 'custom-dialog-header',
+    });
 
-  this.ref.onClose.subscribe(() => {
-    this.getStudent();
-  });
-}
+    this.ref.onClose.subscribe(() => {
+      this.getStudent();
+    });
+  }
   getFormConfig() {
     return {
       tabs: [
@@ -196,7 +234,7 @@ export class ServiceService {
               optionLabel: 'value',
               optionValue: 'key',
               required: true,
-              errorMsg: 'Parent selection is required'
+              errorMsg: 'Parent selection is required',
             },
             {
               type: 'dropdown',
@@ -210,11 +248,11 @@ export class ServiceService {
               footerButton: {
                 label: 'Add New',
                 icon: 'pi pi-plus',
-                action: 'DropdownEditable'
+                action: 'DropdownEditable',
               },
-              errorMsg: 'Child selection is required'
-            }
-          ]
+              errorMsg: 'Child selection is required',
+            },
+          ],
         },
         {
           label: 'Contact Details',
@@ -226,7 +264,7 @@ export class ServiceService {
               label: 'Email',
               required: true,
               inputType: 'email',
-              errorMsg: 'Please enter a valid email address.'
+              errorMsg: 'Please enter a valid email address.',
             },
             {
               type: 'input',
@@ -234,37 +272,38 @@ export class ServiceService {
               label: 'Father/Guardian',
               required: true,
               pattern: '^[A-Za-z]+\\s?[A-Za-z]+$',
-              errorMsg: 'Father Name is required and should contain only letters.'
+              errorMsg:
+                'Father Name is required and should contain only letters.',
             },
             {
               type: 'input',
               controlName: 'address',
               label: 'Address',
               required: true,
-              errorMsg: 'Address is required.'
+              errorMsg: 'Address is required.',
             },
             {
               type: 'input',
               controlName: 'city',
               label: 'City',
               required: true,
-              errorMsg: 'City is required.'
+              errorMsg: 'City is required.',
             },
             {
               type: 'input',
               controlName: 'state',
               label: 'State',
               required: true,
-              errorMsg: 'State is required.'
+              errorMsg: 'State is required.',
             },
             {
               type: 'input',
               controlName: 'postalCode',
               label: 'Postal Code',
               required: true,
-              errorMsg: 'Valid postal code is required.'
-            }
-          ]
+              errorMsg: 'Valid postal code is required.',
+            },
+          ],
         },
         {
           label: 'Additional Information',
@@ -276,7 +315,7 @@ export class ServiceService {
               label: 'Choose Option',
               optionsKey: 'dropdownOptions',
               required: true,
-              errorMsg: 'Selection is required'
+              errorMsg: 'Selection is required',
             },
             {
               type: 'dropdown',
@@ -284,7 +323,7 @@ export class ServiceService {
               label: 'Fees Processing',
               optionsKey: 'feesprocess',
               required: true,
-              errorMsg: 'Selection is required'
+              errorMsg: 'Selection is required',
             },
             {
               type: 'input',
@@ -294,16 +333,35 @@ export class ServiceService {
               inputType: 'number',
               min: 18,
               max: 100,
-              errorMsg: 'Age must be between 18 and 100.'
-            }
-          ]
-        }
+              errorMsg: 'Age must be between 18 and 100.',
+            },
+          ],
+        },
       ],
       buttons: [
-        { type: 'discard', label: 'Discard', style: 'danger', action: 'ResetForm' },
-        { type: 'submit', label: 'Submit', style: 'primary' }
-      ]
+        {
+          type: 'discard',
+          label: 'Discard',
+          style: 'danger',
+          action: 'ResetForm',
+        },
+        { type: 'submit', label: 'Submit', style: 'primary' },
+      ],
     };
   }
 
+   setRole(role: Role) {
+    this.currentRole = role;
+  }
+
+  isTeacher(): boolean {
+    return this.currentRole === Role.Teacher;
+  }
+
+  getRole(): string {
+    return this.currentRole;
+  }
+  isStudent(): boolean {
+    return this.currentRole === Role.Student;
+  }
 }

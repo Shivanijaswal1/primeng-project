@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule,DatePipe  } from '@angular/common';
 import { ZButtonComponent } from './component/z-button/z-button.component';
 import { UiModule } from '../ui/ui/ui.module';
 import { FormsModule } from '@angular/forms';
@@ -21,13 +21,15 @@ import { AdvanceSortingComponent } from './component/advance-sorting/advance-sor
 import { FileUpload } from 'primeng/fileupload';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SubmitMessageComponent } from './component/submit-message/submit-message.component';
-import { HighlightPipe } from 'src/app/feature/pipe/highlight.pipe';
+import { HighlightPipe } from 'src/app/shared/pipe/highlight.pipe';
 import { DialogMessageComponent } from './tabs/component/dialog-message/dialog-message.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { DiscardButtonComponent } from './component/discard-button/discard-button.component';
 import { HorizontalBarChartComponent } from './component/horizontal-bar-chart/horizontal-bar-chart.component';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { NotesFilesPanelComponent } from './component/notes-files-panel/notes-files-panel.component';
+import { IndiaChoroplethComponent } from './component/india-choropleth/india-choropleth.component';
+import { SubmittedStudentDetailComponent } from './component/submitted-student-detail/submitted-student-detail.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,10 @@ import { NotesFilesPanelComponent } from './component/notes-files-panel/notes-fi
     HorizontalBarChartComponent,
     SidebarComponent,
     NotesFilesPanelComponent,
-FormComponent
+    FormComponent,
+    IndiaChoroplethComponent,
+    SubmittedStudentDetailComponent,
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -77,8 +82,11 @@ FormComponent
     AdvanceSortingComponent,
     SidebarComponent,
     NotesFilesPanelComponent,
+    IndiaChoroplethComponent,
+    SubmittedStudentDetailComponent,
+
   ],
 
-  providers: [HighlightPipe],
+  providers: [HighlightPipe,DatePipe],
 })
 export class SharedModule {}

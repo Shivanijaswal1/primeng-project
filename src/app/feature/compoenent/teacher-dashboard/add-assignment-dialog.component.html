@@ -1,4 +1,31 @@
-<div style="padding:1rem; min-width:300px">
-  <h2>Add Assignment</h2>
-  <div class="p-fluid">
+
+<div class="add-assignment-dialog">
+  <h2 class="dialog-header">➕ Add New Assignment</h2>
+
+  <form [formGroup]="assignmentForm" (ngSubmit)="submit()">
+    <div class="form-field">
       <label for="title">Title</label>
+      <input id="title" pInputText formControlName="title" placeholder="Enter assignment title" />
+    </div>
+
+    <div class="form-field">
+      <label for="description">Description</label>
+      <textarea id="description" pInputTextarea formControlName="description" placeholder="Write a brief description"></textarea>
+    </div>
+
+    <div class="form-field">
+      <label for="className">Class</label>
+      <input id="className" pInputText formControlName="className" placeholder="e.g. Class 10A" />
+    </div>
+
+    <div class="form-field">
+      <label for="dueDate">Due Date</label>
+      <p-calendar id="dueDate" formControlName="dueDate" [showIcon]="true"></p-calendar>
+    </div>
+
+    <div class="dialog-buttons">
+      <p-button label="Cancel" type="button" (onClick)="cancel()" class="p-button-secondary"></p-button>
+      <p-button label="Add Assignment" type="submit" [disabled]="assignmentForm.invalid" class="p-button-primary"></p-button>
+    </div>
+  </form>
+</div>

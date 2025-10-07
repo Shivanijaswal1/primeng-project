@@ -1,0 +1,19 @@
+<div class="attendance-dialog">
+
+  <form [formGroup]="attendanceForm">
+    <div formArrayName="attendance">
+      <div *ngFor="let student of attendanceArray.controls; let i = index" [formGroupName]="i" class="student-row">
+        <div class="student-info">
+          <div class="avatar">{{ student.get('name')?.value.charAt(0) }}</div>
+          <span class="student-name">{{ student.get('name')?.value }}</span>
+        </div>
+        <p-checkbox formControlName="present" [binary]="true"></p-checkbox>
+      </div>
+    </div>
+  </form>
+
+  <div class="dialog-actions">
+    <p-button label="Cancel" (onClick)="cancel()" class="p-button-text"></p-button>
+    <p-button label="Submit" (onClick)="submitAttendance()" class="p-button-success"></p-button>
+  </div>
+</div>

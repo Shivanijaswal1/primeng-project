@@ -1,26 +1,38 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-add-assignment-dialog',
   templateUrl: './add-assignment-dialog.component.html',
+    styleUrls: ['./add-assignment-dialog.component.scss'],
 })
 export class AddAssignmentDialogComponent {
-  assignment = {
-    title: '',
-    description: '',
-    dueDate: '',
-    studentIds: [] as number[]
-  };
+assignmentForm!: FormGroup;
   students: any[] = [];
 
-  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
-    this.students = config.data?.students || [];
+  constructor(
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
+    private fb: FormBuilder
+  ) {
+    this.students = config.data.students || [];
+
+    this.assignmentForm = this.fb.group({
+      title: ['', Validators.required],
+      description: [''],
+      className: ['', Validators.required],
+      dueDate: [null, Validators.required]
+    });
   }
 
   submit() {
-    if (this.assignment.title && this.assignment.dueDate && this.assignment.studentIds.length > 0) {
-      this.ref.close(this.assignment);
+    if (this.assignmentForm.valid) {
+      this.ref.close(this.assignmentForm.value);
     }
+  }
+
+  cancel() {
+    this.ref.close();
   }
 }

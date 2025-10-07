@@ -16,7 +16,7 @@ import {
   GoogleLoginProvider,
   SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
-
+import { HighlightPipe } from './shared/pipe/highlight.pipe';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -29,8 +29,10 @@ import {
     SelectButtonModule,
     AuthModule,
     SharedModule,
+
   ],
   providers: [
+    HighlightPipe,
     DialogService,
     provideHttpClient(),
     ConfirmationService,

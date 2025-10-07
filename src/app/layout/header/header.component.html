@@ -1,57 +1,41 @@
-<p-toolbar class="student-toolbar" [style]="{'background-color': 'rgb(70, 89, 181)',' padding': '10px 15px','width':'98vw','boder':'none'}">
-      <div class="toolbar-left" style="display: flex; align-items: center; gap: 1rem;">
-        <button pButton type="button" icon="pi pi-bars" class="p-button-text p-button-rounded toolbar-menu-btn" (click)="sidebarVisible = true"></button>
-        <p-sidebar #sidebarRef [(visible)]="sidebarVisible" [style]="{
-            'background': 'linear-gradient(135deg, #4660b5 0%, #6a82fb 100%)',
-            'box-shadow': '0 4px 24px rgba(70,89,181,0.15)',
-            'border-radius': '18px 0 0 18px',
-            'width': '320px',
-            'color': '#fff'
-        }">
-    <app-sidebar></app-sidebar>
-        </p-sidebar>
-    <h1 class="toolbar-title">Students Details</h1>
+<p-toolbar class="toolbar" [style]="{'background-color':'rgb(70,89,181)','padding':'10px 15px','width':'98vw','border':'none'}">
+  <div class="toolbar-left" style="display:flex; align-items:center; gap:1rem">
+    <button pButton type="button" icon="pi pi-bars"
+            class="p-button-text p-button-rounded toolbar-menu-btn"
+            (click)="sidebarVisible = true"></button>
+
+    <p-sidebar #sidebarRef [(visible)]="sidebarVisible" [style]="sidebarStyle">
+      <app-sidebar></app-sidebar>
+    </p-sidebar>
+
+       <h2 *ngIf="studentService.isTeacher()">👩‍🏫 Teacher Dashboard</h2>
+      <h2 *ngIf="studentService.isStudent()">👨‍🎓 Student Dashboard</h2>
   </div>
-  <div class="toolbar-right" style="display: flex; align-items: center; gap: 1rem;">
-    <app-z-button
-      class="z-button dashboard-btn add-btn toolbar-btn"
-      label="+ Add Student Details"
-      pTooltip=" Enter Student"
-      tooltipPosition="bottom"
-      (handleclick)="show()"
-    ></app-z-button>
-    <app-z-button
-      icon="pi pi-home"
-      class="z-button dashboard-btn dashboard-btn-right toolbar-btn"
-      label="Dashboard"
-      tooltipPosition="bottom"
-      (handleclick)="openChart()"
-    ></app-z-button>
- <!-- <div class="mock-login">
-      <select [(ngModel)]="role">
-        <option value="" disabled selected>Select Role</option>
-        <option value="Teacher">Teacher</option>
-        <option value="Admin">Admin</option>
-        <option value="Accounts">Accounts</option>
-        <option value="Student">Student</option>
-      </select>
-      <button (click)="loginDemo()">Login</button>
-    </div> -->
-  <div class="mock-login">
-  <p-menu #menu [popup]="true" [model]="roleItems"></p-menu>
-  <button pButton type="button"
-          [label]="role ? 'Role: '+  role : 'Select Role'"
-          icon="pi pi-user"
-          (click)="menu.toggle($event)">
-  </button>
-  <button pButton type="button" label="Login" (click)="loginDemo()" class="ml-2"></button>
- </div>
+
+  <div class="toolbar-right" style="display:flex; align-items:center; gap:1rem">
+    <app-z-button *ngIf="studentService.isTeacher()"
+                  class="z-button dashboard-btn add-btn toolbar-btn"
+                  label="+ Add Student Details"
+                  pTooltip="Enter Student"
+                  tooltipPosition="bottom"
+                  (handleclick)="onAddStudent()">
+    </app-z-button>
+
+    <app-z-button icon="pi pi-home"
+                  class="z-button dashboard-btn dashboard-btn-right toolbar-btn"
+                  label="Dashboard"
+                  tooltipPosition="bottom"
+                  (handleclick)="onDashboard()">
+    </app-z-button>
+
+    <div class="mock-login">
+      <p-menu #menu [popup]="true" [model]="roleItems"></p-menu>
+      <button pButton type="button"
+              [label]="role ? 'Role: '+ role : 'Select Role'"
+              icon="pi pi-user"
+              (click)="menu.toggle($event)">
+      </button>
+      <button pButton type="button" label="Login" (click)="loginDemo()" class="ml-2"></button>
+    </div>
   </div>
 </p-toolbar>
-<p-dialog header="Calendar" [(visible)]="showCalendar" [modal]="true" [closable]="true" [style]="{width: '30vw','height':'67vh'}">
-  <p-calendar
-    [(ngModel)]="selectedDate"
-    [inline]="true"
-    [showWeek]="true"
-    [style]="{'width':'30vw'}"/>
-</p-dialog>

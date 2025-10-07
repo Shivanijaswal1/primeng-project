@@ -6,24 +6,11 @@ import { MessageService } from 'primeng/api';
 import { jsPDF } from 'jspdf';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SubmitMessageComponent } from '../submit-message/submit-message.component';
-import autoTable from 'jspdf-autotable';
+import  autoTable from 'jspdf-autotable';
 import { DiscardButtonComponent } from '../discard-button/discard-button.component';
 import { AutoComplete } from 'primeng/autocomplete';
 import { MultiSelect } from 'primeng/multiselect';
 
-interface FormPayload {
-  name: string;
-  email: string;
-  age: number;
-  selectedValue: string | null;
-  father: string;
-  seletedfees: string | null;
-}
-
-interface UploadEvent {
-  originalEvent: Event;
-  files: File[];
-}
 
 @Component({
   selector: 'app-form',
@@ -33,8 +20,8 @@ interface UploadEvent {
 export class FormComponent {
   @ViewChild('dropdownElem') dropdownElem: any;
   // @ViewChild('content', { static: false })
-    @ViewChild('parentAutoComplete') parentAutoComplete!: AutoComplete;
-      @ViewChild('parentMultiSelect') parentMultiSelect!: MultiSelect;
+@ViewChild('parentAutoComplete') parentAutoComplete!: AutoComplete;
+@ViewChild('parentMultiSelect') parentMultiSelect!: MultiSelect;
   panelSize: number[] = [60, 40];
   minSize: number[] = [50, 10];
   content!: ElementRef;
@@ -58,6 +45,9 @@ export class FormComponent {
   bookValues: string[] = [];
   bookTimes: string[] = [];
   activeTabIndex: number = 0;
+  parentValue: any = null;
+ formSubmitted = false;
+
   formTabs = [
     { label: 'Personal ', sectionId: 'section-one' },
     { label: 'Contact ', sectionId: 'section-two' },
@@ -195,7 +185,7 @@ onSubmit() {
     this.updateMostRecentHighlight();
     this._service.addData(payload).subscribe({
       next: () => {
-        // this.form.reset();
+        this.form.reset();
         this.ref = this.dialogservice.open(SubmitMessageComponent, {
           header: 'Form Submitted Message',
           width: '30%',

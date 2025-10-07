@@ -31,7 +31,7 @@
                     <div class="form-css-inline">
                         <div class="form-css-half">
                             <label for="parentDropdown">Choose Parent</label>
-                            <p-dropdown
+                            <!-- <p-dropdown
                                 formControlName="parent"
                                 name="parent"
                                 inputId="parentDropdown"
@@ -48,7 +48,7 @@
                                         {{ option.value }}
                                     </div>
                                 </ng-template>
-                            </p-dropdown>
+                            </p-dropdown> -->
                     <!-- <p-autoComplete
                         #parentAutoComplete
                         formControlName="parent"
@@ -56,13 +56,12 @@
                         [field]="'value'"
                         [dropdown]="true"
                         [forceSelection]="true"
-                        placeholder="Select Parent"
                         (completeMethod)="filterParents($event)"
                         (onFocus)="openParentSuggestions()"
                         (onSelect)="onParentSelect($event)"
                         [ngClass]="{'invalid-field': form.get('parent')?.invalid && form.get('parent')?.touched}">
                   </p-autoComplete> -->
-         <!-- <p-multiSelect
+         <p-multiSelect
               #parentMultiSelect
               formControlName="parent"
               [options]="filteredParents"
@@ -76,7 +75,7 @@
               [ngClass]="{
              'invalid-field': form.get('parent')?.invalid && form.get('parent')?.touched
               }">
-        </p-multiSelect> -->
+        </p-multiSelect>
                         </div>
                         <div class="form-css-half">
                             <ng-container>
