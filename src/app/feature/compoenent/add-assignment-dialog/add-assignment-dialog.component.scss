@@ -1,0 +1,103 @@
+.add-assignment-dialog {
+  width: 100%;
+  max-width: 700px;
+  height: 60vh;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  // box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .dialog-header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-weight: 600;
+        color: #374151;
+        font-size: 0.95rem;
+      }
+
+      input,
+      textarea,
+      .p-inputtext,
+      .p-inputtextarea,
+      .p-calendar {
+        padding: 0.65rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        width: 100%;
+        box-sizing: border-box;
+        transition: all 0.2s ease;
+
+        &:focus {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+      }
+
+      textarea.p-inputtextarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .p-calendar {
+        width: 30vw;
+      }
+    }
+
+    .dialog-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1rem;
+
+      .p-button {
+        font-weight: 600;
+        padding: 0.65rem 1.5rem;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+      }
+
+      .p-button-secondary {
+        background-color: #f3f4f6;
+        color: #374151;
+        border: 1px solid #d1d5db;
+
+        &:hover {
+          background-color: #e5e7eb;
+          color: #111827;
+        }
+      }
+
+      .p-button-primary {
+        background-color: #3b82f6;
+        color: #fff;
+        border: none;
+
+        &:hover {
+          background-color: #2563eb;
+        }
+      }
+    }
+  }
+}

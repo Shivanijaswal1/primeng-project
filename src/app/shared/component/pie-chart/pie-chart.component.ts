@@ -6,8 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as d3 from 'd3';
-import { ServiceService } from 'src/app/core/service.service';
-
+import { ServiceService } from 'src/app/core/service/service.service';
 @Component({
   selector: 'app-pie-chart',
   templateUrl: './pie-chart.component.html',
@@ -41,7 +40,7 @@ export class PieChartComponent {
   this.height = 400;
   this.radius = Math.min(this.width, this.height) / 2 - 100;
 
-  d3.select(this.chartContainer.nativeElement).selectAll('*').remove(); 
+  d3.select(this.chartContainer.nativeElement).selectAll('*').remove();
   this.svg = d3
     .select(this.chartContainer.nativeElement)
     .append('svg')
@@ -157,13 +156,13 @@ polylines.enter()
   .attr('class', 'polyline')
   .merge(polylines)
   .attr('points', (d: any) => {
-    const posA = arc.centroid(d);      
-    const posB = outerArc.centroid(d); 
-    const posC = [...d.pos];          
+    const posA = arc.centroid(d);
+    const posB = outerArc.centroid(d);
+    const posC = [...d.pos];
     posB[1] = posC[1];
     return [posA, posB, posC];
   })
-  
+
   .style('fill', 'none')
   .style('stroke', '#666')
   .style('stroke-width', '1.5px')

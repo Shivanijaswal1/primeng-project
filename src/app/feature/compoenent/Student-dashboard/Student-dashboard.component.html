@@ -1,0 +1,297 @@
+<div>
+  <app-layout></app-layout>
+  <div class="main">
+    <div class="global-filter" style="margin-bottom: 10px;">
+      <div class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="globalFilter"
+          (ngModelChange)="onGlobalFilter()"
+          placeholder="Search all columns" />
+      </div>
+    </div>
+    <div class="sub-toolbar">
+      <div class="sub-toolbar-inner">
+        <div class="toolbar-left">
+          <app-z-button
+            class="white-button-small delete"
+            *ngIf="showDeleteButton"
+            label="Delete"
+            icon="pi pi-trash"
+            (handleclick)="del(selectedStudentIds)">
+          </app-z-button>
+          <p-selectButton
+            [options]="statusOptions"
+            [(ngModel)]="selectedStatus"
+            optionLabel="label"
+            optionValue="value"
+            (onChange)="onStatusChange($event)"
+            aria-labelledby="status">
+          </p-selectButton>
+          <div class="action-bar" *ngIf="shouldShowActionBar()">
+            <ng-container *ngIf="selectedStudentIds.length > 0">
+              <span class="count-badge parent">
+                <i class="pi pi-users"></i> {{ getTotalUniqueParentCount() }} Parent
+              </span>
+              <span class="count-badge child">
+                <i class="pi pi-user-plus"></i> {{ getSelectedChildrenCount() }} Children
+              </span>
+              <span class="count-badge total">
+                <i class="pi pi-list"></i> {{ getTotalSelectedCount() }} Total
+              </span>
+            </ng-container>
+            <ng-container *ngIf="selectedStudentIds.length === 0 && selectedChildIds.length > 0">
+              <span class="count-badge parent">
+                <i class="pi pi-users"></i> {{ getTotalUniqueParentCount() }} Parent
+              </span>
+              <span class="count-badge child">
+                <i class="pi pi-user-plus"></i> {{ getSelectedChildrenCount() }} Children
+              </span>
+              <span class="count-badge total">
+                <i class="pi pi-list"></i> {{ getTotalSelectedCount() }} Total
+              </span>
+            </ng-container>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <span *ngIf="showInvalidError" class="toolbar-error">
+            <i class="pi pi-info-circle"></i> Editing not allowed
+          </span>
+          <button *ngIf="sortingActive"
+            pButton
+            class="clear-sorting-btn"
+            label="Clear Sorting"
+            icon="pi pi-filter-slash"
+           >
+          </button>
+          <div class="search-container">
+            <span class="search-icon"><i class="pi pi-search"></i></span>
+            <input
+              #searchInput
+              type="text"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="onSearchInputChange()"
+              placeholder="Search headers..." />
+            <span class="match-info">{{ currentMatchIndex + 1 }} / {{ matches.length }}</span>
+            <button class="icon-button" (click)="prevMatch()" title="Previous match">
+              <i class="pi pi-chevron-left"></i>
+            </button>
+            <button class="icon-button" (click)="nextMatch()" title="Next match">
+              <i class="pi pi-chevron-right"></i>
+            </button>
+            <button class="icon-button close-btn" (click)="closeSearch()" title="Close">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+          <button class="icon-button sort-btn" (click)="advanceSorting()" title="Advanced Sorting">
+            <i class="pi pi-sort-alpha-down"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
+    <div *ngIf="loading" class="table-spinner-overlay">
+      <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
+    </div>
+    <div class="splitter-container">
+      <div class="table-section">
+        <p-table #dt [paginator]="true" [rows]="5"
+          [resizableColumns]="true"
+          [value]="filteredstudent"
+          [globalFilterFields]="globalFields"
+          [sortField]="sortField"
+          [sortOrder]="sortOrder"
+          dataKey="id"
+          [expandedRowKeys]="expandedRows"
+          (onRowToggle)="onRowToggle($event)"
+          (onRowCollapse)="onRowCollapse($event)"
+          *ngIf="filteredstudent.length > 0; else noData">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th>
+                <app-checkbox (checkedChange)="onSelectAllChange($event)" [checked]="isChecked"></app-checkbox>
+              </th>
+                   <th *ngFor="let Parent of columns; let i =index"
+                   [ngClass]="{'sorted-highlight': isSorted(Parent.field), 'active-filter': isFiltered(Parent.field)}"
+                   [pSortableColumn]="Parent.field">
+                   <span [innerHTML]="Parent.header | highlight: searchTerm : (i === activeHighlightedHeader)"></span>
+                   <p-sortIcon [field]="Parent.field"></p-sortIcon>
+                   <i class="pi pi-filter" style="cursor: pointer; margin-left:10px"
+                  (click)="openFilterMenu($event, Parent.field)"></i>
+                <div class="icon-hover-wrapper">
+                  <i class="pi pi-times delete-icon" (click)="confirmDeleteColumn(Parent.field)"></i>
+                </div>
+              </th>
+              <th pFrozenColumn alignFrozen="right" style="width:6rem;">Notes</th>
+              <th pFrozenColumn alignFrozen="right" style="width:6rem;">Files</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-expanded="expanded">
+            <tr [pEditableRow]="rowData" (click)="rowData._clicked = true">
+              <td>
+                <ng-container *ngIf="rowData.children?.length > 0">
+                  <app-z-button
+                    [icon]="expanded ? 'pi pi-chevron-down':'pi pi-chevron-right'"
+                    [rounded]="true"
+                    [text]="true"
+                    [plain]="true"
+                    [pRowToggler]="rowData">
+                  </app-z-button>
+                </ng-container>
+              </td>
+              <td>
+                <app-checkbox
+                  (checkedChange)="handleCheckboxChange($event, rowData.id)"
+                  [checked]="selectedStudentIds.includes(rowData.id)">
+                </app-checkbox>
+              </td>
+              <td *ngFor="let parent of columns" (click)="onCellClick(rowData, parent.field)">
+                <ng-container *ngIf="parent.field !== 'name'; else nonEditableName">
+                  <td pEditableColumn [pEditableColumnField]="parent.field">
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <ng-container *ngIf="parent.editable !== false && !rowData.disabled; else disabledCell">
+                          <input pInputText type="text"
+                            [(ngModel)]="rowData[parent.field]" required
+                            [ngClass]="{'invalid-input': !rowData[parent.field]}" />
+                        </ng-container>
+                        <ng-template #disabledCell>
+                          <span class="disabled-cell">{{ formatValue(rowData[parent.field], parent.field) }}</span>
+                        </ng-template>
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        <span (click)="$event.stopPropagation()"
+                          [ngClass]="{'invalid-span': !rowData[parent.field] && rowData._clickedField === parent.field}">
+                        </span>
+                        {{ formatValue(rowData[parent.field], parent.field) }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                </ng-container>
+                <ng-template #nonEditableName>
+                  <td>
+                    <ng-container *ngIf="!rowData.children?.length">
+                      <a href="javascript:void(0)" (click)="openNameMenu($event,rowData)">
+                        {{ formatValue(rowData[parent.field]) }}
+                      </a>
+                    </ng-container>
+                    <ng-container *ngIf="rowData.children?.length">
+                      {{ formatValue(rowData[parent.field]) }}
+                    </ng-container>
+                  </td>
+                </ng-template>
+              </td>
+              <td pFrozenColumn alignFrozen="right">
+                <i class="pi pi-pencil"
+                  [ngClass]="{'active-icon': activeIcon[rowData.id] === 'notes'}"
+                   (click)="openNotesPanel(rowData)"
+                   title="Open Notes"
+                   style="cursor:pointer"></i>
+              </td>
+              <td pFrozenColumn alignFrozen="right">
+                <i class="pi pi-file file-icon"
+                  [ngClass]="{'active-icon': activeIcon[rowData.id] === 'files'}"
+                   (click)="openFilesPanel(rowData)"
+                   title="Open Files"
+                   style="cursor:pointer"></i>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="rowexpansion" let-rowData>
+            <tr>
+              <td [attr.colspan]="columns.length + 2">
+                <div class="p-4" style="margin-left: 5vw;">
+                  <p-table class="child-table" [value]="rowData.children" dataKey="id">
+                    <ng-template pTemplate="body" let-child>
+                      <tr>
+                        <app-checkbox
+                          (checkedChange)="handleChildCheckboxChange($event, child.id, rowData.id)"
+                          [checked]="selectedChildIds.includes(child.id)">
+                        </app-checkbox>
+                        <td *ngFor="let key of child | keyvalue">
+                          <ng-container *ngIf="key.key === 'name'; else notName">
+                            <a href="javascript:void(0)" (click)="handleChildNameClick($event, rowData)">
+                              {{ key.value }}
+                            </a>
+                          </ng-container>
+                          <ng-template #notName>
+                            {{ formatValue(key.value, key.key) }}
+                          </ng-template>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template #emptymessage>
+                      <tr>
+                        <td colspan="6">There are no child records yet.</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    <app-notes-files-panel
+      class="panel-section"
+      [showPanel]="showPanel"
+      [panelTitle]="panelTitle"
+      [rowData]="selectedRow"
+      [panelType]="getPanelType(selectedRow)"
+      (saveInput)="onPanelSave($event)"
+      (closePanel)="closePanel(selectedRow?.id)">
+        <ng-container *ngIf="panelTitle === 'Notes' && selectedRow">
+            <div *ngFor="let note of notes[selectedRow.id] || []" class="message-bubble">
+              {{ note }}
+            </div>
+            <div *ngIf="!notes[selectedRow.id]?.length" class="message-bubble">
+              No notes available.
+            </div>
+       </ng-container>
+<ng-container *ngIf="panelTitle === 'file' && selectedRow">
+  <ng-container *ngIf="files[selectedRow.id] && files[selectedRow.id].length > 0; else noFiles">
+    <div *ngFor="let file of files[selectedRow.id]" class="message-bubble">
+      {{ file }}
+    </div>
+  </ng-container>
+  <ng-template #noFiles>
+    <div class="message-bubble">No files available.</div>
+  </ng-template>
+</ng-container>
+        </app-notes-files-panel>
+      </div>
+    </div>
+    <div class="fixed-footer-tab-panel">
+      <div class="footer-tab-panel-inner">
+        <p-tabView [(activeIndex)]="activeTabIndex" class="tabview-button-style"
+          [scrollable]="true" (onChange)="onTabChange($event)">
+          <p-tabPanel *ngFor="let tab of tabMenuItems" [header]="tab.label"></p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+    <ng-template #noData>
+      <div style="text-align: center; padding: 4rem; color: red;">
+        No data found.
+      </div>
+    </ng-template>
+    <p-overlayPanel #filterOverlay [dismissable]="true" [style]="{'width':'15vw'}">
+      <div *ngFor="let val of uniqueValues" class="p-field-checkbox" (click)="$event.stopPropagation()">
+        <p-checkbox [style]="{'margin':'5px'}" name="filter" [binary]="true" [value]="val"
+          [ngModel]="checkboxStates[selectedField] ? checkboxStates[selectedField][val] : false" (onChange)="onCheckboxChange(val)">
+        </p-checkbox>
+        <label style="margin-left: 8px">{{val}}</label>
+      </div>
+      <div class="p-mt-2">
+        <app-z-button label="Clear" class="p-button-sm p-button-secondary"
+          (click)="clearFilter()"></app-z-button>
+        <app-z-button label="Apply" class="p-button-sm p-mr-2"
+          (click)="applyFilter()"></app-z-button>
+      </div>
+    </p-overlayPanel>
+    <p-menu #filterMenu [popup]="true" [model]="filterMenuItems" ></p-menu>
+    <p-menu #nameMenu [popup]="true" [model]="nameMenuItems"></p-menu>
+  </div>

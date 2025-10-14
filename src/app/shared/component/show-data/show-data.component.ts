@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ServiceService } from 'src/app/core/service.service';
-
+import { ServiceService } from 'src/app/core/service/service.service';
 @Component({
   selector: 'app-show-data',
   templateUrl: './show-data.component.html',

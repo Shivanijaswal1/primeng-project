@@ -1,42 +1,32 @@
-import { Component } from '@angular/core';
+import { AdvanceSortingComponent } from 'src/app/shared/component/advance-sorting/advance-sorting.component';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FilterService } from 'primeng/api';
 import { OverlayPanel } from 'primeng/overlaypanel';
-import { Sidebar } from 'primeng/sidebar';
 import { Role, ServiceService } from 'src/app/core/service/service.service';
-import { TableRowCollapseEvent } from 'primeng/table';
+import { Sidebar } from 'primeng/sidebar';
+import { TableRowCollapseEvent, TableModule } from 'primeng/table';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
-import { HighlightPipe } from 'src/app/shared/pipe/highlight.pipe';
 import {
+  Component,
   ElementRef,
   HostListener,
   QueryList,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { AdvanceSortingComponent } from '../advance-sorting/advance-sorting.component';
-
 interface Course {
   status: string;
   sequence: number;
 }
-
 @Component({
-  selector: 'app-submitted-student-detail',
-  templateUrl: './submitted-student-detail.component.html',
-  styleUrls: ['./submitted-student-detail.component.scss'],
-  providers: [
-    DialogService,
-    ConfirmationService,
-    FilterService,
-    DatePipe,
-    HighlightPipe,
-  ],
+  selector: 'app-Student-dashboard',
+  templateUrl: './Student-dashboard.component.html',
+  providers: [DialogService, ConfirmationService, FilterService, DatePipe],
+  styleUrls: ['./Student-dashboard.component.scss'],
 })
-
-export class SubmittedStudentDetailComponent {
+export class TableComponent {
   notes: { [rowId: number]: string[] } = {};
   files: { [rowId: number]: string[] } = {};
   @ViewChild('filterOverlay') filterOverlay!: OverlayPanel;
@@ -57,12 +47,12 @@ export class SubmittedStudentDetailComponent {
   filterMenuItems: MenuItem[] = [];
   selectedField: string = '';
   uniqueValues: string[] = [];
+  availableValues: { [field: string]: string[] } = {};
   nameMenuItems: MenuItem[] = [];
   searchTerm = '';
   searchBarVisible = false;
   selectedValue: string[] = [];
   tempSelectedValue: string[] = [];
-  checkboxStates: { [key: string]: boolean } = {};
   matches: number[] = [];
   currentMatchIndex: number = -1;
   activeHighlightedHeader: number | null = null;
@@ -101,6 +91,10 @@ export class SubmittedStudentDetailComponent {
   selectedParentIds: (number | string)[] = [];
   selectedChildRecords: { parentId: number; childId: number }[] = [];
   data: any;
+  filteredColumns: Set<string> = new Set();
+  columnSelectedValues: { [field: string]: string[] } = {};
+  checkboxStates: { [field: string]: { [value: string]: boolean } } = {};
+  appliedOrder: string[] = [];
 
   ngOnInit() {
     this.getstudentData();
@@ -111,13 +105,13 @@ export class SubmittedStudentDetailComponent {
       { field: 'age', header: 'Age', editable: false },
       { field: 'selectedValue', header: 'Department', editable: false },
       { field: 'selectedfees', header: 'Fees Status', editable: false },
-      { field: 'amount', header: 'Amount', editable: true },
-      { field: 'secondAmount', header: 'second Amount', editable: false },
       { field: 'father', header: 'Fathername', editable: false },
       { field: 'address', header: 'Address', editable: false },
       { field: 'city', header: 'City', editable: false },
       { field: 'state', header: 'State', editable: false },
       { field: 'postalCode', header: 'Postal Code', editable: false },
+      { field: 'age', header: 'Amount', editable: true },
+      { field: 'id', header: 'second Amount', editable: false },
     ];
 
     this.dynamicHeaders = [
@@ -127,7 +121,7 @@ export class SubmittedStudentDetailComponent {
       { header: 'Join Date', field: 'Join Date', sortable: true },
       { header: 'Date of Birth', field: 'Date of Birth', sortable: true },
     ];
-    this._studentService.setRole(Role.Teacher);
+    this._studentService.setRole(Role.Student);
   }
 
   onPanelSave(event: { rowId: number; content: string }) {
@@ -159,7 +153,9 @@ export class SubmittedStudentDetailComponent {
   openFilesPanel(row: any) {
     this.resetAllIcons();
     if (
-      this.openRowId === row.id && this.showPanel && this.panelTitle === 'Files'
+      this.openRowId === row.id &&
+      this.showPanel &&
+      this.panelTitle === 'Files'
     ) {
       this.closePanel();
     } else {
@@ -241,6 +237,7 @@ export class SubmittedStudentDetailComponent {
     });
     this.ref.onClose.subscribe((formValue: any) => {
       if (formValue?.policy?.length > 0 && rowData.id) {
+        const updatedPolicy = formValue.policy[0];
         const parentIndex = this.student.findIndex(
           (student) => student.id === rowData.id
         );
@@ -265,6 +262,7 @@ export class SubmittedStudentDetailComponent {
   tabchange(status: string) {
     this.closePanel();
     const normalized = status.toLowerCase().trim();
+    this.selectedStatus = normalized;
     if (normalized === 'all') {
       this.filteredstudent = [...this.student];
     } else {
@@ -309,51 +307,77 @@ export class SubmittedStudentDetailComponent {
 
   openFilterMenu(event: MouseEvent, field: string) {
     this.selectedField = field;
-    this.uniqueValues = [
-      ...new Set(
-        this.student.map((student) => this.formatValue(student[field]))
-      ),
-    ];
-    this.tempSelectedValue = [...this.selectedValue];
+      const rowsForValues = this.getRowsAfterApplyingFilters(field);
+    const  vals = [...new Set(rowsForValues.map((s) => this.formatValue(s[field])))];
+    this.uniqueValues = vals;
+    if (!this.checkboxStates[field]) this.checkboxStates[field] = {};
+    this.uniqueValues.forEach((val) => {
+       this.checkboxStates[field][val] = this.columnSelectedValues[field]?.includes(val) ?? false;
+    });
     this.filterOverlay.show(event);
   }
 
-  applyFilter() {
-    this.tempSelectedValue.forEach((val) => {
-      if (!this.selectedValue.includes(val)) {
-        this.selectedValue.push(val);
+  onCheckboxChange(value: string) {
+    this.checkboxStates[this.selectedField][value] = !this.checkboxStates[this.selectedField][value];
+    this.tempSelectedValue = Object.keys(
+      this.checkboxStates[this.selectedField]
+    ).filter((k) => this.checkboxStates[this.selectedField][k]);
+  }
+
+applyFilter() {
+  if (!this.selectedField) return;
+  const checkedMap = this.checkboxStates[this.selectedField] || {};
+  const selectedValues = Object.keys(checkedMap).filter((k) => checkedMap[k]);
+    this.columnSelectedValues[this.selectedField] = [...selectedValues];
+    this.filteredColumns.add(this.selectedField);
+  this.filteredstudent = this.getRowsAfterApplyingFilters();
+
+  this.tempSelectedValue = [...selectedValues];
+
+  this.filterOverlay.hide();
+}
+
+  private getRowsAfterApplyingFilters(excludeField?: string) {
+    let base = [...this.student];
+    Object.keys(this.columnSelectedValues).forEach((field) => {
+      if (excludeField && field === excludeField) return;
+      const selected = this.columnSelectedValues[field];
+      if (selected && selected.length > 0) {
+        base = base.filter((row) => selected.includes(this.formatValue(row[field])) );
       }
     });
-    if (this.selectedField && this.selectedValue.length > 0) {
-      const field = this.selectedField;
-      this.filteredstudent = this.student.filter((student) => {
-        const formatted = this.formatValue(student[field]);
-        return this.selectedValue.includes(formatted);
-      });
+    if (
+      this.selectedStatus === 'pending' || this.selectedStatus === 'complete'
+    ){
+      const status = this.selectedStatus.toLowerCase();
+      base = base.filter(
+        (stu) => ( stu.selectedfees?.code ?? '').toLowerCase() === status
+      );
     }
-    this.filterOverlay.hide();
+    return base;
   }
 
   clearFilter() {
-    this.filteredstudent = [...this.student];
-    this.selectedValue = [];
+    if (!this.selectedField) return;
+    this.columnSelectedValues[this.selectedField] = [];
     this.tempSelectedValue = [];
-    Object.keys(this.checkboxStates).forEach((key) => {
-      this.checkboxStates[key] = false;
+    this.filteredstudent = this.student.filter((row) => {
+      return Object.entries(this.columnSelectedValues).every(
+        ([field, selected]) => {
+          return (
+            !selected?.length || selected.includes(this.formatValue(row[field]))
+          );
+        }
+      );
     });
+    this.filteredColumns.delete(this.selectedField);
     this.filterOverlay.hide();
   }
 
-  onCheckboxChange(value: string) {
-    if (this.tempSelectedValue.includes(value)) {
-      this.tempSelectedValue = this.tempSelectedValue.filter(
-        (v) => v !== value
-      );
-      this.selectedValue = [];
-    } else {
-      this.tempSelectedValue.push(value);
-    }
+  isFiltered(field: string) {
+    return this.filteredColumns.has(field);
   }
+
   showInvalidError = false;
 
   checkInvalidCells() {
@@ -443,24 +467,6 @@ export class SubmittedStudentDetailComponent {
 
   private resolveField(obj: any, field: string) {
     return field.split('.').reduce((o, key) => (o ? o[key] : null), obj);
-  }
-
-  clearSorting() {
-    this.currentSortFields = [];
-    this.sortOrder = 0;
-    this.sortField = '';
-    this.sortingActive = false;
-    this.filteredstudent = [...this.student];
-  }
-
-  onRowExpand(event: any) {
-    const parent = event.data;
-    if (Array.isArray(parent.children)) {
-      parent.children = parent.children.map((child: any, index: number) => ({
-        ...child,
-        id: child['id'] ?? Math.floor(Math.random() * 1000000 + index),
-      }));
-    }
   }
 
   childSelections: { [parentId: number]: any[] } = {};
@@ -778,4 +784,5 @@ export class SubmittedStudentDetailComponent {
   getPanelType(row: any): 'file' | 'notes' {
     return row?.type === 'file' ? 'file' : 'notes';
   }
+
 }

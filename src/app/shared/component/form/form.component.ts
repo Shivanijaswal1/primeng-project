@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ServiceService } from 'src/app/core/service.service';
+import { ServiceService } from 'src/app/core/service/service.service';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { jsPDF } from 'jspdf';
@@ -19,7 +19,6 @@ import { MultiSelect } from 'primeng/multiselect';
 })
 export class FormComponent {
   @ViewChild('dropdownElem') dropdownElem: any;
-  // @ViewChild('content', { static: false })
 @ViewChild('parentAutoComplete') parentAutoComplete!: AutoComplete;
 @ViewChild('parentMultiSelect') parentMultiSelect!: MultiSelect;
   panelSize: number[] = [60, 40];

@@ -30,6 +30,7 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { NotesFilesPanelComponent } from './component/notes-files-panel/notes-files-panel.component';
 import { IndiaChoroplethComponent } from './component/india-choropleth/india-choropleth.component';
 import { SubmittedStudentDetailComponent } from './component/submitted-student-detail/submitted-student-detail.component';
+import { NotFoundComponent } from './component/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { SubmittedStudentDetailComponent } from './component/submitted-student-d
     FormComponent,
     IndiaChoroplethComponent,
     SubmittedStudentDetailComponent,
+    NotFoundComponent,
 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
