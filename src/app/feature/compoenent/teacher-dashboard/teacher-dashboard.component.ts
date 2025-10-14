@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceService,Role } from 'src/app/core/service.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AddAssignmentDialogComponent } from './add-assignment-dialog.component';
+import { Role, ServiceService } from 'src/app/core/service/service.service';
+import { AddAssignmentDialogComponent } from '../add-assignment-dialog/add-assignment-dialog.component';
 import { AttendancePageComponent } from '../attendance-page/attendance-page.component';
 import { FormComponent } from 'src/app/shared/component/form/form.component';
 
