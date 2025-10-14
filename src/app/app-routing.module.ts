@@ -1,18 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthComponent } from './auth/auth.component';
-import { authGuardGuard } from './auth/guard/auth-guard.guard';
+import { AuthComponent } from './auth/Component/login.component';
+import { loginGuard } from './core/guard/login.guard';
+import { authGuard } from './core/guard/auth-guard.guard';
+import { NotFoundComponent } from './shared/component/not-found/not-found.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'auth', pathMatch: 'full' },
-  { path: '', component: AuthComponent },
+  { path: 'auth', component: AuthComponent, canActivate: [loginGuard] },
+  { path: '', redirectTo: '/auth', pathMatch: 'full' },
   {
-    path: 'student-detail',
+    path: '',
     loadChildren: () =>
       import('./feature/feature.module').then((m) => m.FeatureModule),
-      canActivate: [authGuardGuard],
+    canActivate: [authGuard],
   },
 
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({
