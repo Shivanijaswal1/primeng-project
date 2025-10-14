@@ -79,7 +79,6 @@ showSubmittedStudents = false;
   }
 
   loadReports() {
-    debugger
     this.studentService.getReports().subscribe(data => {
       this.performanceData = {
         labels: data.map(r => r.subject),
