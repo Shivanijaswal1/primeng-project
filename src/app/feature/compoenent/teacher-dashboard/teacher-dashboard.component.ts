@@ -202,7 +202,6 @@ showSubmittedStudents = false;
     console.log('Logout clicked...');
   }
   takeAttendance() {
-    debugger
     this.ref = this.dialogService.open(AttendancePageComponent, {
       header: 'Take Attendance',
       width: '600px',
@@ -221,14 +220,12 @@ showSubmittedStudents = false;
     });
   }
 addAssignment() {
-  debugger
   this.ref = this.dialogService.open(AddAssignmentDialogComponent, {
     width:"700px",
     data: { students: this.students }
   });
 
   this.ref.onClose.subscribe((assignment: any) => {
-    debugger
     if (assignment) {
       this.studentService.addAssignment(assignment).subscribe(() => {
         console.log('Assignment added successfully');
@@ -274,7 +271,6 @@ updateData() {
   };
 }
  show() {
-  debugger
     this.ref = this.dialogService.open(FormComponent, {
       header: 'Student Registration form',
       width: '65%',

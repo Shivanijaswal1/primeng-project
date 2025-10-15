@@ -4,25 +4,13 @@ import { CanActivateFn, Router } from '@angular/router';
 export const loginGuard: CanActivateFn = () => {
   const router = inject(Router);
   const user = localStorage.getItem('user');
-
+  const role = (localStorage.getItem('selectedRole') || '').toLowerCase();
   if (user) {
-    const userObj = JSON.parse(user);
-    switch (userObj.role) {
-      case 'Student':
-        router.navigate(['/student-detail']);
-        break;
-      case 'Teacher':
-        router.navigate(['/teacher-dashboard']);
-        break;
-      case 'Admin':
-        router.navigate(['/admin-dashboard']);
-        break;
-      case 'Accounts':
-        router.navigate(['/accounts-dashboard']);
-        break;
-    }
+
+  if (role === 'teacher') router.navigate(['/teacher-dashboard'], { replaceUrl: true });
+    else router.navigate(['/student-detail'], { replaceUrl: true });
     return false;
+    }
+     return true;
   }
 
-  return true;
-};

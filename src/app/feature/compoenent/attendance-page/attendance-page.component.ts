@@ -30,9 +30,8 @@ export class AttendancePageComponent {
   }
 
   submitAttendance() {
-    debugger
     const data = this.attendanceForm.value.attendance;
-    this.ref.close(data); // return attendance data to dashboard
+    this.ref.close(data);
   }
 
   cancel() {
@@ -40,7 +39,6 @@ export class AttendancePageComponent {
   }
 
 getAvatar(name: string): string {
-  debugger
   const initials = name.split(' ').map(n => n[0]).join('');
   return `https://ui-avatars.com/api/?name=${initials}&background=random&color=fff&size=64`;
 }
