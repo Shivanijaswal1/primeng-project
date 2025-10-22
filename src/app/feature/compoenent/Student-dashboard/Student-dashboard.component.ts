@@ -464,7 +464,7 @@ applyFilter() {
     });
     this.ref.onClose.subscribe((sortData) => {
       if (sortData) {
-        this.applyAdvancedSorting(sortData);
+
       }
     });
   }
@@ -477,29 +477,7 @@ applyFilter() {
     return result;
   }
 
-  applyAdvancedSorting(sortData: { sortField: string; sortOrder: number }[]) {
-    this.sortingActive = true;
-    this.currentSortFields = sortData.map((s) =>
-      s.sortField.trim().toLowerCase()
-    );
-    this.filteredstudent.sort((a, b) => {
-      for (const { sortField, sortOrder } of sortData) {
-        let valueA = this.resolveField(a, sortField);
-        let valueB = this.resolveField(b, sortField);
-        if (valueA == null && valueB == null) return 0;
-        if (valueA == null) return sortOrder;
-        if (valueB == null) return -sortOrder;
-        if (typeof valueA === 'string' && typeof valueB === 'string') {
-          const result = valueA.localeCompare(valueB);
-          if (result !== 0) return sortOrder * result;
-        } else {
-          const result = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
-          if (result !== 0) return sortOrder * result;
-        }
-      }
-      return 0;
-    });
-  }
+
 
 clearSorting() {
   this.sortingActive = false;
