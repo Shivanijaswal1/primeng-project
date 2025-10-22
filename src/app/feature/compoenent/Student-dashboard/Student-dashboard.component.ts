@@ -6,7 +6,7 @@ import { FilterService } from 'primeng/api';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Role, ServiceService } from 'src/app/core/service/service.service';
 import { Sidebar } from 'primeng/sidebar';
-import { TableRowCollapseEvent, TableModule } from 'primeng/table';
+import { TableRowCollapseEvent } from 'primeng/table';
 import { TabsComponent } from 'src/app/shared/tabs/tabs.component';
 import {
   Component,
@@ -16,10 +16,10 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-interface Course {
-  status: string;
-  sequence: number;
-}
+// interface Course {
+//   status: string;
+//   sequence: number;
+// }
 @Component({
   selector: 'app-Student-dashboard',
   templateUrl: './Student-dashboard.component.html',
@@ -33,6 +33,9 @@ export class TableComponent {
   @ViewChildren('headerCell') headerCells!: QueryList<ElementRef>;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   @ViewChild('nameMenu') nameMenu: any;
+  @ViewChild('assignPanel') assignPanel!: OverlayPanel;
+  public selectedAssignNodes: any[] = [];
+  selectedRow: any = null;
   student: any[] = [];
   expandedRows: any = {};
   columns: { field: string; header: string; editable?: boolean }[] = [];
@@ -78,14 +81,12 @@ export class TableComponent {
   showPanel: boolean = false;
   panelTitle: string = '';
   openRowId: number | null = null;
-  selectedRow: any = null;
   activeIcon: { [rowId: number]: 'files' | 'notes' | null } = {};
   constructor(
-    private _studentService: ServiceService,
+    public studentService: ServiceService,
     public dialogservice: DialogService,
     private _deleteservice: ConfirmationService,
     private _messageservice: MessageService,
-    private datePipe: DatePipe
   ) {}
   selectedParentIdsFromChildren: Set<number> = new Set();
   selectedParentIds: (number | string)[] = [];
@@ -95,6 +96,8 @@ export class TableComponent {
   columnSelectedValues: { [field: string]: string[] } = {};
   checkboxStates: { [field: string]: { [value: string]: boolean } } = {};
   appliedOrder: string[] = [];
+  multiSortMeta: { field: string; order: number }[] = [];
+
 
   ngOnInit() {
     this.getstudentData();
@@ -121,7 +124,7 @@ export class TableComponent {
       { header: 'Join Date', field: 'Join Date', sortable: true },
       { header: 'Date of Birth', field: 'Date of Birth', sortable: true },
     ];
-    this._studentService.setRole(Role.Student);
+    this.studentService.setRole(Role.Student);
   }
 
   onPanelSave(event: { rowId: number; content: string }) {
@@ -167,6 +170,41 @@ export class TableComponent {
     }
   }
 
+  openAssignOverlay(event: any, row: any) {
+    this.studentService.openAssignMenu(row);
+    this.assignPanel.toggle(event);
+  }
+
+  onAssignPanelHide() {
+    if (this.selectedRow) {
+      const selectedNodes = this.studentService.assignTreeData
+        .flatMap((node: any) => this.getSelectedNodes(node))
+        .filter((node) => node.selected);
+      this.selectedRow.assignedUsers = selectedNodes.map((n) => n.label);
+      console.log('Auto-saved assigned users:', this.selectedRow.assignedUsers);
+    }
+  }
+
+  private getSelectedNodes(node: any): any[] {
+    const selected = node.partialSelected || node.selected ? [node] : [];
+    const children = node.children ? node.children.flatMap((c: any) => this.getSelectedNodes(c)) : [];
+    return [...selected, ...children];
+  }
+
+  getUserInitials(name: string): string {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase();
+  }
+
+  getAvatarColor(index: number): string {
+    const colors = ['#007bff', '#17a2b8', '#28a745', '#ffc107', '#6610f2'];
+    return colors[index % colors.length];
+  }
+
+
   closePanel(rowId?: number) {
     this.showPanel = false;
     this.openRowId = null;
@@ -176,6 +214,7 @@ export class TableComponent {
       this.activeIcon[rowId] = null;
     }
   }
+
   resetAllIcons() {
     Object.keys(this.activeIcon).forEach((key) => {
       this.activeIcon[+key] = null;
@@ -187,7 +226,7 @@ export class TableComponent {
   }
 
   getstudentData() {
-    this._studentService.getStudent().subscribe((data) => {
+    this.studentService.getStudent().subscribe((data) => {
       const patchedData = (data || []).map((stu: any) => ({
         ...stu,
         file: stu.file ?? '',
@@ -220,7 +259,7 @@ export class TableComponent {
   }
 
   getFormData(): void {
-    this._studentService.show();
+    this.studentService.show();
   }
 
   handleChildNameClick(event: any, rowData: any) {
@@ -244,7 +283,7 @@ export class TableComponent {
         if (parentIndex !== -1) {
           const parentObj = this.student[parentIndex];
           this.loading = true;
-          this._studentService
+          this.studentService
             .updateParentWithChildren(rowData.id, parentObj.children)
             .subscribe({
               next: () => {
@@ -328,8 +367,8 @@ applyFilter() {
   if (!this.selectedField) return;
   const checkedMap = this.checkboxStates[this.selectedField] || {};
   const selectedValues = Object.keys(checkedMap).filter((k) => checkedMap[k]);
-    this.columnSelectedValues[this.selectedField] = [...selectedValues];
-    this.filteredColumns.add(this.selectedField);
+  this.columnSelectedValues[this.selectedField] = [...selectedValues];
+  this.filteredColumns.add(this.selectedField);
   this.filteredstudent = this.getRowsAfterApplyingFilters();
 
   this.tempSelectedValue = [...selectedValues];
@@ -435,9 +474,6 @@ applyFilter() {
     const result = this.currentSortFields.some(
       (f) => f.toLowerCase().trim() === field.toLowerCase().trim()
     );
-    if (result) {
-      console.log('Highlighting column:', field);
-    }
     return result;
   }
 
@@ -464,6 +500,12 @@ applyFilter() {
       return 0;
     });
   }
+
+clearSorting() {
+  this.sortingActive = false;
+  this.currentSortFields = [];
+  this.filteredstudent = [...this.student];
+}
 
   private resolveField(obj: any, field: string) {
     return field.split('.').reduce((o, key) => (o ? o[key] : null), obj);
@@ -517,6 +559,7 @@ applyFilter() {
     }
     this.updateSelectedParentsFromChildren();
   }
+
   getSelectedChildrenCount(): number {
     if (this.selectedStudentIds.length > 0) {
       return this.filteredstudent
@@ -674,7 +717,7 @@ applyFilter() {
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        this._studentService.deleteMultiple(this.selectedStudentIds);
+        this.studentService.deleteMultiple(this.selectedStudentIds);
         this.getstudentData();
         this.selectedStudentIds = [];
         this.getstudentData();
