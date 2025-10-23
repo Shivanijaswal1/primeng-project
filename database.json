@@ -1,38 +1,8 @@
 {
   "form": [
     {
-      "id": "cc8c",
-      "name": "test",
-      "parent": 3,
-      "child": 302,
-      "email": "test@Gmail.com",
-      "father": "test",
-      "address": "test",
-      "city": "test",
-      "state": "test",
-      "postalCode": "3224",
-      "selectedValue": {
-        "name": "Medical",
-        "code": "O2"
-      },
-      "selectedfees": {
-        "name": "complete",
-        "code": "complete"
-      },
-      "age": "21",
-      "children": [
-        {
-          "name": "hjk",
-          "dateofbirth": "2025-08-18T18:30:00.000Z",
-          "joinDate": "2025-08-25T18:30:00.000Z",
-          "status": "True",
-          "role": "vbnm"
-        }
-      ]
-    },
-    {
       "id": "158c",
-      "name": "test",
+      "name": "ABC",
       "parent": 2,
       "child": 201,
       "email": "test@gmail",
@@ -46,8 +16,8 @@
         "code": "O2"
       },
       "selectedfees": {
-        "name": "Pending",
-        "code": "pending"
+        "name": "complete",
+        "code": "complete"
       },
       "age": "32",
       "children": [
@@ -79,7 +49,7 @@
     },
     {
       "id": "7dde",
-      "name": "test",
+      "name": "BCA",
       "parent": 1,
       "child": 101,
       "email": "test@gmail.com",
@@ -99,79 +69,67 @@
       "age": "32"
     },
     {
-      "id": "0c84",
-      "name": "test",
-      "parent": 2,
-      "child": 201,
-      "email": "asdfg@gmail.com",
-      "father": "eeeeer",
-      "address": "abc",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "3224",
-      "selectedValue": {
-        "name": "ART",
-        "code": "O1"
+      "id": "e9ab",
+      "name": "TEST",
+      "parent": {
+        "key": 2,
+        "value": "JAVA",
+        "children": [
+          {
+            "key": 201,
+            "value": "Child 1 of Parent 2",
+            "details": "First child of parent 2"
+          },
+          {
+            "key": 202,
+            "value": "Child 2 of Parent 2",
+            "details": "Second child of parent 2"
+          }
+        ]
       },
-      "selectedfees": {
-        "name": "complete",
-        "code": "complete"
-      },
-      "age": "22"
-    },
-    {
-      "id": "5846",
-      "name": "test",
-      "parent": 2,
-      "child": 201,
-      "email": "asdfg@gmail.com",
-      "father": "eeeeer",
-      "address": "abc",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "3224",
-      "selectedValue": {
-        "name": "ART",
-        "code": "O1"
-      },
-      "selectedfees": {
-        "name": "complete",
-        "code": "complete"
-      },
-      "age": "22"
-    },
-    {
-      "id": "65b8",
-      "name": "jh",
-      "parent": 3,
-      "child": 302,
-      "email": "ghjk@gmail.com",
-      "father": "ww",
-      "address": "abc",
-      "city": "una",
-      "state": "HP",
-      "postalCode": "3222",
-      "selectedValue": {
-        "name": "ART",
-        "code": "O1"
-      },
-      "selectedfees": {
-        "name": "Pending",
-        "code": "pending"
-      },
-      "age": "22"
-    },
-    {
-      "id": "7e65",
-      "name": "wrt",
-      "parent": 1,
-      "child": 102,
+      "child": "vvv",
       "email": "shivaniwinss@gmail.com",
-      "father": "eeeee",
-      "address": "test",
+      "father": "eeeeer",
+      "address": "hvfdh",
       "city": "test",
       "state": "HP",
-      "postalCode": "3225",
+      "postalCode": "3224",
+      "selectedValue": {
+        "name": "Medical",
+        "code": "O2"
+      },
+      "selectedfees": {
+        "name": "complete",
+        "code": "complete"
+      },
+      "age": "44"
+    },
+    {
+      "id": "0b1b",
+      "name": "john",
+      "parent": {
+        "key": 2,
+        "value": "JAVA",
+        "children": [
+          {
+            "key": 201,
+            "value": "Child 1 of Parent 2",
+            "details": "First child of parent 2"
+          },
+          {
+            "key": 202,
+            "value": "Child 2 of Parent 2",
+            "details": "Second child of parent 2"
+          }
+        ]
+      },
+      "child": "test",
+      "email": "john@gmail.com",
+      "father": "jon",
+      "address": "test",
+      "city": "test3",
+      "state": "test5",
+      "postalCode": "3222",
       "selectedValue": {
         "name": "Medical",
         "code": "O2"
@@ -181,6 +139,229 @@
         "code": "complete"
       },
       "age": "21"
+    },
+    {
+      "id": "11e9",
+      "name": "ZZZ",
+      "parent": {
+        "key": 2,
+        "value": "JAVA",
+        "children": [
+          {
+            "key": 201,
+            "value": "Child 1 of Parent 2",
+            "details": "First child of parent 2"
+          },
+          {
+            "key": 202,
+            "value": "Child 2 of Parent 2",
+            "details": "Second child of parent 2"
+          }
+        ]
+      },
+      "child": "test",
+      "email": "test@gmail.com",
+      "father": "jon",
+      "address": "test5",
+      "city": "test5",
+      "state": "test4",
+      "postalCode": "3222",
+      "selectedValue": {
+        "name": "Commerce",
+        "code": "O3"
+      },
+      "selectedfees": {
+        "name": "complete",
+        "code": "complete"
+      },
+      "age": "22"
+    },
+    {
+      "id": "c59c",
+      "name": "SSS",
+      "parent": {
+        "key": 2,
+        "value": "JAVA",
+        "children": [
+          {
+            "key": 201,
+            "value": "Child 1 of Parent 2",
+            "details": "First child of parent 2"
+          },
+          {
+            "key": 202,
+            "value": "Child 2 of Parent 2",
+            "details": "Second child of parent 2"
+          }
+        ]
+      },
+      "child": "test",
+      "email": "john@gmail.com",
+      "father": "test",
+      "address": "test5",
+      "city": "test",
+      "state": "test",
+      "postalCode": "3224",
+      "selectedValue": {
+        "name": "Medical",
+        "code": "O2"
+      },
+      "selectedfees": {
+        "name": "complete",
+        "code": "complete"
+      },
+      "age": "21"
+    },
+    {
+      "id": "6ef9",
+      "name": "AAA",
+      "parent": {
+        "key": 1,
+        "value": "JavaScript",
+        "children": [
+          {
+            "key": 101,
+            "value": "Child 1 of Parent 1",
+            "details": "First child of parent 1"
+          },
+          {
+            "key": 102,
+            "value": "Child 2 of Parent 1",
+            "details": "Second child of parent 1"
+          }
+        ]
+      },
+      "child": "test",
+      "email": "john@gmail.com",
+      "father": "test",
+      "address": "test",
+      "city": "una",
+      "state": "HP",
+      "postalCode": "test",
+      "selectedValue": {
+        "name": "Medical",
+        "code": "O2"
+      },
+      "selectedfees": {
+        "name": "complete",
+        "code": "complete"
+      },
+      "age": "22"
+    },
+    {
+      "id": "7793",
+      "name": "john",
+      "parent": {
+        "key": 2,
+        "value": "JAVA",
+        "children": [
+          {
+            "key": 201,
+            "value": "Child 1 of Parent 2",
+            "details": "First child of parent 2"
+          },
+          {
+            "key": 202,
+            "value": "Child 2 of Parent 2",
+            "details": "Second child of parent 2"
+          }
+        ]
+      },
+      "child": "test",
+      "email": "john@gmail.com",
+      "father": "john",
+      "address": "test",
+      "city": "test",
+      "state": "test",
+      "postalCode": "555",
+      "selectedValue": {
+        "name": "Medical",
+        "code": "O2"
+      },
+      "selectedfees": {
+        "name": "complete",
+        "code": "complete"
+      },
+      "age": "21"
+    },
+    {
+      "id": "140f",
+      "name": "shivn",
+      "parent": {
+        "key": 2,
+        "value": "JAVA",
+        "children": [
+          {
+            "key": 201,
+            "value": "Child 1 of Parent 2",
+            "details": "First child of parent 2"
+          },
+          {
+            "key": 202,
+            "value": "Child 2 of Parent 2",
+            "details": "Second child of parent 2"
+          }
+        ]
+      },
+      "child": "test",
+      "email": "abc@Gmail.com",
+      "father": "test",
+      "address": "abc",
+      "city": "text",
+      "state": "test",
+      "postalCode": "3224",
+      "selectedValue": {
+        "name": "Medical",
+        "code": "O2"
+      },
+      "selectedfees": {
+        "name": "Pending",
+        "code": "pending"
+      },
+      "age": "22"
+    }
+  ],
+  "students": [
+    {
+      "id": "1",
+      "name": "John Doe",
+      "class": "10A",
+      "rollNo": 12
+    },
+    {
+      "id": "2",
+      "name": "Jane Smith",
+      "class": "10A",
+      "rollNo": 13
+    },
+    {
+      "id": "3",
+      "name": "Amit Sharma",
+      "class": "9B",
+      "rollNo": 21
+    }
+  ],
+  "attendance": [],
+  "reports": [
+    {
+      "id": "1",
+      "subject": "Math",
+      "average": 85
+    },
+    {
+      "id": "2",
+      "subject": "Science",
+      "average": 90
+    }
+  ],
+  "assignments": [
+    {
+      "title": "New assignment uploaded",
+      "id": "0b0d"
+    },
+    {
+      "title": "Math homework due tomorrow",
+      "id": "fc40"
     }
   ],
   "data": [
