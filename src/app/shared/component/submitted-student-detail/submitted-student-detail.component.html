@@ -1,5 +1,17 @@
 <div>
+  <app-layout></app-layout>
   <div class="main">
+    <div class="global-filter" style="margin-bottom: 10px;">
+      <div class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="globalFilter"
+          (ngModelChange)="onGlobalFilter()"
+          placeholder="Search all columns" />
+      </div>
+    </div>
     <div class="sub-toolbar">
       <div class="sub-toolbar-inner">
         <div class="toolbar-left">
@@ -85,15 +97,13 @@
       <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
     </div>
     <div class="splitter-container">
-      <div class="table-wrapper">
+      <div class="table-section">
         <p-table #dt [paginator]="true" [rows]="5"
           [resizableColumns]="true"
           [value]="filteredstudent"
           [globalFilterFields]="globalFields"
           [sortField]="sortField"
           [sortOrder]="sortOrder"
-          [scrollable]="true"
-          scrollHeight="calc(100vh - 260px)"
           dataKey="id"
           [expandedRowKeys]="expandedRows"
           (onRowToggle)="onRowToggle($event)"
@@ -106,7 +116,7 @@
                 <app-checkbox (checkedChange)="onSelectAllChange($event)" [checked]="isChecked"></app-checkbox>
               </th>
                    <th *ngFor="let Parent of columns; let i =index"
-                   [ngClass]="{'sorted-highlight': isSorted(Parent.field), }"
+                   [ngClass]="{'sorted-highlight': isSorted(Parent.field), 'active-filter': isFiltered(Parent.field)}"
                    [pSortableColumn]="Parent.field">
                    <span [innerHTML]="Parent.header || (i === activeHighlightedHeader)"></span>
                    <p-sortIcon [field]="Parent.field"></p-sortIcon>
@@ -234,16 +244,14 @@
       [panelType]="getPanelType(selectedRow)"
       (saveInput)="onPanelSave($event)"
       (closePanel)="closePanel(selectedRow?.id)">
-
-<ng-container *ngIf="panelTitle === 'Notes' && selectedRow">
+        <ng-container *ngIf="panelTitle === 'Notes' && selectedRow">
             <div *ngFor="let note of notes[selectedRow.id] || []" class="message-bubble">
               {{ note }}
             </div>
             <div *ngIf="!notes[selectedRow.id]?.length" class="message-bubble">
               No notes available.
             </div>
-          </ng-container>
-
+       </ng-container>
 <ng-container *ngIf="panelTitle === 'file' && selectedRow">
   <ng-container *ngIf="files[selectedRow.id] && files[selectedRow.id].length > 0; else noFiles">
     <div *ngFor="let file of files[selectedRow.id]" class="message-bubble">
@@ -272,9 +280,9 @@
     </ng-template>
     <p-overlayPanel #filterOverlay [dismissable]="true" [style]="{'width':'15vw'}">
       <div *ngFor="let val of uniqueValues" class="p-field-checkbox" (click)="$event.stopPropagation()">
-        <!-- <p-checkbox [style]="{'margin':'5px'}" name="filter" [binary]="true" [value]="val"
+        <p-checkbox [style]="{'margin':'5px'}" name="filter" [binary]="true" [value]="val"
           [ngModel]="checkboxStates[selectedField] ? checkboxStates[selectedField][val] : false" (onChange)="onCheckboxChange(val)">
-        </p-checkbox> -->
+        </p-checkbox>
         <label style="margin-left: 8px">{{val}}</label>
       </div>
       <div class="p-mt-2">
